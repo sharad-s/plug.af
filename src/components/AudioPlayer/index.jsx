@@ -19,7 +19,6 @@ import {
   prevSong,
 } from '../../features/audioplayer/actions';
 
-
 class AudioPage extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +41,14 @@ class AudioPage extends Component {
     } else {
       this.playSong();
     }
+  };
+
+  handleFireFeedback = async () => {
+    alert('You voted this track a banger!');
+  };
+
+  handleDooFeedback = async () => {
+    alert('You voted this track as whack!');
   };
 
   async playSong() {
@@ -107,13 +114,23 @@ class AudioPage extends Component {
     //   <button onClick={this.prevSnippet}>Previous Song</button>
     // ) : null;
 
+    const renderedDooDooButton = isPlaying ? (
+      <button class="feedback-btn" onClick={this.handleDooFeedback}>
+        💩
+      </button>
+    ) : null;
+    const renderedFireButton = isPlaying ? (
+      <button class="feedback-btn" onClick={this.handleFireFeedback}>
+        🔥
+      </button>
+    ) : null;
+    // const renderedPrevButton = isPlaying ? (
+    //   <button onClick={this.prevSnippet}>Previous Song</button>
+    // ) : null;
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
-
-
     const url = `https://plug.af/?playlistURL=${audio.playlistURL}`;
-
     return (
       <div className="info-album">
         <div className="cover">{renderedTrackArtwork}</div>
@@ -128,9 +145,11 @@ class AudioPage extends Component {
         </div>
 
         <div className="">{renederedSeconds}</div>
-        <div>
+        <div class="toggles">
+          {renderedFireButton}
           {renderedPlayButton}
           {renderedNextButton}
+          {renderedDooDooButton}
         </div>
         <br />
         <span className=""> Plug This Playlist: </span>
@@ -152,11 +171,9 @@ class AudioPage extends Component {
     );
   }
 }
-
 const mapStateToProps = state => ({
   audio: state.audio,
 });
-
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -169,14 +186,7 @@ const mapDispatchToProps = dispatch =>
     },
     dispatch,
   );
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(AudioPage);
-
-// {renderedTrackArtwork}
-//         {renderedTrackMetadata}
-//         {renederedSeconds}
-//         {renderedPlaylistName}
-//         {renderedPlayButton}
+)(AudioPage); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}
