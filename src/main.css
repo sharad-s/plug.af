@@ -1,0 +1,154 @@
+[data-aspect-ratio] {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-aspect-ratio] > .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+[data-aspect-ratio="16:9"]::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
+}
+
+[data-aspect-ratio="1:1"]::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+[data-aspect-ratio="2:1"]::before {
+  content: "";
+  display: block;
+  padding-top: 50%;
+}
+
+[data-aspect-ratio="4:3"]::before {
+  content: "";
+  display: block;
+  padding-top: 75%;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  outline: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+html,
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  color: #000000;
+}
+
+
+input:focus,
+button:focus {
+  outline: none;
+}
+
+
+button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+
+input,
+textarea {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid;
+  font-size: 14px;
+  width: 100%;
+  height: 40px;
+}
+
