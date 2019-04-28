@@ -138,7 +138,7 @@ class AudioPage extends Component {
           <li>
             <a
               className="twitter-share-button"
-              href={`https://twitter.com/intent/tweet?text=I just discovered fire new music in a matter of seconds. Can't believe this. ${url}`}
+              href={`https://twitter.com/intent/tweet?text=I just discovered fire new music in a matter of seconds on @plugwithus. Can't believe this. ${url}`}
               data-size="large"
             >
               <i className="fab fa-twitter icon-hover" />

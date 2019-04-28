@@ -10,7 +10,7 @@ import {
 
 import store from '../../state/store';
 
-const PLUG_PLAYLIST_URL = 'https://soundcloud.com/tenasa/sets/delicious';
+const PLUG_PLAYLIST_URL = 'https://soundcloud.com/hatemusic-1/sets/hatemusic-aux-cord-vol-1';
 
 const CLIENT_ID = '47159083054685525f6b73d25e2560b9';
 
