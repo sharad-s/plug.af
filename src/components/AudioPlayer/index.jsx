@@ -156,6 +156,7 @@ class AudioPage extends Component {
         <ul className="flex-horiz socials">
           <li>
             <a
+              target="_blank"
               className="twitter-share-button"
               href={`https://twitter.com/intent/tweet?text=I just discovered fire new music in a matter of seconds on @plugwithus. Can't believe this. ${url}`}
               data-size="large"
