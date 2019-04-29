@@ -38,8 +38,8 @@ class Header extends Component {
           {/* <!-- Brand --> */}
           <Link to="/" className="navbar-brand" id="navbar-brand">
             <span role="img" aria-label="Plug">
-              🔌{' '}
-            </span>{' '}
+              🔌{`  `}
+            </span>
             plug.af
           </Link>
 

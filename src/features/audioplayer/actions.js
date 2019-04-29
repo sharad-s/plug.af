@@ -10,7 +10,8 @@ import {
 
 import store from '../../state/store';
 
-const PLUG_PLAYLIST_URL = 'https://soundcloud.com/hatemusic-1/sets/hatemusic-aux-cord-vol-1';
+const PLUG_PLAYLIST_URL =
+	'https://soundcloud.com/hatemusic-1/sets/hatemusic-aux-cord-vol-1';
 
 const CLIENT_ID = '47159083054685525f6b73d25e2560b9';
 
@@ -55,7 +56,7 @@ export const getTrack = async index => {
 
 	const track = playlist[index];
 	console.log('gettrack', track);
-	dispatch(getTrackAction(track));
+	dispatch(getTrackAction(track, index));
 };
 
 export const playSnippet = async () => {
@@ -124,7 +125,6 @@ export const nextSong = async () => {
 
 	try {
 		const newTrackIndex = await _incrementIndex(1);
-		console.log(newTrackIndex);
 		if (newTrackIndex === 0) {
 			await updatePlaylist();
 			return;
@@ -145,19 +145,27 @@ export const nextSong = async () => {
 
 export const prevSong = async () => {
 	const { getState, dispatch } = store;
-	const { scPlayer, playlist } = getState().audio;
+	const { playlist } = getState().audio;
 
 	try {
 		const newTrackIndex = await _incrementIndex(-1);
+		if (newTrackIndex === 0) {
+			await getTrack(0);
+			await playSnippet();
+			await setSnippet();
+			return;
+		}
 		console.log('prevSong:', newTrackIndex);
+
+		await getTrack(newTrackIndex)
+		await playSnippet()
+		await setSnippet()
 		const nextTrack = playlist[newTrackIndex];
-		const streamUrl = _createStreamUrl(nextTrack.id);
-		await scPlayer.play({
-			streamUrl,
-		});
-
-		await setSnippet();
-
+		// const streamUrl = _createStreamUrl(nextTrack.id);
+		// await scPlayer.play({
+		// 	streamUrl,
+		// });
+		// await setSnippet();
 		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
 	} catch (err) {
 		console.log('prevSong:', err.message);
@@ -177,10 +185,6 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 		await getTrack(0);
 		await playSnippet();
 		await setSnippet();
-		// playlist = { tracks, playlistTitle: title, playlistURL: url };
-		// // dispatch(appendPlaylistAction(playlist));
-
-		// this.setState({ tracks, playlistName: title, playlistURL: url });
 	} catch (err) {
 		console.log('updatePlaylist:', err);
 		dispatch(getSearchErrorAction(err));
@@ -236,9 +240,9 @@ const prevSnippetAction = (newTrackIndex, nextTrack) => ({
 	},
 });
 
-const getTrackAction = nextTrack => ({
+const getTrackAction = (nextTrack, nextIndex) => ({
 	type: types.GET_TRACK,
-	payload: nextTrack,
+	payload: {nextTrack, nextIndex}
 });
 
 const clearPlaylistAction = nextTrack => ({

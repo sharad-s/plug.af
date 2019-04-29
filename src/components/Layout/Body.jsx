@@ -5,6 +5,10 @@ import AudioPage from '../AudioPage';
 
 export default class index extends Component {
 	render() {
-		return <AudioPage />;
+		return (
+			<div>
+				<AudioPage />
+			</div>
+		);
 	}
 }

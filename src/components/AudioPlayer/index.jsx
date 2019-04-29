@@ -44,11 +44,13 @@ class AudioPage extends Component {
   };
 
   handleFireFeedback = async () => {
-    alert('You voted this track a banger!');
+    // alert('You voted this track a banger!');
+    await this.nextSnippet();
   };
 
   handleDooFeedback = async () => {
-    alert('You voted this track as whack!');
+    // alert('You voted this track as whack!');
+    await this.nextSnippet();
   };
 
   async playSong() {
@@ -67,12 +69,12 @@ class AudioPage extends Component {
 
   prevSnippet = async () => {
     await prevSong();
-    await setSnippet();
+    // await setSnippet();
   };
 
   render() {
     const { audio } = this.props;
-    const { isPlaying, currentTrack } = audio;
+    const { isPlaying, currentTrack, trackIndex } = audio;
 
     let renderedTrackMetadata, renderedTrackArtwork;
 
@@ -105,36 +107,43 @@ class AudioPage extends Component {
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
     ) : null;
 
-    const renderedNextButton = isPlaying ? (
-      <button onClick={this.nextSnippet}>
-        <i className="fas fa-forward" />
-      </button>
-    ) : null;
-    // const renderedPrevButton = isPlaying ? (
-    //   <button onClick={this.prevSnippet}>Previous Song</button>
+    // const renderedNextButton = isPlaying ? (
+    //   <button onClick={this.nextSnippet}>
+    //     <i className="fas fa-forward" />
+    //   </button>
     // ) : null;
 
-    const renderedDooDooButton = isPlaying ? (
+    const renderedDooDooButton = true ? (
       <button class="feedback-btn" onClick={this.handleDooFeedback}>
-        💩
+        <span role="img" aria-label="DooDoo">
+          💩
+        </span>
       </button>
     ) : null;
-    const renderedFireButton = isPlaying ? (
+    const renderedFireButton = true ? (
       <button class="feedback-btn" onClick={this.handleFireFeedback}>
-        🔥
+        <span role="img" aria-label="Fire">
+          🔥
+        </span>
       </button>
     ) : null;
-    // const renderedPrevButton = isPlaying ? (
-    //   <button onClick={this.prevSnippet}>Previous Song</button>
-    // ) : null;
+    const renderedPrevButton =
+      trackIndex !== 0 ? (
+        <button onClick={this.prevSnippet}>
+          <i class="fas fa-backward" />
+        </button>
+      ) : null;
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
     const url = `https://plug.af/?playlistURL=${audio.playlistURL}`;
     return (
       <div className="info-album">
-        <div className="cover">{renderedTrackArtwork}</div>
-
+        <div className="flex-horiz flex-centered">
+          <div className="emoji grow">{renderedDooDooButton}</div>
+          <div className="cover">{renderedTrackArtwork}</div>
+          <div className="emoji grow">{renderedFireButton}</div>
+        </div>
         <div className="track-data">
           <a href={audio.currentTrack.permalink_url}>
             <span>
@@ -145,11 +154,9 @@ class AudioPage extends Component {
         </div>
 
         <div className="">{renederedSeconds}</div>
-        <div class="toggles">
-          {renderedFireButton}
+        <div class="toggles flex-horiz flex-centered">
+          {renderedPrevButton}
           {renderedPlayButton}
-          {renderedNextButton}
-          {renderedDooDooButton}
         </div>
         <br />
         <span className=""> Plug This Playlist: </span>
@@ -157,6 +164,7 @@ class AudioPage extends Component {
           <li>
             <a
               target="_blank"
+              rel="noopener noreferrer"
               className="twitter-share-button"
               href={`https://twitter.com/intent/tweet?text=I just discovered fire new music in a matter of seconds on @plugwithus. Can't believe this. ${url}`}
               data-size="large"

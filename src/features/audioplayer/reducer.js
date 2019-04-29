@@ -66,8 +66,8 @@ export default function(state = initialState, action) {
     case types.PREV_SNIPPET:
       return {
         ...state,
-        trackIndex: action.payload.trackIndex,
-        currentTrack: action.payload.currentTrack,
+        trackIndex: action.payload.newTrackIndex,
+        currentTrack: action.payload.nextTrack,
         isPlaying: true,
       };
 
@@ -79,7 +79,8 @@ export default function(state = initialState, action) {
     case types.GET_TRACK:
       return {
         ...state,
-        currentTrack: action.payload,
+        currentTrack: action.payload.nextTrack,
+        trackIndex: action.payload.nextIndex
       };
 
       case types.CLEAR_PLAYLIST:

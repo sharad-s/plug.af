@@ -6,6 +6,13 @@
   color: #61dafb;
 }
 
+/* Container */
+.container {
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+
 /* Flexboxes */
 
 .flex-vert {
@@ -18,7 +25,10 @@
 .flex-horiz {
   display: flex;
   flex-direction: row;
-  width: 100vw;
+}
+
+.flex-centered {
+  justify-content: center
 }
 
 .flex-space-btwn {
@@ -71,6 +81,7 @@
 }
 .toggles {
   height: 100%;
+
 }
 .feedback-btn {
   font-size: 1.5em;
@@ -193,6 +204,10 @@ input:focus {
   margin: 1vh;
 }
 
+
+
+
+
 /* Track Data*/
 
 .track-data {
@@ -212,3 +227,20 @@ input:focus {
 .icon-hover:hover {
   color: red;
 }
+
+.feedback-btn {
+  height: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 2vh;
+  margin-right: 2vh;
+}
+
+
+.grow:hover
+{
+        -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        transform: scale(1.2);
+}
+
