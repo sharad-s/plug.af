@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 // import isEmpty from '../../utils/isEmpty';
 
-import queryString from 'query-string';
-
 // Subcomponents
 import AudioPlayer from '../AudioPlayer';
 

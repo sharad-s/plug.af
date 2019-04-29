@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-
 // Redux
 import { connect } from 'react-redux';
-import {
-  getShortURLFromPlaylistURL
-} from '../../features/audioplayer/actions';
 
 class ShareButton extends Component {
 	state = {

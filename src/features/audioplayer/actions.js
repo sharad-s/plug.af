@@ -11,7 +11,7 @@ import {
 } from '../errors/actions';
 
 // Utils
-import { setShortURL, getShortURL, getLongURL } from '../../utils/shorturl';
+import { setShortURL, getLongURL } from '../../utils/shorturl';
 
 const PLUG_PLAYLIST_URL =
 	'https://soundcloud.com/hatemusic-1/sets/hatemusic-aux-cord-vol-1';

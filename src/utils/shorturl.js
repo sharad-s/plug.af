@@ -23,10 +23,10 @@ function send_request(longUrl, shortUrl) {
 		.catch(error => console.error('Error:', error));
 }
 
-async function main() {
-	const shortURL = await setShortURL();
-	await getLongURL(shortURL);
-}
+// async function main() {
+// 	const shortURL = await setShortURL();
+// 	await getLongURL(shortURL);
+// }
 
 async function setShortURL(longURL = playlistURL) {
 	const shortURL = sha3_512(longURL).slice(0, 6);
@@ -56,4 +56,4 @@ function getLongURL(shortURL) {
 		.catch(error => console.error('Error:', error));
 }
 
-export { setShortURL, getLongURL }
+export { setShortURL, getLongURL, getShortID }
