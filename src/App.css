@@ -228,6 +228,10 @@ input:focus {
   color: red;
 }
 
+.hover-red:hover {
+  color: red;
+}
+
 .feedback-btn {
   height: 100%;
   margin-top: auto;
@@ -236,11 +240,15 @@ input:focus {
   margin-right: 2vh;
 }
 
+.feedback-btn-text {
+  font-size: 15px;
+}
+
 
 .grow:hover
 {
-        -webkit-transform: scale(1.2);
-        -ms-transform: scale(1.2);
-        transform: scale(1.2);
+        -webkit-transform: scale(1.5);
+        -ms-transform: scale(1.5);
+        transform: scale(1.5);
 }
 

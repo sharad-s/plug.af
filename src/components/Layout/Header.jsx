@@ -34,7 +34,7 @@ class Header extends Component {
         className="navbar navbar-expand-lg navbar-light bg-black"
         id="appbar"
       >
-        <div class="flex-horiz flex-space-btwn">
+        <div className="flex-horiz flex-space-btwn">
           {/* <!-- Brand --> */}
           <Link to="/" className="navbar-brand" id="navbar-brand">
             <span role="img" aria-label="Plug">

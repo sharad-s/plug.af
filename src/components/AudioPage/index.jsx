@@ -16,6 +16,7 @@ import {
 	getTrack,
 	playSnippet,
 	setSnippet,
+	getPlaylistFromShortID
 } from '../../features/audioplayer/actions';
 
 
@@ -33,10 +34,19 @@ class AudioPage extends Component {
 	}
 
 	async componentDidMount() {
-		connectSoundcloud();
+		await connectSoundcloud();
+
+		let playlistURL
+		const {shortID} = this.props.match.params
+
+		if(shortID){
+			// Get playlistURL from ShortID
+			playlistURL = await getPlaylistFromShortID(shortID);
+		}
+		
 
 		// Check for any query params (link sharing)
-		let { playlistURL } = queryString.parse(this.props.location.search);
+		// let { playlistURL } = queryString.parse(this.props.location.search);
 		await updatePlaylist(playlistURL);
 		await getTrack(0);
 		await playSnippet();

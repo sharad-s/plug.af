@@ -4,7 +4,9 @@ import isEmpty from '../../utils/isEmpty';
 
 // subComponents
 // import AudioInfo from './AudioInfo';
-import CopyURLButton from '../CopyURLButton';
+import CopyURLButton from '../ShareButtons/CopyURLButton';
+import TweetButton from '../ShareButtons/TweetButton';
+
 // import SnippetCard from "../SnippetCard";
 
 // Redux
@@ -114,33 +116,37 @@ class AudioPage extends Component {
     // ) : null;
 
     const renderedDooDooButton = true ? (
-      <button class="feedback-btn" onClick={this.handleDooFeedback}>
+      <button className="feedback-btn" onClick={this.handleDooFeedback}>
         <span role="img" aria-label="DooDoo">
           💩
         </span>
+        <br />
       </button>
     ) : null;
     const renderedFireButton = true ? (
-      <button class="feedback-btn" onClick={this.handleFireFeedback}>
+      <button className="feedback-btn" onClick={this.handleFireFeedback}>
         <span role="img" aria-label="Fire">
           🔥
         </span>
+        <br />
       </button>
     ) : null;
     const renderedPrevButton =
       trackIndex !== 0 ? (
         <button onClick={this.prevSnippet}>
-          <i class="fas fa-backward" />
+          <i className="fas fa-backward" />
         </button>
       ) : null;
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
-    const url = `https://plug.af/?playlistURL=${audio.playlistURL}`;
     return (
       <div className="info-album">
         <div className="flex-horiz flex-centered">
-          <div className="emoji grow">{renderedDooDooButton}</div>
+          <div className="emoji grow">
+          {renderedDooDooButton}
+          <br />
+          </div>
           <div className="cover">{renderedTrackArtwork}</div>
           <div className="emoji grow">{renderedFireButton}</div>
         </div>
@@ -154,7 +160,7 @@ class AudioPage extends Component {
         </div>
 
         <div className="">{renederedSeconds}</div>
-        <div class="toggles flex-horiz flex-centered">
+        <div className="toggles flex-horiz flex-centered">
           {renderedPrevButton}
           {renderedPlayButton}
         </div>
@@ -162,18 +168,10 @@ class AudioPage extends Component {
         <span className=""> Plug This Playlist: </span>
         <ul className="flex-horiz socials">
           <li>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="twitter-share-button"
-              href={`https://twitter.com/intent/tweet?text=I just discovered fire new music in a matter of seconds on @plugwithus. Can't believe this. ${url}`}
-              data-size="large"
-            >
-              <i className="fab fa-twitter icon-hover" />
-            </a>
+           <TweetButton />
           </li>
           <li>
-            <CopyURLButton url={url} />
+            <CopyURLButton />
           </li>
         </ul>
       </div>

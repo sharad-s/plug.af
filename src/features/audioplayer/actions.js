@@ -1,17 +1,22 @@
 import SoundCloudAudio from 'soundcloud-audio';
 import SC from 'soundcloud';
 
+// Redux
 import * as types from './types';
+import store from '../../state/store';
 
 import {
 	getSoundcloudErrorsAction,
 	getSearchErrorAction,
 } from '../errors/actions';
 
-import store from '../../state/store';
+// Utils
+import { setShortURL, getShortURL, getLongURL } from '../../utils/shorturl';
 
 const PLUG_PLAYLIST_URL =
 	'https://soundcloud.com/hatemusic-1/sets/hatemusic-aux-cord-vol-1';
+
+const baseURL = 'https://plug.af/';
 
 const CLIENT_ID = '47159083054685525f6b73d25e2560b9';
 
@@ -157,9 +162,9 @@ export const prevSong = async () => {
 		}
 		console.log('prevSong:', newTrackIndex);
 
-		await getTrack(newTrackIndex)
-		await playSnippet()
-		await setSnippet()
+		await getTrack(newTrackIndex);
+		await playSnippet();
+		await setSnippet();
 		const nextTrack = playlist[newTrackIndex];
 		// const streamUrl = _createStreamUrl(nextTrack.id);
 		// await scPlayer.play({
@@ -180,8 +185,13 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 		console.log('updatePlaylist:', playlist);
 		const { tracks, title } = playlist;
 
+		// Get ShortID of playlist
+		const shortURL = await getShortURLFromPlaylistURL(url);
+		console.log('SHORTURL', shortURL);
+
 		dispatch(clearPlaylistAction());
-		dispatch(updatePlaylistAction(tracks, title, url));
+		dispatch(updatePlaylistAction(tracks, title, url, shortURL));
+
 		await getTrack(0);
 		await playSnippet();
 		await setSnippet();
@@ -189,6 +199,25 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 		console.log('updatePlaylist:', err);
 		dispatch(getSearchErrorAction(err));
 		// this.setState({ errorMessage: err.message });
+	}
+};
+
+export const getPlaylistFromShortID = async shortID => {
+	try {
+		const playlistURL = await getLongURL(shortID);
+		return playlistURL;
+	} catch (err) {
+		console.log('getPlaylistFromURL:', err);
+	}
+};
+
+export const getShortURLFromPlaylistURL = async playlistURL => {
+	try {
+		const shortID = await setShortURL(playlistURL);
+		const shortURL = baseURL + shortID;
+		return shortURL;
+	} catch (err) {
+		console.log('getShortURLFromPlaylistURL:', err);
 	}
 };
 
@@ -217,9 +246,14 @@ const setSnippetAction = scPlayer => ({
 	payload: scPlayer,
 });
 
-const updatePlaylistAction = (tracks, playlistTitle, playlistURL) => ({
+const updatePlaylistAction = (
+	tracks,
+	playlistTitle,
+	playlistURL,
+	shortURL,
+) => ({
 	type: types.UPDATE_PLAYLIST,
-	payload: { tracks, playlistTitle, playlistURL },
+	payload: { tracks, playlistTitle, playlistURL, shortURL },
 });
 
 const updateTrackTimeAction = currentTime => ({
@@ -242,7 +276,7 @@ const prevSnippetAction = (newTrackIndex, nextTrack) => ({
 
 const getTrackAction = (nextTrack, nextIndex) => ({
 	type: types.GET_TRACK,
-	payload: {nextTrack, nextIndex}
+	payload: { nextTrack, nextIndex },
 });
 
 const clearPlaylistAction = nextTrack => ({

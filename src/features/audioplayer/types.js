@@ -14,7 +14,7 @@ export const APPEND_PLAYLIST = "APPEND_PLAYLIST"
 export const CLEAR_PLAYLIST = "CLEAR_PLAYLIST"
 
 
-
-
-
 export const GET_TRACK = "GET_TRACK"
+
+
+export const SET_SHORT_ID = "SET_SHORT_ID"

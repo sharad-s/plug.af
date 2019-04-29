@@ -6,6 +6,7 @@ const initialState = {
   playlists: [],
   playlistName: '',
   playlistURL: '',
+  shortURL: '',
   currentTrack: {},
   trackIndex: 0,
   currentTime: 0,
@@ -27,6 +28,7 @@ export default function(state = initialState, action) {
         playlist: action.payload.tracks,
         playlistName: action.payload.playlistTitle,
         playlistURL: action.payload.playlistURL,
+        shortURL: action.payload.shortURL
       };
 
     case types.APPEND_PLAYLIST:
@@ -83,10 +85,15 @@ export default function(state = initialState, action) {
         trackIndex: action.payload.nextIndex
       };
 
-      case types.CLEAR_PLAYLIST:
+    case types.CLEAR_PLAYLIST:
       return {
         ...state, 
         playlist: {}
+      }
+     case types.SET_SHORT_ID:
+      return {
+        ...state, 
+        shortID: action.payload
       }
 
     default:
