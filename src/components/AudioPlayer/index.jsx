@@ -181,7 +181,7 @@ class AudioPage extends Component {
         </div>
         <br />
 
-        <span className=""> Plug It: </span>
+        <span className="">Share your Plug: </span>
         <ul className="flex-horiz socials">
           <li>
             <TweetButton />
