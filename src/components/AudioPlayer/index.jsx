@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import isEmpty from '../../utils/isEmpty';
 
@@ -89,11 +89,12 @@ class AudioPage extends Component {
       }
 
       renderedTrackMetadata = (
-        <div>
+        <Fragment>
           <h1> {title} </h1>
           <h2> {user.username} </h2>
-        </div>
+        </Fragment>
       );
+
       renderedTrackArtwork = (
         <img src={artwork_url} alt={title} width="150vh;" />
       );
@@ -105,7 +106,7 @@ class AudioPage extends Component {
       <i className="fas fa-play" />
     );
 
-    const renderedPlayButton = audio.playlistName ? (
+    const renderedPlayButton = audio.title ? (
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
     ) : null;
 
@@ -123,6 +124,7 @@ class AudioPage extends Component {
         <br />
       </button>
     ) : null;
+
     const renderedFireButton = true ? (
       <button className="feedback-btn" onClick={this.handleFireFeedback}>
         <span role="img" aria-label="Fire">
@@ -131,44 +133,58 @@ class AudioPage extends Component {
         <br />
       </button>
     ) : null;
+
     const renderedPrevButton =
       trackIndex !== 0 ? (
         <button onClick={this.prevSnippet}>
           <i className="fas fa-backward" />
         </button>
       ) : null;
+
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
+
     return (
       <div className="info-album">
+
+        <div className="flex-col flex-centered">
+          <span className="playing-from-text"> Playing from {audio.kind}:</span>
+          <p className="playing-from-text">
+            <a className="hover-red" href={audio.playlistURL}>{audio.title}</a>
+          </p>
+        </div>
+
         <div className="flex-horiz flex-centered">
           <div className="emoji grow">
-          {renderedDooDooButton}
-          <br />
+            {renderedDooDooButton}
+            <br />
           </div>
           <div className="cover">{renderedTrackArtwork}</div>
           <div className="emoji grow">{renderedFireButton}</div>
         </div>
+
         <div className="track-data">
-          <a href={audio.currentTrack.permalink_url}>
+          <a className="hover-red" href={audio.currentTrack.permalink_url}>
             <span>
               <i className="fab fa-soundcloud" />
             </span>
-            <div className="album album-list">{renderedTrackMetadata}</div>
+            {renderedTrackMetadata}
           </a>
         </div>
 
         <div className="">{renederedSeconds}</div>
+
         <div className="toggles flex-horiz flex-centered">
           {renderedPrevButton}
           {renderedPlayButton}
         </div>
         <br />
-        <span className=""> Plug This Playlist: </span>
+
+        <span className=""> Plug It: </span>
         <ul className="flex-horiz socials">
           <li>
-           <TweetButton />
+            <TweetButton />
           </li>
           <li>
             <CopyURLButton />

@@ -12,6 +12,8 @@ const initialState = {
   currentTime: 0,
   errorMessage: '',
   isPlaying: false,
+  kind: "",
+  title: ""
 };
 
 export default function(state = initialState, action) {
@@ -26,7 +28,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         playlist: action.payload.tracks,
-        playlistName: action.payload.playlistTitle,
+        title: action.payload.title,
+        kind: action.payload.kind,
         playlistURL: action.payload.playlistURL,
         shortURL: action.payload.shortURL
       };

@@ -27,7 +27,7 @@ class Header extends Component {
   render() {
     const renderedPlaceholder = !isEmpty(this.props.errors.searchError.message)
       ? '404 - Enter a Soundcloud Playlist URL'
-      : 'Plug your music (Soundcloud Playlist URL)';
+      : 'Plug a Soundcloud URL';
 
     return (
       <nav

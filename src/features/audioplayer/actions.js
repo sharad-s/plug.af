@@ -14,7 +14,7 @@ import {
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 
 const PLUG_PLAYLIST_URL =
-	'https://soundcloud.com/hatemusic-1/sets/hatemusic-aux-cord-vol-1';
+	'https://soundcloud.com/beatsfromsatchi/sets/party-mood';
 
 const baseURL = 'https://plug.af/';
 
@@ -184,7 +184,7 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 		const response = await SC.resolve(url);
 		console.log(response);
 
-		let tracks, title, shortURL;
+		let shortURL;
 
 		switch (response.kind) {
 			case 'playlist':
@@ -223,6 +223,7 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 				dispatch(
 					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
 				);
+				break;
 			default:
 				break;
 		}
@@ -283,13 +284,13 @@ const setSnippetAction = scPlayer => ({
 
 const updatePlaylistAction = (
 	tracks,
-	playlistTitle,
+	title,
 	playlistURL,
 	shortURL,
 	kind,
 ) => ({
 	type: types.UPDATE_PLAYLIST,
-	payload: { tracks, playlistTitle, playlistURL, shortURL, kind },
+	payload: { tracks, title, playlistURL, shortURL, kind },
 });
 
 const updateTrackTimeAction = currentTime => ({

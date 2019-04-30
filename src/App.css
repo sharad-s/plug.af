@@ -219,6 +219,11 @@ input:focus {
   text-decoration: none;
 }
 
+.playing-from-text {
+  font-size: 12px;
+  margin-top: unset;
+}
+
 /* Icons */
 
 .icon-hover {
@@ -244,6 +249,10 @@ input:focus {
   font-size: 15px;
 }
 
+a {
+  text-decoration: none
+}
+
 
 .grow:hover
 {
@@ -251,4 +260,7 @@ input:focus {
         -ms-transform: scale(1.5);
         transform: scale(1.5);
 }
+
+
+/**/
 
