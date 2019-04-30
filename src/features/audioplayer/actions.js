@@ -181,16 +181,51 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 	const { dispatch } = store;
 	try {
 		console.log('updatePlaylist: getting playlist:', url);
-		let playlist = await SC.resolve(url);
-		console.log('updatePlaylist:', playlist);
-		const { tracks, title } = playlist;
+		const response = await SC.resolve(url);
+		console.log(response);
 
-		// Get ShortID of playlist
-		const shortURL = await getShortURLFromPlaylistURL(url);
-		console.log('SHORTURL', shortURL);
+		let tracks, title, shortURL;
 
-		dispatch(clearPlaylistAction());
-		dispatch(updatePlaylistAction(tracks, title, url, shortURL));
+		switch (response.kind) {
+			case 'playlist':
+				console.log('Searched Playlist');
+				let { tracks, title } = response;
+				// Get ShortID of playlist
+				shortURL = await getShortURLFromPlaylistURL(url);
+				console.log('SHORTURL', shortURL);
+				dispatch(clearPlaylistAction());
+				dispatch(
+					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+				);
+				break;
+			case 'user':
+				let user = response;
+				console.log(`Searched User: ${user.id}`);
+				// Search user's tracks
+				tracks = await SC.get('/tracks', {
+					user_id: user.id,
+					limit: 100,
+				});
+				title = user.permalink;
+				shortURL = await getShortURLFromPlaylistURL(url);
+				console.log('SHORTURL', shortURL);
+				dispatch(clearPlaylistAction());
+				dispatch(
+					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+				);
+				break;
+			case 'track':
+				console.log('Searched Track', response);
+				title = response.title;
+				tracks = [response];
+				shortURL = await getShortURLFromPlaylistURL(url);
+				dispatch(clearPlaylistAction());
+				dispatch(
+					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+				);
+			default:
+				break;
+		}
 
 		await getTrack(0);
 		await playSnippet();
@@ -251,9 +286,10 @@ const updatePlaylistAction = (
 	playlistTitle,
 	playlistURL,
 	shortURL,
+	kind,
 ) => ({
 	type: types.UPDATE_PLAYLIST,
-	payload: { tracks, playlistTitle, playlistURL, shortURL },
+	payload: { tracks, playlistTitle, playlistURL, shortURL, kind },
 });
 
 const updateTrackTimeAction = currentTime => ({

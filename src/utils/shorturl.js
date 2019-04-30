@@ -18,7 +18,7 @@ function send_request(longUrl, shortUrl) {
 		},
 	})
 		.then(res => res.json())
-		.then(response => console.log('Success:', JSON.stringify(response)))
+		// .then(response => console.log('Success:', JSON.stringify(response)))
 		.then(() => console.log(`Saved ${longUrl} to ${shortUrl}`))
 		.catch(error => console.error('Error:', error));
 }
@@ -49,7 +49,7 @@ function getLongURL(shortURL) {
 		.then(res => res.json())
 		.then(response => {
 			const longURL = response.result;
-			console.log('Success:', JSON.stringify(response));
+			// console.log('Success:', JSON.stringify(response));
 			console.log(`Got ${longURL} from ${shortURL}`);
 			return longURL;
 		})
