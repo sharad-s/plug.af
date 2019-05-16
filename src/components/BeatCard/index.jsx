@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 const borderRadius = '10px';
 
-
 // Whole Card
-const StyledCard = styled.div`
+const StyledCardContainer = styled.div`
 	width: 200px;
 	height: auto;
 	cursor: pointer;
@@ -23,35 +22,52 @@ const StyledCard = styled.div`
   flex-direction:column
 `;
 
-// Image
-const StyledCardImage = styled.img`
+//
+const CardImageContainer = styled.div`
+	position: relative;
 	width: 200px;
 	height: 200px;
+`;
+
+// Image
+const CardImage = styled.img`
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
 	border-radius: ${borderRadius} ${borderRadius} 0 0;
-
 	// Flex Details
 `;
 
-// Contains all Track Data eg. Artist Name Soundclodu Button
-const StyledCardDetails = styled.div`
-	height: 25%;
-	border-radius: 0 0 ${borderRadius} ${borderRadius};
-	// background-color: grey;
-	// border: 1px solid grey;
-	border-top: none;
+// Image overlay
 
+const CardImageOverlay = styled.div`
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    // display: none;
+    color: #FFF;
+    background: rgba(0, 0, 0, .3);
+    z-index: 1
+}
+`;
+
+// Contains all Track Data eg. Artist Name Soundclodu Button
+const CardDetailsContainer = styled.div`
 	// Vertical Flex for section below image
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
 `;
 
 // Just Artist Name
 const TrackDetails = styled.div`
 	flex: 75%;
-	background-color: aqua;
+	// background-color: aqua;
 	object-fit: cover;
-	z-index: -1;
 	border-radius: 0 0 0 0;
 
 	// Padding for Text
@@ -83,31 +99,36 @@ const StyledText = styled.span`
 	font-size: 12px;
 	margin: 0;
 `;
+
 // SC Icon
 const Icon = styled.i`
-	height:100%;
-	margin-top:auto;
-	margin-bottom:auto;
+	height: 100%;
+	margin-top: auto;
+	margin-bottom: auto;
 `;
 export const Card = props => {
 	const { imageSrc, trackTitle, trackArtist, trackURL } = props;
 
 	return (
-		<StyledCard>
-			<StyledCardImage src={imageSrc} />
-			<StyledCardDetails>
-				<TrackDetails>
-					<StyledText> {trackTitle} </StyledText>
-					<StyledText> {trackArtist} </StyledText>
-				</TrackDetails>
-					<SoundcloudButton
-						onClick={() => {
-							alert('link to track');
-						}}
-					>
-						<Icon className="fab fa-soundcloud" />
-					</SoundcloudButton>
-			</StyledCardDetails>
-		</StyledCard>
+		<StyledCardContainer>
+			<CardImageContainer>
+				<CardImage src={imageSrc} />
+				<CardImageOverlay id="OVERLAY">
+				 	<CardDetailsContainer> 
+					<TrackDetails>
+						<StyledText> {trackTitle} </StyledText>
+						<StyledText> {trackArtist} </StyledText>
+					</TrackDetails>
+					</CardDetailsContainer>
+				</CardImageOverlay>
+			</CardImageContainer>
+				<SoundcloudButton
+					onClick={() => {
+						alert('link to track');
+					}}
+				>
+					<Icon className="fab fa-soundcloud" />
+				</SoundcloudButton>
+		</StyledCardContainer>
 	);
 };
