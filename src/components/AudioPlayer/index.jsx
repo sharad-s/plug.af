@@ -6,6 +6,7 @@ import isEmpty from '../../utils/isEmpty';
 // import AudioInfo from './AudioInfo';
 import CopyURLButton from '../ShareButtons/CopyURLButton';
 import TweetButton from '../ShareButtons/TweetButton';
+import {Card} from "../BeatCard"
 
 // import SnippetCard from "../SnippetCard";
 
@@ -20,6 +21,8 @@ import {
   nextSong,
   prevSong,
 } from '../../features/audioplayer/actions';
+
+
 
 class AudioPage extends Component {
   constructor(props) {
@@ -80,6 +83,8 @@ class AudioPage extends Component {
 
     let renderedTrackMetadata, renderedTrackArtwork;
 
+    let trackTitle, trackArtist = "";
+
     // Populate Track Data if exists
     if (!isEmpty(currentTrack)) {
       var { title, user, artwork_url } = currentTrack;
@@ -88,6 +93,8 @@ class AudioPage extends Component {
         artwork_url = user.avatar_url;
       }
 
+      trackTitle= title; 
+      trackArtist = user.username;
       renderedTrackMetadata = (
         <Fragment>
           <h1> {title} </h1>
@@ -96,7 +103,7 @@ class AudioPage extends Component {
       );
 
       renderedTrackArtwork = (
-        <img src={artwork_url} alt={title} width="150vh;" />
+        <img src={artwork_url} alt={title} width="150vw" />
       );
     }
 
@@ -190,6 +197,7 @@ class AudioPage extends Component {
             <CopyURLButton />
           </li>
         </ul>
+        <Card imageSrc={artwork_url} trackTitle={trackTitle} trackArtist={trackArtist} />
       </div>
     );
   }
