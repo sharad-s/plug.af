@@ -5,7 +5,7 @@ const borderRadius = '10px';
 
 const StyledCard = styled.div`
 	width: 200px;
-	height: 200px;
+	height: auto;
 	cursor: pointer;
 	// background-color: grey;
 	&:hover {
@@ -22,8 +22,8 @@ const StyledCard = styled.div`
 `;
 
 const StyledCardImage = styled.img`
-	width: inherit;
-	height: inherit;
+	width: 200px;
+	height: 200px;
 	object-fit: cover;
 	border-radius: ${borderRadius} ${borderRadius} 0 0;
 
@@ -64,7 +64,6 @@ const SoundcloudButton = styled.button`
 	object-fit: cover;
 	z-index: 1;
 	border-radius: 0 0 ${borderRadius} 0};
-
 `;
 
 const StyledText = styled.span`
