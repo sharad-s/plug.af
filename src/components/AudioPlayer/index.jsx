@@ -141,9 +141,6 @@ class AudioPage extends Component {
             <div class="card_image">
               {' '}
               <img src={artwork_url} />{' '}
-            </div>
-            <div class="card_title title-white" />
-            <center>
               <div class="information-overlay">
                 <div class="details">
                   <span>
@@ -163,7 +160,8 @@ class AudioPage extends Component {
                   </span>
                 </div>
               </div>
-            </center>
+            </div>
+
             <a class="pure-button btn-sc" href="#">
               Listen on Soundcloud <i class="fab fa-soundcloud" />
             </a>
