@@ -10,7 +10,7 @@ const StyledCardContainer = styled.div`
 	cursor: pointer;
 	// background-color: grey;
 	&:hover {
-		transform: scale(1.1, 1.1);
+		transform: scale(0.9, 0.9);
 		box-shadow:  0 8px 16px 0 rgba(0,0,0,0.2);,
 	}
 	  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -49,6 +49,18 @@ const CardImageOverlay = styled.div`
     // display: none;
     color: #FFF;
     background: rgba(0, 0, 0, .4);
+    z-index: 2
+}
+`;
+
+
+const InvisibleOverlay = styled.div`
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
     z-index: 1
 }
 `;
@@ -66,7 +78,7 @@ const CardDetailsContainer = styled.div`
 
 
 // Soundcloud link CTA
-const SoundcloudButton = styled.button`
+const SoundcloudButton = styled.a`
 	flex: 25%;
   	background-color: #ff7700 !important;
   	color: white;
@@ -75,7 +87,7 @@ const SoundcloudButton = styled.button`
 	border-radius: 0 0 ${borderRadius} ${borderRadius}};
 	&:hover {
 		color: white;
-		box-shadow:  0 8px 16px 0 rgba(0,0,0,0.2);,
+		box-shadow:  0 8px 16px 0 rgba(0,0,0,0.4);,
 	}
 
 	display: flex;
@@ -128,6 +140,7 @@ export const Card = props => {
 		<StyledCardContainer>
 			<CardImageContainer>
 				<CardImage src={imageSrc} />
+				<InvisibleOverlay id="INVISIBLE_OVERLAY"/> 
 				<CardImageOverlay id="OVERLAY">
 				 	<CardDetailsContainer> 
 				 	<Icon>
@@ -140,11 +153,7 @@ export const Card = props => {
 					</CardDetailsContainer>
 				</CardImageOverlay>
 			</CardImageContainer>
-				<SoundcloudButton
-					onClick={() => {
-						alert('link to track');
-					}}
-				>
+				<SoundcloudButton href={trackURL}>
 					<Icon className="fab fa-soundcloud" />
 					<StyledText> Listen on Soundcloud </StyledText>
 				</SoundcloudButton>

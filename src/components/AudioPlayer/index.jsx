@@ -167,20 +167,12 @@ class AudioPage extends Component {
             {renderedDooDooButton}
             <br />
           </div>
-          <div className="cover">{renderedTrackArtwork}</div>
+        <Card imageSrc={artwork_url} trackTitle={trackTitle} trackArtist={trackArtist} renderedPlayButton={renderedPlayButton} />
+          
           <div className="emoji grow">{renderedFireButton}</div>
         </div>
 
-        <div className="track-data">
-          <a className="hover-red" href={audio.currentTrack.permalink_url}>
-            <span>
-              <i className="fab fa-soundcloud" />
-            </span>
-            {renderedTrackMetadata}
-          </a>
-        </div>
-
-        <div className="">{renederedSeconds}</div>
+        <div className="" style={{marginTop:"5vh;"}}>{renederedSeconds}</div>
 
         <div className="toggles flex-horiz flex-centered">
           {renderedPrevButton}
@@ -197,7 +189,6 @@ class AudioPage extends Component {
             <CopyURLButton />
           </li>
         </ul>
-        <Card imageSrc={artwork_url} trackTitle={trackTitle} trackArtist={trackArtist} renderedPlayButton={renderedPlayButton} />
       </div>
     );
   }
