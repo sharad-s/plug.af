@@ -4,9 +4,7 @@ import isEmpty from '../../utils/isEmpty';
 
 // Redux
 import { connect } from 'react-redux';
-import {
-  updatePlaylist,
-} from '../../features/audioplayer/actions';
+import { updatePlaylist } from '../../features/audioplayer/actions';
 
 class Header extends Component {
   state = {
@@ -29,42 +27,7 @@ class Header extends Component {
       ? '404 - Enter a Soundcloud Playlist URL'
       : 'Plug a Soundcloud URL';
 
-    return (
-      <nav
-        className="navbar navbar-expand-lg navbar-light bg-black"
-        id="appbar"
-      >
-        <div className="flex-horiz flex-space-btwn">
-          {/* <!-- Brand --> */}
-          <Link to="/" className="navbar-brand" id="navbar-brand">
-            <span role="img" aria-label="Plug">
-              🔌{`  `}
-            </span>
-            plug.af
-          </Link>
-
-          {/* <!-- Links --> */}
-          <div>
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                <input
-                  type="text"
-                  name="name"
-                  className="searchform"
-                  placeholder={renderedPlaceholder}
-                  value={this.state.value}
-                  onChange={this.handleChange}
-                />
-              </label>
-
-              <button type="submit" className="go" value="go">
-                <i className="fab fa-soundcloud icon-hover" />
-              </button>
-            </form>
-          </div>
-        </div>
-      </nav>
-    );
+    return <div class="top-menu">plug</div>;
   }
 }
 

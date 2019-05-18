@@ -12,6 +12,9 @@ import TweetButton from '../ShareButtons/TweetButton';
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import like from '../../images/like.svg';
+import dislike from '../../images/cancel.svg';
+
 import {
   connectSoundcloud,
   pauseSnippet,
@@ -79,7 +82,7 @@ class AudioPage extends Component {
     const { isPlaying, currentTrack, trackIndex } = audio;
 
     let renderedTrackMetadata, renderedTrackArtwork;
-
+    console.log(currentTrack);
     // Populate Track Data if exists
     if (!isEmpty(currentTrack)) {
       var { title, user, artwork_url } = currentTrack;
@@ -117,80 +120,71 @@ class AudioPage extends Component {
     // ) : null;
 
     const renderedDooDooButton = true ? (
-      <button className="feedback-btn" onClick={this.handleDooFeedback}>
-        <span role="img" aria-label="DooDoo">
-          💩
-        </span>
-        <br />
-      </button>
+      <img src={dislike} class="button-in" onClick={this.handleDooFeedback} />
     ) : null;
-
     const renderedFireButton = true ? (
-      <button className="feedback-btn" onClick={this.handleFireFeedback}>
-        <span role="img" aria-label="Fire">
-          🔥
-        </span>
-        <br />
-      </button>
+      <img src={like} class="button-in" onClick={this.handleFireFeedback} />
     ) : null;
-
     const renderedPrevButton =
       trackIndex !== 0 ? (
         <button onClick={this.prevSnippet}>
           <i className="fas fa-backward" />
         </button>
       ) : null;
-
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
-
     return (
-      <div className="info-album">
-
-        <div className="flex-col flex-centered">
-          <span className="playing-from-text"> Playing from {audio.kind}:</span>
-          <p className="playing-from-text">
-            <a className="hover-red" href={audio.playlistURL}>{audio.title}</a>
-          </p>
-        </div>
-
-        <div className="flex-horiz flex-centered">
-          <div className="emoji grow">
-            {renderedDooDooButton}
-            <br />
+      <Fragment>
+        <div class="cards-list">
+          <div class="card 1">
+            <div class="card_image">
+              {' '}
+              <img src={artwork_url} />{' '}
+            </div>
+            <div class="card_title title-white" />
+            <center>
+              <div class="information-overlay">
+                <div class="details">
+                  <span>
+                    {audio.currentTrack.title ? (
+                      audio.currentTrack.title
+                    ) : (
+                      <div />
+                    )}
+                  </span>
+                  <span>
+                    {' '}
+                    {audio.currentTrack.user ? (
+                      audio.currentTrack.user.username
+                    ) : (
+                      <div />
+                    )}
+                  </span>
+                </div>
+              </div>
+            </center>
+            <a class="pure-button btn-sc" href="#">
+              Listen on Soundcloud <i class="fab fa-soundcloud" />
+            </a>
           </div>
-          <div className="cover">{renderedTrackArtwork}</div>
-          <div className="emoji grow">{renderedFireButton}</div>
         </div>
 
-        <div className="track-data">
-          <a className="hover-red" href={audio.currentTrack.permalink_url}>
-            <span>
-              <i className="fab fa-soundcloud" />
-            </span>
-            {renderedTrackMetadata}
-          </a>
-        </div>
-
-        <div className="">{renederedSeconds}</div>
-
-        <div className="toggles flex-horiz flex-centered">
-          {renderedPrevButton}
-          {renderedPlayButton}
-        </div>
-        <br />
-
-        <span className="">Share This Plug: </span>
-        <ul className="flex-horiz socials">
-          <li>
-            <TweetButton />
-          </li>
-          <li>
-            <CopyURLButton />
-          </li>
-        </ul>
-      </div>
+        <center>
+          <br />
+          <br />
+          <div class="buttons-panel">
+            {renderedDooDooButton}
+            {renderedFireButton}
+          </div>
+          <br />
+          <div class="container">
+            <a class="pure-button btn-share" href="#">
+              Share <i class="fas fa-share-square" />
+            </a>
+          </div>
+        </center>
+      </Fragment>
     );
   }
 }
