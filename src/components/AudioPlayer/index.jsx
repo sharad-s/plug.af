@@ -114,7 +114,7 @@ class AudioPage extends Component {
     );
 
     const renderedPlayButton = audio.title ? (
-      <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
+      <button style={{color: "white"}}onClick={this.handleClick}>{renderedPlayButtonText}</button>
     ) : null;
 
     // const renderedNextButton = isPlaying ? (
@@ -197,7 +197,7 @@ class AudioPage extends Component {
             <CopyURLButton />
           </li>
         </ul>
-        <Card imageSrc={artwork_url} trackTitle={trackTitle} trackArtist={trackArtist} />
+        <Card imageSrc={artwork_url} trackTitle={trackTitle} trackArtist={trackArtist} renderedPlayButton={renderedPlayButton} />
       </div>
     );
   }

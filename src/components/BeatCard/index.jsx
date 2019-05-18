@@ -48,7 +48,7 @@ const CardImageOverlay = styled.div`
     height: 25%;
     // display: none;
     color: #FFF;
-    background: rgba(0, 0, 0, .3);
+    background: rgba(0, 0, 0, .4);
     z-index: 1
 }
 `;
@@ -60,51 +60,66 @@ const CardDetailsContainer = styled.div`
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-
+	height: 100%
 `;
 
-// Just Artist Name
-const TrackDetails = styled.div`
-	flex: 75%;
-	// background-color: aqua;
-	object-fit: cover;
-	border-radius: 0 0 0 0;
 
-	// Padding for Text
-	padding: 2px 16px;
-
-	// Vertical Flex Container for Text
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: flex-start;
-`;
 
 // Soundcloud link CTA
 const SoundcloudButton = styled.button`
 	flex: 25%;
-	background-color: orange;
+  	background-color: #ff7700 !important;
+  	color: white;
 	object-fit: cover;
 	z-index: 1;
 	border-radius: 0 0 ${borderRadius} ${borderRadius}};
-
 	&:hover {
 		color: white;
 		box-shadow:  0 8px 16px 0 rgba(0,0,0,0.2);,
 	}
+
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
 `;
 
 // Text
-const StyledText = styled.span`
+const StyledText = styled.p`
 	font-size: 12px;
 	margin: 0;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
 `;
 
 // SC Icon
 const Icon = styled.i`
-	height: 100%;
+	height: auto;
 	margin-top: auto;
-	margin-bottom: auto;
+	margin-bottom: auto;	
+	width: 25%;
+	flex-shrink: 0;
+	flex-grow: 0;
+`;
+
+// Just Artist Name
+const TrackDetails = styled.div`
+	width: 75%;
+	// background-color: aqua;
+	object-fit: cover;
+	border-radius: 0 0 0 0;
+
+	height
+
+	// Padding for Text
+	// padding: 2px 16px;
+
+	// Vertical Flex Container for Text
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-start;
 `;
 export const Card = props => {
 	const { imageSrc, trackTitle, trackArtist, trackURL } = props;
@@ -115,6 +130,9 @@ export const Card = props => {
 				<CardImage src={imageSrc} />
 				<CardImageOverlay id="OVERLAY">
 				 	<CardDetailsContainer> 
+				 	<Icon>
+				 	{props.renderedPlayButton}
+				 	</Icon>
 					<TrackDetails>
 						<StyledText> {trackTitle} </StyledText>
 						<StyledText> {trackArtist} </StyledText>
@@ -128,6 +146,7 @@ export const Card = props => {
 					}}
 				>
 					<Icon className="fab fa-soundcloud" />
+					<StyledText> Listen on Soundcloud </StyledText>
 				</SoundcloudButton>
 		</StyledCardContainer>
 	);
