@@ -14,10 +14,8 @@ import {
 	getTrack,
 	playSnippet,
 	setSnippet,
-	getPlaylistFromShortID
+	getPlaylistFromShortID,
 } from '../../features/audioplayer/actions';
-
-
 
 // Playlist
 class AudioPage extends Component {
@@ -32,16 +30,18 @@ class AudioPage extends Component {
 	}
 
 	async componentDidMount() {
+
+		window.scrollTo(0,1)
+		
 		await connectSoundcloud();
 
-		let playlistURL
-		const {shortID} = this.props.match.params
+		let playlistURL;
+		const { shortID } = this.props.match.params;
 
-		if(shortID){
+		if (shortID) {
 			// Get playlistURL from ShortID
 			playlistURL = await getPlaylistFromShortID(shortID);
 		}
-		
 
 		// Check for any query params (link sharing)
 		// let { playlistURL } = queryString.parse(this.props.location.search);
@@ -72,16 +72,11 @@ class AudioPage extends Component {
 		) : null;
 
 		return (
-			<section className="section latest-album modified" id="anchor01">
-				<center>
-					<AudioPlayer
-						tracks={this.state.tracks}
-						playlistName={this.state.playlistName}
-						renderedPlaylistName={renderedPlaylistName}
-					/>
-					<br />
-				</center>
-			</section>
+			<AudioPlayer
+				tracks={this.state.tracks}
+				playlistName={this.state.playlistName}
+				renderedPlaylistName={renderedPlaylistName}
+			/>
 		);
 	}
 }

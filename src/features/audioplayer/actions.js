@@ -14,7 +14,7 @@ import {
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 
 const PLUG_PLAYLIST_URL =
-	'https://soundcloud.com/beatsfromsatchi/sets/party-mood';
+	'https://soundcloud.com/octbr';
 
 const baseURL = 'https://plug.af/';
 

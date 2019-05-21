@@ -6,6 +6,7 @@ import isEmpty from '../../utils/isEmpty';
 // import AudioInfo from './AudioInfo';
 import CopyURLButton from '../ShareButtons/CopyURLButton';
 import TweetButton from '../ShareButtons/TweetButton';
+import  Beatcard from './Beatcard';
 
 // import SnippetCard from "../SnippetCard";
 
@@ -134,50 +135,26 @@ class AudioPage extends Component {
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
+
+    const secondsPassed = audio.currentTime - 45;
+
+    console.log("Second:", secondsPassed);
+    console.log("CurrentTime", audio.currentTime)
+
     return (
       <Fragment>
-        <div class="cards-list">
-          <div class="card 1">
-            <div class="card_image">
-              {' '}
-              <img src={artwork_url} />{' '}
-            </div>
-            <div class="card_title title-white" />
-            <center>
-              <div class="information-overlay">
-                <div class="details">
-                  <span>
-                    {audio.currentTrack.title ? (
-                      audio.currentTrack.title
-                    ) : (
-                      <div />
-                    )}
-                  </span>
-                  <span>
-                    {' '}
-                    {audio.currentTrack.user ? (
-                      audio.currentTrack.user.username
-                    ) : (
-                      <div />
-                    )}
-                  </span>
-                </div>
-              </div>
-            </center>
-            <a class="pure-button btn-sc" href="#">
-              Listen on Soundcloud <i class="fab fa-soundcloud" />
-            </a>
-          </div>
-        </div>
+        <Beatcard
+          renderedPlayButton={renderedPlayButton}
+          trackArtworkURL={artwork_url}
+          audio={audio}
+          secondsPassed={secondsPassed}
+        />
 
         <center>
-          <br />
-          <br />
           <div class="buttons-panel">
             {renderedDooDooButton}
             {renderedFireButton}
           </div>
-          <br />
           <div class="container">
             <a class="pure-button btn-share" href="#">
               Share <i class="fas fa-share-square" />
