@@ -2,10 +2,7 @@
 import React, {Component, Fragment} from "react";
 import Swipeable from "react-swipy"
 
-import Card from "./components/Card";
-import Button from "./components/Button";
-
-import { ImageCard } from "../../elements"
+import Beatcard from "../Beatcard"
 
 const wrapperStyles = {position: "relative", width: "250px", height: "250px"};
 const actionsStyles = {

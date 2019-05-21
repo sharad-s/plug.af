@@ -6,7 +6,7 @@ import isEmpty from '../../utils/isEmpty';
 // import AudioInfo from './AudioInfo';
 import CopyURLButton from '../ShareButtons/CopyURLButton';
 import TweetButton from '../ShareButtons/TweetButton';
-import  Beatcard from './Beatcard';
+import  Beatcard from '../Beatcard';
 
 // import SnippetCard from "../SnippetCard";
 
@@ -91,17 +91,6 @@ class AudioPage extends Component {
       if (isEmpty(artwork_url)) {
         artwork_url = user.avatar_url;
       }
-
-      renderedTrackMetadata = (
-        <Fragment>
-          <h1> {title} </h1>
-          <h2> {user.username} </h2>
-        </Fragment>
-      );
-
-      renderedTrackArtwork = (
-        <img src={artwork_url} alt={title} width="150vh;" />
-      );
     }
 
     const renderedPlayButtonText = isPlaying ? (
@@ -114,21 +103,16 @@ class AudioPage extends Component {
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
     ) : null;
 
-    // const renderedNextButton = isPlaying ? (
-    //   <button onClick={this.nextSnippet}>
-    //     <i className="fas fa-forward" />
-    //   </button>
-    // ) : null;
-
     const renderedDooDooButton = true ? (
       <img src={dislike} class="button-in" onClick={this.handleDooFeedback} />
     ) : null;
     const renderedFireButton = true ? (
       <img src={like} class="button-in" onClick={this.handleFireFeedback} />
     ) : null;
+
     const renderedPrevButton =
       trackIndex !== 0 ? (
-        <button onClick={this.prevSnippet}>
+        <button class="button-in" onClick={this.prevSnippet}>
           <i className="fas fa-backward" />
         </button>
       ) : null;
@@ -137,9 +121,6 @@ class AudioPage extends Component {
     ) : null;
 
     const secondsPassed = audio.currentTime - 45;
-
-    console.log("Second:", secondsPassed);
-    console.log("CurrentTime", audio.currentTime)
 
     return (
       <Fragment>
