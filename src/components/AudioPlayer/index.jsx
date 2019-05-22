@@ -6,7 +6,7 @@ import isEmpty from '../../utils/isEmpty';
 // import AudioInfo from './AudioInfo';
 import CopyURLButton from '../ShareButtons/CopyURLButton';
 import TweetButton from '../ShareButtons/TweetButton';
-import  Beatcard from '../Beatcard';
+import Beatcard from '../Beatcard';
 
 // import SnippetCard from "../SnippetCard";
 
@@ -15,6 +15,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import like from '../../images/like.svg';
 import dislike from '../../images/cancel.svg';
+import goback from '../../images/go-back.svg';
+import share from '../../images/share.svg';
 
 import {
   connectSoundcloud,
@@ -107,20 +109,35 @@ class AudioPage extends Component {
       <img src={dislike} class="button-in" onClick={this.handleDooFeedback} />
     ) : null;
     const renderedFireButton = true ? (
-      <img src={like} class="button-in" onClick={this.handleFireFeedback} />
+      <img src={like} class="button-in sm" onClick={this.handleFireFeedback} />
     ) : null;
 
-    const renderedPrevButton =
-      trackIndex !== 0 ? (
-        <button class="button-in" onClick={this.prevSnippet}>
-          <i className="fas fa-backward" />
-        </button>
-      ) : null;
+ 
+
+    const prevButtonStyle =  trackIndex !== 0 ? {visibility: "visible"} : {visibility: "hidden"};
+   
+    const renderedPrevButton = (
+        <img
+          src={goback}
+          class="button-in button-small"
+          onClick={this.prevSnippet}
+          style={prevButtonStyle}
+        />
+      );
+
     const renederedSeconds = isPlaying ? (
       <p>0:{Math.floor(audio.currentTime)} / 0:60 </p>
     ) : null;
 
     const secondsPassed = audio.currentTime - 45;
+
+    const renderedShareButton = (
+      <img
+        src={share}
+        class="button-in button-small"
+        onClick={this.prevSnippet}
+      />
+    );
 
     return (
       <Fragment>
@@ -133,14 +150,12 @@ class AudioPage extends Component {
 
         <center>
           <div class="buttons-panel">
+            {renderedPrevButton}
             {renderedDooDooButton}
             {renderedFireButton}
+            {renderedShareButton}
           </div>
-          <div class="container">
-            <a class="pure-button btn-share" href="#">
-              Share <i class="fas fa-share-square" />
-            </a>
-          </div>
+          
         </center>
       </Fragment>
     );

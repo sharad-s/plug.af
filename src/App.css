@@ -49,12 +49,20 @@ body {
 .buttons-panel .button-in {
   cursor: pointer;
   transition: 0.2s;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   padding: 5px;
 }
 .button-in:hover {
   transform: scale(0.9, 0.9);
+}
+
+.button-small {
+  width: 25px !important;
+  height: 100%;
+  margin-right: 10px;
+  margin-left: 10px;
+
 }
 .top-menu {
   z-index: 0;
@@ -90,7 +98,7 @@ body {
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 
   /* Vertical Fle for Entire card*/
   display: flex;
