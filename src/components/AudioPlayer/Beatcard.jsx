@@ -28,7 +28,7 @@ class Beatcard extends Component {
       audio,
       trackArtworkURL,
       secondsPassed,
-
+      trackURL
     } = this.props;
 
     return (

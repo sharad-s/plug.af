@@ -10,13 +10,13 @@ class Beatcard extends Component {
 
     let numnum = ((secondsPassed % duration) / duration - 1) * 100;
 
-    // console.log(
-    //   'componentWillReceiveProps',
-    //   'Current Second',
-    //   secondsPassed,
-    //   'Translate3D Percentage:',
-    //   numnum,
-    // );
+    console.log(
+      'componentWillReceiveProps',
+      'Current Second',
+      secondsPassed,
+      'Translate3D Percentage:',
+      numnum,
+    );
 
     elem.style.transform = `translate3d(${numnum}%, 0, 0)`;
   }
@@ -28,7 +28,6 @@ class Beatcard extends Component {
       audio,
       trackArtworkURL,
       secondsPassed,
-
     } = this.props;
 
     return (
@@ -68,7 +67,7 @@ class Beatcard extends Component {
           </div>
 
           {/* Soundcloud Underbutton */}
-          <a class="pure-button btn-sc" href="#">
+          <a class="pure-button btn-sc" href={audio.currentTrack.permalink_url}>
             <i class="fab fa-soundcloud" /> Listen on Soundcloud
           </a>
         </div>
