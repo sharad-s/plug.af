@@ -127,6 +127,7 @@ body {
   z-index: 1;
 }
 
+
 .information-overlay {
   position: absolute;
   bottom: 0;
@@ -140,6 +141,7 @@ body {
   /*overflow: hidden;*/
 }
 
+
 .information-overlay .fill {
   position: absolute;
   top: 0;
@@ -150,7 +152,7 @@ body {
   background:rgba(255, 255, 255, 0.4);
   display: block;
   transform: translate3d(100%,0,0);
-  transition: transform 300ms;
+  transition: transform 350ms;
   /*overflow*/
   overflow: hidden;
 }
@@ -162,7 +164,6 @@ body {
   align-items: center;
   height: 100%;
 }
-
 .card_title {
   text-align: center;
   border-radius: 0px 0px 40px 40px;
@@ -192,7 +193,7 @@ body {
   width: 100%;
   border-radius: 40px;
   object-fit: cover;
-  color: white !important;
+  color: white !important-;
   font-family: 'Poppins', sans-serif;
 }
 .information-overlay {
@@ -211,7 +212,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .details {
   width: 75%;
 

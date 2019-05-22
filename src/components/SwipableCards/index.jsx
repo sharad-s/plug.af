@@ -33,7 +33,6 @@ class App extends Component {
 
     return (
       <Fragment>
-      <div />
       <div style={{margin:"3vh", textAlign: "center"}}>
         <div style={wrapperStyles}>
           {cards.length > 0 ? (

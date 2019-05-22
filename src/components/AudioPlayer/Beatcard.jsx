@@ -10,13 +10,13 @@ class Beatcard extends Component {
 
     let numnum = ((secondsPassed % duration) / duration - 1) * 100;
 
-    // console.log(
-    //   'componentWillReceiveProps',
-    //   'Current Second',
-    //   secondsPassed,
-    //   'Translate3D Percentage:',
-    //   numnum,
-    // );
+      console.log(
+        'componentWillReceiveProps',
+        'Current Second',
+        secondsPassed,
+        'Translate3D Percentage:',
+        numnum,
+      );
 
     elem.style.transform = `translate3d(${numnum}%, 0, 0)`;
   }

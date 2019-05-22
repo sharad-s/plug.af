@@ -83,7 +83,7 @@ class AudioPage extends Component {
     const { isPlaying, currentTrack, trackIndex } = audio;
 
     let renderedTrackMetadata, renderedTrackArtwork;
-    console.log(currentTrack);
+    // console.log(currentTrack);
     // Populate Track Data if exists
     if (!isEmpty(currentTrack)) {
       var { title, user, artwork_url } = currentTrack;
