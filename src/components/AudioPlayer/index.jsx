@@ -149,7 +149,7 @@ class AudioPage extends Component {
         />
 
         <center>
-          <div class="buttons-panel">
+          <div class="buttons-panel noselect">
             {renderedPrevButton}
             {renderedDooDooButton}
             {renderedFireButton}

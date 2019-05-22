@@ -13,8 +13,7 @@ import {
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 
-const PLUG_PLAYLIST_URL =
-	'https://soundcloud.com/octbr';
+const PLUG_PLAYLIST_URL = 'https://soundcloud.com/octbr';
 
 const baseURL = 'https://plug.af/';
 
@@ -70,6 +69,16 @@ export const playSnippet = async () => {
 
 	const track = playlist[trackIndex];
 
+	// Preload Next Snippet
+	try {
+		const nextTrack = playlist[trackIndex + 1];
+		const nextStreamUrl = _createStreamUrl(nextTrack.id);
+		// await scPlayer.preload(nextStreamUrl, 'auto');
+		console.log("Preload scPlayer:", scPlayer)
+	} catch (err) {
+		console.log('playSnippet: preload next snippet', err.message);
+	}
+
 	try {
 		// Create Stream URL
 		const streamUrl = _createStreamUrl(track.id);
@@ -77,10 +86,13 @@ export const playSnippet = async () => {
 		await scPlayer.play({
 			streamUrl,
 		});
+
 		dispatch(playSnippetAction(track));
 	} catch (err) {
 		console.log('playSnippet:', err.message);
 	}
+
+
 };
 
 export const setSnippet = async () => {
@@ -98,7 +110,10 @@ export const setSnippet = async () => {
 				nextSong();
 			}
 		});
-
+		scPlayer.on('ended', () => {
+			console.log('Playback Unexpectedly ended. Skipping to Next Song');
+			nextSong();
+		});
 		dispatch(setSnippetAction());
 	} catch (err) {
 		console.log('setSnippet:', err.message);
@@ -282,13 +297,7 @@ const setSnippetAction = scPlayer => ({
 	payload: scPlayer,
 });
 
-const updatePlaylistAction = (
-	tracks,
-	title,
-	playlistURL,
-	shortURL,
-	kind,
-) => ({
+const updatePlaylistAction = (tracks, title, playlistURL, shortURL, kind) => ({
 	type: types.UPDATE_PLAYLIST,
 	payload: { tracks, title, playlistURL, shortURL, kind },
 });

@@ -1,5 +1,6 @@
 body {
   background-color: #151513;
+  height: inherit;
 }
 
 /*
@@ -53,7 +54,7 @@ body {
   height: 80px;
   padding: 5px;
 }
-.button-in:hover {
+.button-in:hover, .button-in:active {
   transform: scale(0.9, 0.9);
 }
 
@@ -106,7 +107,7 @@ body {
 }
 
 
-.card-container:hover {
+.card-container:hover, .card-container:active {
   transform: scale(0.95, 0.95);
   box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25),
     -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
@@ -198,6 +199,8 @@ body {
   color: white !important;
   border-radius: 0px 0px 20px 20px !important;
 }
+
+
 .information {
   width: 100%;
   border-radius: 40px;
