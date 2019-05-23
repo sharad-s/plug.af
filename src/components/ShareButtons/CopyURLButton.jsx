@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+// Logos
+import share from '../../images/share.svg';
+
 // Redux
 import { connect } from 'react-redux';
 
@@ -11,27 +14,23 @@ class ShareButton extends Component {
 
 	handleCopy = async () => {
 		this.setState({ copied: true });
-		alert('Copied to Clipboard');
+		alert('Copied Plug Link to Clipboard!');
 	};
 
 	render() {
 		return (
-			<div>
-				<CopyToClipboard text={this.props.audio.shortURL} onCopy={this.handleCopy}>
-					<button>
-						<i className="fas fa-link icon-hover" />
-					</button>
-				</CopyToClipboard>
-				<br />
-			</div>
+			<CopyToClipboard
+				text={this.props.audio.shortURL}
+				onCopy={this.handleCopy}
+			>
+				<img src={share} class="button-in button-small" />
+			</CopyToClipboard>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-  audio: state.audio,
+	audio: state.audio,
 });
 
-export default connect(
-  mapStateToProps,
-)(ShareButton); //
+export default connect(mapStateToProps)(ShareButton); //

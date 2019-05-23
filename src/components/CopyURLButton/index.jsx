@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+// Logos
+import share from '../../images/share.svg';
+
 
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  getShortURLFromPlaylistURL
-} from '../../features/audioplayer/actions';
+import { getShortURLFromPlaylistURL } from '../../features/audioplayer/actions';
 
 class ShareButton extends Component {
 	state = {
@@ -20,7 +21,9 @@ class ShareButton extends Component {
 	};
 
 	generateShortURL = async () => {
-		const shortURL = await getShortURLFromPlaylistURL(this.props.audio.playlistURL);
+		const shortURL = await getShortURLFromPlaylistURL(
+			this.props.audio.playlistURL,
+		);
 		return shortURL;
 	};
 
@@ -29,10 +32,11 @@ class ShareButton extends Component {
 
 		return (
 			<div>
-				<CopyToClipboard text={this.generateShortURL()} onCopy={this.handleCopy}>
-					<button>
-						<i className="fas fa-link icon-hover" />
-					</button>
+				<CopyToClipboard
+					text={this.generateShortURL()}
+					onCopy={this.handleCopy}
+				>
+					<img src={share} class="button-in button-small" />
 				</CopyToClipboard>
 				<br />
 			</div>
@@ -41,9 +45,7 @@ class ShareButton extends Component {
 }
 
 const mapStateToProps = state => ({
-  audio: state.audio,
+	audio: state.audio,
 });
 
-export default connect(
-  mapStateToProps,
-)(ShareButton); //
+export default connect(mapStateToProps)(ShareButton); //

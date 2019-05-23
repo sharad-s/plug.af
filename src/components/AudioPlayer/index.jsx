@@ -16,7 +16,6 @@ import { bindActionCreators } from 'redux';
 import like from '../../images/like.svg';
 import dislike from '../../images/cancel.svg';
 import goback from '../../images/go-back.svg';
-import share from '../../images/share.svg';
 
 import {
   connectSoundcloud,
@@ -131,14 +130,6 @@ class AudioPage extends Component {
 
     const secondsPassed = audio.currentTime - 45;
 
-    const renderedShareButton = (
-      <img
-        src={share}
-        class="button-in button-small"
-        onClick={this.prevSnippet}
-      />
-    );
-
     return (
       <Fragment>
         <Beatcard
@@ -153,7 +144,7 @@ class AudioPage extends Component {
             {renderedPrevButton}
             {renderedDooDooButton}
             {renderedFireButton}
-            {renderedShareButton}
+            <CopyURLButton />
           </div>
           
         </center>
