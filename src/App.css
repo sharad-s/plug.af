@@ -1,6 +1,9 @@
 body {
   background-color: #151513;
   height: inherit;
+  overflow-x: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
 }
 
 /*
@@ -49,7 +52,7 @@ body {
 
 .buttons-panel .button-in {
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.15s;
   width: 80px;
   height: 80px;
   padding: 5px;
@@ -70,7 +73,7 @@ body {
   margin: 30px auto;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   font-family: 'Poppins', sans-serif;
   color: #f3e576;
   font-size: 30px;
@@ -80,9 +83,19 @@ body {
 .cards-list {
   z-index: 0;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
+
+.card-container-god {
+  
+
+  /* Vertical Fle for Entire card*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-container {
@@ -93,7 +106,7 @@ body {
   box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25),
     -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
   cursor: pointer;
-  transition: 0.4s;
+  transition: 0.3s;
 
   /* Update Margins*/
   margin-left: 0px;
@@ -108,7 +121,7 @@ body {
 
 
 .card-container:hover, .card-container:active {
-  transform: scale(0.95, 0.95);
+  transform: scale(1.05, 1.05);
   box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25),
     -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
 }
@@ -143,7 +156,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 25%;
+  height: 5%;
   /*// display: none;*/
   color: #fff;
   background: rgba(0, 0, 0, 0.4);

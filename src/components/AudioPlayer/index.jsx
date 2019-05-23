@@ -7,17 +7,13 @@ import isEmpty from '../../utils/isEmpty';
 import CopyURLButton from '../ShareButtons/CopyURLButton';
 import TweetButton from '../ShareButtons/TweetButton';
 import Beatcard from '../Beatcard';
+import SwipableCards from "../SwipableCards"
 
 // import SnippetCard from "../SnippetCard";
 
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import like from '../../images/like.svg';
-import dislike from '../../images/cancel.svg';
-import goback from '../../images/go-back.svg';
-import share from '../../images/share.svg';
-
 import {
   connectSoundcloud,
   pauseSnippet,
@@ -26,6 +22,12 @@ import {
   nextSong,
   prevSong,
 } from '../../features/audioplayer/actions';
+
+// Buttons
+import like from '../../images/like.svg';
+import dislike from '../../images/cancel.svg';
+import goback from '../../images/go-back.svg';
+import share from '../../images/share.svg';
 
 class AudioPage extends Component {
   constructor(props) {
@@ -141,12 +143,7 @@ class AudioPage extends Component {
 
     return (
       <Fragment>
-        <Beatcard
-          renderedPlayButton={renderedPlayButton}
-          trackArtworkURL={artwork_url}
-          audio={audio}
-          secondsPassed={secondsPassed}
-        />
+        <SwipableCards renderedPlayButton={renderedPlayButton} />
 
         <center>
           <div class="buttons-panel noselect">
