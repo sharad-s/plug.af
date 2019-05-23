@@ -14,7 +14,7 @@ class ShareButton extends Component {
 
 	handleCopy = async () => {
 		this.setState({ copied: true });
-		alert('Copied Plug Link to Clipboard!');
+		alert(`Copied Plug Link (${this.props.audio.shortURL}) to Clipboard!`);
 	};
 
 	render() {
