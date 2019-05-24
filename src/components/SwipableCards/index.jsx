@@ -5,173 +5,143 @@ import Swipeable from 'react-swipy';
 // Utils
 import isEmpty from '../../utils/isEmpty';
 
-// Sub
+// SubComponents
 import Beatcard from '../Beatcard';
-import Card from './Card';
 
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  connectSoundcloud,
-  pauseSnippet,
-  playSnippet,
   setSnippet,
   nextSong,
   prevSong,
 } from '../../features/audioplayer/actions';
 
-const wrapperStyles = {
+const swipeWrapperStyles = {
   position: 'relative',
   width: '100%',
-  // height: '340px',
   display: 'flex',
   justifyContent: 'center',
 };
-const actionsStyles = {
+
+const swipableStyles = {
   display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: 12,
-  backgroundColor: 'white',
-  zIndex: 100,
+  justifyContent: 'center',
+  width: '100%',
+  height: '100%',
+  overflowX: 'hidden',
 };
 
+// Styles for Card Underneath
 const cardStyles = {
   cursor: 'pointer',
   userSelect: 'none',
   position: 'fixed',
-  top: "62px",
-  bottom: "0px",
-  height:"inherit",
-  zIndex: -1
+  top: '62px',
+  bottom: '0px',
+  height: 'inherit',
+  zIndex: -1,
+  width: '100%',
 };
 
+//  Track for End of List
 const emptyTrack = {
-  artwork_url: "https://source.unsplash.com/random/300x300",
-  title: "END OF LIST",
-  permalink_url: "https://plug.af",
-}
-
-// const cards = [];
-// for (let i = 0; i < audio.playlist.length; i++) {
-//   cards.push(<Beatcard />);
-// }
+  artwork_url: 'https://source.unsplash.com/random/300x300',
+  title: 'END OF LIST',
+  permalink_url: 'https://plug.af',
+};
 
 class App extends Component {
   state = {
-    // cards: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "7th", "8th", "9inth", "Tinth"],
-    cards: [],
+    tracks: [],
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const cards = [];
+    const tracks = [];
 
+    // If New Playlist is Updated
     if (prevProps.audio.playlist !== this.props.audio.playlist) {
       console.log(
         'componentDidUpdate:: New Playlist Loaded. Playlist:',
         this.props.audio.playlist,
       );
 
+      // If Playlist has tracks, push track objects to local state
       if (!isEmpty(this.props.audio.playlist.length)) {
-        this.props.audio.playlist.map(track =>  {
-           const trackSubset = { 
-            artwork_url: track.artwork_url, 
+        // Use a subset of track object needed for Beatcard
+        this.props.audio.playlist.map(track => {
+          const trackSubset = {
+            artwork_url: track.artwork_url,
             title: track.title,
             user: track.user,
-            permalink_url: track.permalink_url, 
-          }
-          cards.push(trackSubset);
+            permalink_url: track.permalink_url,
+          };
+
+          tracks.push(trackSubset);
         });
 
-        this.setState({ cards });
+        this.setState({ tracks });
       }
     }
-
-    // console.log(nextProps);
-    // const { audio } = nextProps;
-    // console.log("AUDIO Playlist",audio.playlist)
-
-    // audio.playlist.map(track => {
-    //   cards.push(
-    //     <Beatcard renderedPlayButton={null} track={track} secondsPassed={5} />,
-    //   );
-    // });
-    // this.setState({ cards });
   }
 
+  // Removes a track object from local state
   remove = () =>
-    this.setState(({ cards }) => ({
-      cards: cards.slice(1, cards.length),
+    this.setState(({ tracks }) => ({
+      tracks: tracks.slice(1, tracks.length),
     }));
 
   render() {
-    const { cards } = this.state;
+    const { tracks } = this.state;
 
     return (
       <Fragment>
-          <div style={wrapperStyles} id="WRAPPER">
-            {cards.length > 0 ? (
-                <div
-                  id="SWIPABLE"
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width:"100%",
-                    height:"100%",
-                    overflowX:"hidden"
+        <div style={swipeWrapperStyles} id="WRAPPER">
+          {/* If Tracks are in local state, render Top and Bottom Card */}
+          {tracks.length > 0 ? (
+            <div id="SWIPABLE" style={swipableStyles}>
+              {/* Top Swipable Card */}
 
-                  }}
-                >
-                  <Swipeable limit={100} onAfterSwipe={this.remove}>
-                    <div id="SWIPABLE_CARD_TOP"> <Beatcard track={cards[0]} /></div>
-                  </Swipeable>
-                {cards.length > 1 && (
-                  <div
-                    id="NONSWIPABLE_CARD_BOTTOM"
-                    style={cardStyles}
-                  >
-                    <Beatcard track={cards[1]} />
-                  </div>
-                )}
+              <Swipeable limit={100} onAfterSwipe={this.remove}>
+                <div id="SWIPABLE_CARD_TOP">
+                  {' '}
+                  <Beatcard track={tracks[0]} />
                 </div>
-            ) : (
-              <div style={{'z-index': '-2'}}>
-               <Beatcard track={emptyTrack} secondsPassed={0} />
-              </div>
-            )}
-          </div>
+              </Swipeable>
+
+              {/* Bottom, Fixed Non-Swipable Card */}
+              {tracks.length > 1 && (
+                <div id="NONSWIPABLE_CARD_BOTTOM" style={cardStyles}>
+                  <Beatcard track={tracks[1]} />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ zIndex: '-2' }}>
+              {/* If No More Tracks in Local State, load empty card */}
+              <Beatcard track={emptyTrack} secondsPassed={0} />
+            </div>
+          )}
+        </div>
       </Fragment>
     );
   }
 }
 
-{
-  /*
-        <Beatcard
-          renderedPlayButton={renderedPlayButton}
-          trackArtworkURL={artwork_url}
-          audio={audio}
-          secondsPassed={secondsPassed}
-        />
-
-      */
-}
-
 const mapStateToProps = state => ({
   audio: state.audio,
 });
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      connectSoundcloud,
-      pauseSnippet,
-      playSnippet,
       setSnippet,
       nextSong,
       prevSong,
     },
     dispatch,
   );
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

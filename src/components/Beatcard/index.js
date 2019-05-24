@@ -87,10 +87,10 @@ class Beatcard extends Component {
                 <div class="icon-on-overlay">{renderedPlayButton}</div>
                 <div class="details">
                   <p className="title-text noselect">
-                    {track.title ? track.title : <div />}
+                    {track.title ? track.title : null}
                   </p>
                   <p className="title-text noselect">
-                    {track.user ? track.user.username : <div />}
+                    {track.user ? track.user.username : null}
                   </p>
                 </div>
               </div>

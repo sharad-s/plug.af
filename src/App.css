@@ -1,9 +1,13 @@
 body {
   background-color: #151513;
-  height: inherit;
+  height: auto;
   overflow-x: hidden;
   max-width: 100vw;
   max-height: 100vh;
+}
+
+body.noScroll { /* ...or body.dialogShowing */
+  overflow: hidden;
 }
 
 /*
@@ -13,14 +17,13 @@ body {
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
-
 
 /* Text */
 .artist-text {
@@ -57,7 +60,8 @@ body {
   height: 80px;
   padding: 5px;
 }
-.button-in:hover, .button-in:active {
+.button-in:hover,
+.button-in:active {
   transform: scale(0.9, 0.9);
 }
 
@@ -66,7 +70,6 @@ body {
   height: 100%;
   margin-right: 10px;
   margin-left: 10px;
-
 }
 .top-menu {
   z-index: 0;
@@ -82,19 +85,9 @@ body {
 
   margin-bottom: 0px;
 }
-.cards-list {
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
 
 .card-container-god {
-  
-
-  /* Vertical Fle for Entire card*/
+  /* Vertical Flex Container for Entire Space Surrounding Cards */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -123,13 +116,12 @@ body {
   flex-direction: column;
 }
 
-
-.card-container:hover, .card-container:active {
+.card-container:hover,
+.card-container:active {
   transform: scale(1.05, 1.05);
   box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25),
     -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
 }
-
 
 .card-image-container {
   position: relative;
@@ -154,7 +146,6 @@ body {
   z-index: 1;
 }
 
-
 .information-overlay {
   position: absolute;
   bottom: 0;
@@ -168,7 +159,6 @@ body {
   /*overflow: hidden;*/
 }
 
-
 .information-overlay .fill {
   position: absolute;
   top: 0;
@@ -176,9 +166,9 @@ body {
   z-index: -1;
   width: 100%;
   height: 100%;
-  background:rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
   display: block;
-  transform: translate3d(100%,0,0);
+  transform: translate3d(100%, 0, 0);
   transition: transform 350ms;
   /*overflow*/
   overflow: hidden;
@@ -202,8 +192,6 @@ body {
   /*height: 40px;*/
 }
 
-
-
 .title-black {
   color: black;
 }
@@ -216,7 +204,6 @@ body {
   color: white !important;
   border-radius: 0px 0px 20px 20px !important;
 }
-
 
 .information {
   width: 100%;
@@ -235,8 +222,7 @@ body {
   background: rgba(0, 0, 0, 0.4);
   z-index: 2;
 
-
-   /*overflow*/
+  /*overflow*/
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -262,7 +248,7 @@ body {
 
 .icon-on-overlay {
   width: 25%;
-  height:100%;
+  height: 100%;
   height: auto;
   margin-top: auto;
   margin-bottom: auto;
@@ -276,13 +262,11 @@ body {
   margin: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden; 
-  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
   /*background-color: blue;*/
-  z-index: -1
+  z-index: -1;
 }
-
-
 
 @media all and (max-width: 500px) {
   .card-list {
@@ -291,3 +275,30 @@ body {
   }
 }
 
+/*Swipable*/
+.swipe-wrapper {
+  position: 'relative';
+  width: '100%';
+  display: 'flex';
+  justify-content: 'center';
+}
+
+.swipable {
+  display: 'flex';
+  justify-content: 'center';
+  width: '100%';
+  height: '100%';
+  overflow-x: 'hidden';
+}
+
+/*Card */
+.bottom-card {
+  cursor: 'pointer';
+  user-select: 'none';
+  position: 'fixed';
+  top: '62px';
+  bottom: '0px';
+  height: 'inherit';
+  z-index: -1;
+  width: 100%;
+}

@@ -19,13 +19,11 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
-          <div className="flex-vert">
             <Header />
             <div className="mainbody">
              <Route exact path="/" component={AudioPage} />
              <Route exact path="/:shortID" component={AudioPage} />
             </div>
-          </div>
         </div>
       </BrowserRouter>
     </Provider>
