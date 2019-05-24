@@ -25,8 +25,8 @@ SC.initialize({
 });
 
 // Constants
-const LEFT = 'LEFT';
-const RIGHT = 'RIGHT';
+const LEFT = 'left';
+const RIGHT = 'right';
 
 /*
 ******************
