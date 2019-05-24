@@ -13,6 +13,8 @@ import {
   prevSong,
 } from '../../features/audioplayer/actions';
 
+// Subcomponents
+import Loader from "../Loader";
 
 const regex = /large/gi;
 const increaseImageResolution = originalURL => originalURL.replace(regex, "t500x500");

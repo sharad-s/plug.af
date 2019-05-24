@@ -58,20 +58,8 @@ class AudioPage extends Component {
   render() {
     const { audio } = this.props;
 
-    const renderedPlayButtonText = audio.isPlaying ? (
-      <i className="fas fa-pause" />
-    ) : (
-      <i className="fas fa-play" />
-    );
-
-    const renderedPlayButton = audio.title ? (
-      <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
-    ) : null;
-
     return (
-      <Fragment>
-        <SwipableCards renderedPlayButton={renderedPlayButton} />
-      </Fragment>
+        <SwipableCards />
     );
   }
 }
