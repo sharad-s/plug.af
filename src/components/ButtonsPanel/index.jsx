@@ -15,9 +15,13 @@ import {
 	prevSong,
 } from '../../features/audioplayer/actions';
 
+const LEFT = "LEFT"
+const RIGHT = "RIGHT"
+
+
 class ButtonsPanel extends Component {
-	nextSnippet = async () => {
-		await nextSong();
+	nextSnippet = async (swipeDirection) => {
+		await nextSong(swipeDirection);
 		// await setSnippet();
 	};
 
@@ -28,12 +32,14 @@ class ButtonsPanel extends Component {
 
 	handleFireFeedback = async () => {
 		// alert('You voted this track a banger!');
-		await this.nextSnippet();
+		await this.nextSnippet(RIGHT);
+
 	};
 
 	handleDooFeedback = async () => {
 		// alert('You voted this track as whack!');
-		await this.nextSnippet();
+		await this.nextSnippet(LEFT);
+
 	};
 
 	render() {
@@ -80,6 +86,12 @@ class ButtonsPanel extends Component {
 		);
 	}
 }
+
+
+// PropTypes
+// next
+// prev
+// audio
 
 const mapStateToProps = state => ({
 	audio: state.audio,

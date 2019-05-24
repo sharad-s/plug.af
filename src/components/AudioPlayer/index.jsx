@@ -71,7 +71,6 @@ class AudioPage extends Component {
     return (
       <Fragment>
         <SwipableCards renderedPlayButton={renderedPlayButton} />
-        <ButtonsPanel />
       </Fragment>
     );
   }

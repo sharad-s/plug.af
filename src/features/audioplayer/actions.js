@@ -24,6 +24,10 @@ SC.initialize({
 	redirect_uri: 'http://03d0923f.ngrok.io',
 });
 
+// Constants
+const LEFT = 'LEFT';
+const RIGHT = 'RIGHT';
+
 /*
 ******************
 Thunks
@@ -74,7 +78,7 @@ export const playSnippet = async () => {
 		const nextTrack = playlist[trackIndex + 1];
 		const nextStreamUrl = _createStreamUrl(nextTrack.id);
 		// await scPlayer.preload(nextStreamUrl, 'auto');
-		console.log("Preload scPlayer:", scPlayer)
+		console.log('Preload scPlayer:', scPlayer);
 	} catch (err) {
 		console.log('playSnippet: preload next snippet', err.message);
 	}
@@ -91,8 +95,6 @@ export const playSnippet = async () => {
 	} catch (err) {
 		console.log('playSnippet:', err.message);
 	}
-
-
 };
 
 export const setSnippet = async () => {
@@ -139,22 +141,28 @@ const _incrementIndex = async int => {
 	}
 };
 
-export const nextSong = async () => {
+// Swipe with Next Song
+export const nextSong = async (swipeDirection = 'LEFT') => {
 	const { getState, dispatch } = store;
 	const { scPlayer, playlist } = getState().audio;
 
+
+
 	try {
+		// Index ?
 		const newTrackIndex = await _incrementIndex(1);
-		if (newTrackIndex === 0) {
-			await updatePlaylist();
-			return;
-		}
 		const nextTrack = playlist[newTrackIndex];
 		const streamUrl = _createStreamUrl(nextTrack.id);
+
+		// Force Swipe Card
+		forceSwipeCard(swipeDirection)
+
+		// Play Snippet
 		await scPlayer.play({
 			streamUrl,
 		});
 
+		// Set Snippet Interval
 		await setSnippet();
 
 		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
@@ -269,6 +277,25 @@ export const getShortURLFromPlaylistURL = async playlistURL => {
 		return shortURL;
 	} catch (err) {
 		console.log('getShortURLFromPlaylistURL:', err);
+	}
+};
+
+// Swipe The Fucking Card on the screen
+
+const forceSwipeCard = swipeDirection => {
+
+	const { swipeFunction } = window;
+
+	switch (swipeDirection) {
+		case LEFT:
+			swipeFunction.left();
+			return;
+		case RIGHT:
+			swipeFunction.right();
+			return;
+		default:
+			swipeFunction.left();
+			return;
 	}
 };
 

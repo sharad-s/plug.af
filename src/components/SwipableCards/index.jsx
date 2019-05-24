@@ -7,6 +7,7 @@ import isEmpty from '../../utils/isEmpty';
 
 // SubComponents
 import Beatcard from '../Beatcard';
+import ButtonsPanel from '../ButtonsPanel';
 
 // Redux
 import { connect } from 'react-redux';
@@ -26,6 +27,7 @@ const swipeWrapperStyles = {
 
 const swipableStyles = {
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'center',
   width: '100%',
   height: '100%',
@@ -50,6 +52,9 @@ const emptyTrack = {
   title: 'END OF LIST',
   permalink_url: 'https://plug.af',
 };
+
+
+
 
 class App extends Component {
   state = {
@@ -102,7 +107,15 @@ class App extends Component {
             <div id="SWIPABLE" style={swipableStyles}>
               {/* Top Swipable Card */}
 
-              <Swipeable limit={100} onAfterSwipe={this.remove}>
+              <Swipeable
+                limit={100}
+                onAfterSwipe={this.remove}
+                buttons={({ left, right }) => {
+                  // Set Global Var for Swipe Function
+                  window.swipeFunction = { left, right };
+                  return <ButtonsPanel/>;
+                }}
+              >
                 <div id="SWIPABLE_CARD_TOP">
                   {' '}
                   <Beatcard track={tracks[0]} />
