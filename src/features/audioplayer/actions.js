@@ -78,7 +78,7 @@ export const playSnippet = async () => {
 		const nextTrack = playlist[trackIndex + 1];
 		const nextStreamUrl = _createStreamUrl(nextTrack.id);
 		// await scPlayer.preload(nextStreamUrl, 'auto');
-		console.log('Preload scPlayer:', scPlayer);
+		// console.log('Preload scPlayer:', scPlayer);
 	} catch (err) {
 		console.log('playSnippet: preload next snippet', err.message);
 	}
@@ -86,7 +86,7 @@ export const playSnippet = async () => {
 	try {
 		// Create Stream URL
 		const streamUrl = _createStreamUrl(track.id);
-		console.log('playSnippet:', streamUrl);
+		// console.log('playSnippet:', streamUrl);
 		await scPlayer.play({
 			streamUrl,
 		});
@@ -132,21 +132,25 @@ Helper Functions
 const _createStreamUrl = id => `https://api.soundcloud.com/tracks/${id}/stream`;
 
 const _incrementIndex = async int => {
-	const { getState } = store;
+	const { getState, dispatch } = store;
 	const { trackIndex, playlist } = getState().audio;
+	// If trackIndex+ int is out of range of playlist length, return 0;
 	if (trackIndex + int >= playlist.length || trackIndex + int < 0) {
+		dispatch(updateCurrentIndexAction(0));
 		return 0;
 	} else {
+		dispatch(updateCurrentIndexAction(trackIndex + int));
 		return trackIndex + int;
 	}
 };
 
 // Swipe with Next Song
-export const nextSong = async (swipeDirection = 'LEFT', opts = { disableSwipe: false}) => {
+export const nextSong = async (
+	swipeDirection = 'LEFT',
+	opts = { disableForceSwipe: false },
+) => {
 	const { getState, dispatch } = store;
 	const { scPlayer, playlist } = getState().audio;
-
-
 
 	try {
 		// Index ?
@@ -155,8 +159,8 @@ export const nextSong = async (swipeDirection = 'LEFT', opts = { disableSwipe: f
 		const streamUrl = _createStreamUrl(nextTrack.id);
 
 		// If Anything other than manual swipe occurs, Force Swipe Card
-		if (!opts.disableSwipe) {
-			forceSwipeCard(swipeDirection)
+		if (!opts.disableForceSwipe) {
+			forceSwipeCard(swipeDirection);
 		}
 
 		// Play Snippet
@@ -285,7 +289,6 @@ export const getShortURLFromPlaylistURL = async playlistURL => {
 // Swipe The Fucking Card on the screen
 
 const forceSwipeCard = swipeDirection => {
-
 	const { swipeFunction } = window;
 
 	switch (swipeDirection) {
@@ -356,4 +359,9 @@ const getTrackAction = (nextTrack, nextIndex) => ({
 
 const clearPlaylistAction = nextTrack => ({
 	type: types.CLEAR_PLAYLIST,
+});
+
+const updateCurrentIndexAction = trackIndex => ({
+	type: types.UPDATE_CURRENT_INDEX,
+	payload: trackIndex,
 });

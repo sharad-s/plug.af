@@ -51,10 +51,15 @@ const emptyTrack = {
   artwork_url: 'https://source.unsplash.com/random/300x300',
   title: 'END OF LIST',
   permalink_url: 'https://plug.af',
+  user: {},
 };
 
-
-
+const createTrackSubset = (track = emptyTrack) => ({
+  artwork_url: track.artwork_url,
+  title: track.title,
+  user: track.user,
+  permalink_url: track.permalink_url,
+});
 
 class App extends Component {
   state = {
@@ -62,47 +67,85 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const tracks = [];
-
     // If New Playlist is Updated
     if (prevProps.audio.playlist !== this.props.audio.playlist) {
+      const { playlist, trackIndex } = this.props.audio;
+      const tracks = [];
+
+      // If New Playlist has tracks, push track objects to local state
+      if (!isEmpty(this.props.audio.playlist.length)) {
+        console.log(
+          'componentDidUpdate:: New Playlist Loaded. Playlist:',
+          playlist,
+          ' / Tracks being pushed to state:',
+          createTrackSubset(playlist[trackIndex]),
+          createTrackSubset(playlist[trackIndex + 1]),
+        );
+
+        tracks.push(
+          createTrackSubset(playlist[trackIndex]),
+          createTrackSubset(playlist[trackIndex + 1]),
+        );
+        // // Use a subset of track object needed for Beatcard
+        // this.props.audio.playlist.map(track => {
+        //   tracks.push(createTrackSubset(track));
+        // });
+
+         console.log("ComponentDidUpdate: playlist: About to Push New State:", tracks)
+        this.setState({ tracks });
+        console.log("ComponentDidUpdate: playlist: New State:", this.state.tracks)
+
+      }
+    }
+
+    // // If New Track Index is Updated
+    if (prevProps.audio.trackIndex !== this.props.audio.trackIndex) {
+      const { playlist, trackIndex } = this.props.audio;
+      const tracks = [];
+
       console.log(
-        'componentDidUpdate:: New Playlist Loaded. Playlist:',
-        this.props.audio.playlist,
+        'trackIndex Updated: New TrackIndex:',
+        trackIndex,
+        ' / Tracks being pushed to state:',
+        createTrackSubset(playlist[trackIndex]),
+        createTrackSubset(playlist[trackIndex + 1]),
       );
 
-      // If Playlist has tracks, push track objects to local state
-      if (!isEmpty(this.props.audio.playlist.length)) {
-        // Use a subset of track object needed for Beatcard
-        this.props.audio.playlist.map(track => {
-          const trackSubset = {
-            artwork_url: track.artwork_url,
-            title: track.title,
-            user: track.user,
-            permalink_url: track.permalink_url,
-          };
+      tracks.push(
+        createTrackSubset(playlist[trackIndex]),
+        createTrackSubset(playlist[trackIndex + 1]),
+      );
+      
+      console.log("ComponentDidUpdate: trackIndex: About to Push New State:", tracks)
+      this.setState({ tracks });
 
-          tracks.push(trackSubset);
-        });
+      console.log("ComponentDidUpdate: trackIndex: New State:", this.state.tracks)
 
-        this.setState({ tracks });
-      }
     }
   }
 
   // Removes a track object from local state
-  remove = () =>
+  remove = () => {
+    console.log("SwipableCards: remove: About to remove a track. New State:", this.state)
     this.setState(({ tracks }) => ({
       tracks: tracks.slice(1, tracks.length),
     }));
-
-
-  handleSwipe = (swipeDirection) => {
-   nextSong(swipeDirection, { disableSwipe: true})
+    console.log("SwipableCards: remove: removed a track. New State:", this.state)
   }
+
+
+  handleSwipe = swipeDirection => {
+    nextSong(swipeDirection, { disableForceSwipe: true });
+  };
 
   render() {
     const { tracks } = this.state;
+    const { audio } = this.props;
+    const { trackIndex, playlist } = audio;
+
+    const firstTrack = playlist[trackIndex];
+    const secondTrack = playlist[trackIndex + 1];
+    // console.log('SwipableCards: audio.trackIndex:', audio.trackIndex);
 
     return (
       <Fragment>
@@ -115,11 +158,11 @@ class App extends Component {
               <Swipeable
                 limit={100}
                 onAfterSwipe={this.remove}
-                onSwipe={(swipeDirection) => this.handleSwipe(swipeDirection)}
+                onSwipe={swipeDirection => this.handleSwipe(swipeDirection)}
                 buttons={({ left, right }) => {
                   // Set Global Var for Swipe Function
                   window.swipeFunction = { left, right };
-                  return <ButtonsPanel/>;
+                  return <ButtonsPanel />;
                 }}
               >
                 <div id="SWIPABLE_CARD_TOP">

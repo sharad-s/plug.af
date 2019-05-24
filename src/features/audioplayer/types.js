@@ -18,3 +18,8 @@ export const GET_TRACK = "GET_TRACK"
 
 
 export const SET_SHORT_ID = "SET_SHORT_ID"
+
+
+
+// Track Index
+export const UPDATE_CURRENT_INDEX = "UPDATE_CURRENT_INDEX"

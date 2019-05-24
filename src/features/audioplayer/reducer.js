@@ -12,8 +12,9 @@ const initialState = {
   currentTime: 0,
   errorMessage: '',
   isPlaying: false,
-  kind: "",
-  title: ""
+  kind: '',
+  title: '',
+  currentIndex: 0,
 };
 
 export default function(state = initialState, action) {
@@ -31,7 +32,7 @@ export default function(state = initialState, action) {
         title: action.payload.title,
         kind: action.payload.kind,
         playlistURL: action.payload.playlistURL,
-        shortURL: action.payload.shortURL
+        shortURL: action.payload.shortURL,
       };
 
     case types.APPEND_PLAYLIST:
@@ -85,19 +86,25 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentTrack: action.payload.nextTrack,
-        trackIndex: action.payload.nextIndex
+        trackIndex: action.payload.nextIndex,
       };
 
     case types.CLEAR_PLAYLIST:
       return {
-        ...state, 
-        playlist: {}
-      }
-     case types.SET_SHORT_ID:
+        ...state,
+        playlist: {},
+      };
+    case types.SET_SHORT_ID:
       return {
-        ...state, 
-        shortID: action.payload
-      }
+        ...state,
+        shortID: action.payload,
+      };
+
+    case types.UPDATE_CURRENT_INDEX:
+      return {
+        ...state,
+        currentIndex: action.trackIndex,
+      };
 
     default:
       return state;
