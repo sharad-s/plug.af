@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
+import isEmpty from '../../utils/isEmpty';
+
+// Redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+  connectSoundcloud,
+  pauseSnippet,
+  playSnippet,
+  setSnippet,
+  nextSong,
+  prevSong,
+} from '../../features/audioplayer/actions';
+
+
+const regex = /large/gi;
+const increaseImageResolution = originalURL => originalURL.replace(regex, "t500x500");
 
 class Beatcard extends Component {
-
   componentWillReceiveProps(nextProps) {
-    const { secondsPassed } = nextProps;
+
+    const secondsPassed = nextProps.audio.currentTime - 45;
     let duration = 15;
 
     const elem = document.querySelector('.information-overlay .fill');
@@ -21,23 +38,52 @@ class Beatcard extends Component {
     elem.style.transform = `translate3d(${numnum}%, 0, 0)`;
   }
 
+  handleClick = async e => {
+    const { isPlaying } = this.props.audio;
+    e.preventDefault();
+    console.log('Clicked');
+    if (isPlaying) {
+      this.pauseSong();
+    } else {
+      this.playSong();
+    }
+  };
+
+  async playSong() {
+    await playSnippet();
+    await setSnippet();
+  }
+
+  async pauseSong() {
+    await pauseSnippet();
+  }
+
   render() {
+    const { audio, secondsPassed, track } = this.props;
+
     
-    const {
-      renderedPlayButton,
-      audio,
-      trackArtworkURL,
-      secondsPassed,
-    } = this.props;
+    const trackArtURL = isEmpty(track.artwork_url)
+      ? increaseImageResolution(track.user.avatar_url)
+      : increaseImageResolution(track.artwork_url);
+
+    const renderedPlayButtonText = audio.isPlaying ? (
+      <i className="fas fa-pause" />
+    ) : (
+      <i className="fas fa-play" />
+    );
+
+    const renderedPlayButton = audio.title ? (
+      <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
+    ) : null;
 
     return (
-      <div class="cards-list">
+      <div class="card-container-god">
         {/* Card In Whole */}
         <div class="card-container noselect">
           {/* Card Image + Play BUtton Container */}
           <div class="card-image-container">
             {/* Card Image */}
-            <img src={trackArtworkURL} className="card-image" />
+            <img src={trackArtURL} className="card-image" />
             {/* 25% Image Overlay with Track Details */}
             <div class="information-overlay" id="OVERLAY">
               <div class="fill" />
@@ -45,18 +91,10 @@ class Beatcard extends Component {
                 <div class="icon-on-overlay">{renderedPlayButton}</div>
                 <div class="details">
                   <p className="title-text noselect">
-                    {audio.currentTrack.title ? (
-                      audio.currentTrack.title
-                    ) : (
-                      <div />
-                    )}
+                    {track.title ? track.title : null}
                   </p>
                   <p className="title-text noselect">
-                    {audio.currentTrack.user ? (
-                      audio.currentTrack.user.username
-                    ) : (
-                      <div />
-                    )}
+                    {track.user ? track.user.username : null}
                   </p>
                 </div>
               </div>
@@ -68,7 +106,7 @@ class Beatcard extends Component {
 
           {/* Soundcloud Underbutton */}
 
-          <a class="pure-button btn-sc" href={audio.currentTrack.permalink_url}>
+          <a class="pure-button btn-sc" href={track.permalink_url}>
             <i class="fab fa-soundcloud" /> Listen on Soundcloud
           </a>
         </div>
@@ -77,4 +115,23 @@ class Beatcard extends Component {
   }
 }
 
-export default Beatcard;
+const mapStateToProps = state => ({
+  audio: state.audio,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      connectSoundcloud,
+      pauseSnippet,
+      playSnippet,
+      setSnippet,
+      nextSong,
+      prevSong,
+    },
+    dispatch,
+  );
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Beatcard); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}

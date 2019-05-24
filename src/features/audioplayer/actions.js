@@ -13,7 +13,7 @@ import {
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 
-const PLUG_PLAYLIST_URL = 'https://soundcloud.com/octbr';
+const PLUG_PLAYLIST_URL = 'https://soundcloud.com/99q/sets/xxx';
 
 const baseURL = 'https://plug.af/';
 
@@ -23,6 +23,10 @@ SC.initialize({
 	client_id: CLIENT_ID,
 	redirect_uri: 'http://03d0923f.ngrok.io',
 });
+
+// Constants
+const LEFT = 'left';
+const RIGHT = 'right';
 
 /*
 ******************
@@ -74,7 +78,7 @@ export const playSnippet = async () => {
 		const nextTrack = playlist[trackIndex + 1];
 		const nextStreamUrl = _createStreamUrl(nextTrack.id);
 		// await scPlayer.preload(nextStreamUrl, 'auto');
-		console.log("Preload scPlayer:", scPlayer)
+		// console.log('Preload scPlayer:', scPlayer);
 	} catch (err) {
 		console.log('playSnippet: preload next snippet', err.message);
 	}
@@ -82,7 +86,7 @@ export const playSnippet = async () => {
 	try {
 		// Create Stream URL
 		const streamUrl = _createStreamUrl(track.id);
-		console.log('playSnippet:', streamUrl);
+		// console.log('playSnippet:', streamUrl);
 		await scPlayer.play({
 			streamUrl,
 		});
@@ -91,8 +95,6 @@ export const playSnippet = async () => {
 	} catch (err) {
 		console.log('playSnippet:', err.message);
 	}
-
-
 };
 
 export const setSnippet = async () => {
@@ -130,31 +132,43 @@ Helper Functions
 const _createStreamUrl = id => `https://api.soundcloud.com/tracks/${id}/stream`;
 
 const _incrementIndex = async int => {
-	const { getState } = store;
+	const { getState, dispatch } = store;
 	const { trackIndex, playlist } = getState().audio;
+	// If trackIndex+ int is out of range of playlist length, return 0;
 	if (trackIndex + int >= playlist.length || trackIndex + int < 0) {
+		dispatch(updateCurrentIndexAction(0));
 		return 0;
 	} else {
+		dispatch(updateCurrentIndexAction(trackIndex + int));
 		return trackIndex + int;
 	}
 };
 
-export const nextSong = async () => {
+// Swipe with Next Song
+export const nextSong = async (
+	swipeDirection = 'LEFT',
+	opts = { disableForceSwipe: false },
+) => {
 	const { getState, dispatch } = store;
 	const { scPlayer, playlist } = getState().audio;
 
 	try {
+		// Index ?
 		const newTrackIndex = await _incrementIndex(1);
-		if (newTrackIndex === 0) {
-			await updatePlaylist();
-			return;
-		}
 		const nextTrack = playlist[newTrackIndex];
 		const streamUrl = _createStreamUrl(nextTrack.id);
+
+		// If Anything other than manual swipe occurs, Force Swipe Card
+		if (!opts.disableForceSwipe) {
+			forceSwipeCard(swipeDirection);
+		}
+
+		// Play Snippet
 		await scPlayer.play({
 			streamUrl,
 		});
 
+		// Set Snippet Interval
 		await setSnippet();
 
 		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
@@ -272,6 +286,24 @@ export const getShortURLFromPlaylistURL = async playlistURL => {
 	}
 };
 
+// Swipe The Fucking Card on the screen
+
+const forceSwipeCard = swipeDirection => {
+	const { swipeFunction } = window;
+
+	switch (swipeDirection) {
+		case LEFT:
+			swipeFunction.left();
+			return;
+		case RIGHT:
+			swipeFunction.right();
+			return;
+		default:
+			swipeFunction.left();
+			return;
+	}
+};
+
 /*
 ******************
 Action Creators
@@ -327,4 +359,9 @@ const getTrackAction = (nextTrack, nextIndex) => ({
 
 const clearPlaylistAction = nextTrack => ({
 	type: types.CLEAR_PLAYLIST,
+});
+
+const updateCurrentIndexAction = trackIndex => ({
+	type: types.UPDATE_CURRENT_INDEX,
+	payload: trackIndex,
 });
