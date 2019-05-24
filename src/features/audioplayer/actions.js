@@ -142,7 +142,7 @@ const _incrementIndex = async int => {
 };
 
 // Swipe with Next Song
-export const nextSong = async (swipeDirection = 'LEFT') => {
+export const nextSong = async (swipeDirection = 'LEFT', opts = { disableSwipe: false}) => {
 	const { getState, dispatch } = store;
 	const { scPlayer, playlist } = getState().audio;
 
@@ -154,8 +154,10 @@ export const nextSong = async (swipeDirection = 'LEFT') => {
 		const nextTrack = playlist[newTrackIndex];
 		const streamUrl = _createStreamUrl(nextTrack.id);
 
-		// Force Swipe Card
-		forceSwipeCard(swipeDirection)
+		// If Anything other than manual swipe occurs, Force Swipe Card
+		if (!opts.disableSwipe) {
+			forceSwipeCard(swipeDirection)
+		}
 
 		// Play Snippet
 		await scPlayer.play({

@@ -96,6 +96,11 @@ class App extends Component {
       tracks: tracks.slice(1, tracks.length),
     }));
 
+
+  handleSwipe = (swipeDirection) => {
+   nextSong(swipeDirection, { disableSwipe: true})
+  }
+
   render() {
     const { tracks } = this.state;
 
@@ -110,6 +115,7 @@ class App extends Component {
               <Swipeable
                 limit={100}
                 onAfterSwipe={this.remove}
+                onSwipe={(swipeDirection) => this.handleSwipe(swipeDirection)}
                 buttons={({ left, right }) => {
                   // Set Global Var for Swipe Function
                   window.swipeFunction = { left, right };
@@ -117,7 +123,6 @@ class App extends Component {
                 }}
               >
                 <div id="SWIPABLE_CARD_TOP">
-                  {' '}
                   <Beatcard track={tracks[0]} />
                 </div>
               </Swipeable>
