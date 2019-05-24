@@ -57,6 +57,7 @@ class Beatcard extends Component {
   render() {
     const { audio, secondsPassed, track } = this.props;
 
+    
     const trackArtURL = isEmpty(track.artwork_url)
       ? track.user.avatar_url
       : track.artwork_url;

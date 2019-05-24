@@ -24,7 +24,7 @@ import {
 const wrapperStyles = {
   position: 'relative',
   width: '100%',
-  height: '400px',
+  // height: '340px',
   display: 'flex',
   justifyContent: 'center',
 };
@@ -40,11 +40,17 @@ const cardStyles = {
   cursor: 'pointer',
   userSelect: 'none',
   position: 'fixed',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  top: 0,
+  top: "62px",
+  bottom: "0px",
+  height:"inherit",
+  zIndex: -1
 };
+
+const emptyTrack = {
+  artwork_url: "https://source.unsplash.com/random/300x300",
+  title: "END OF LIST",
+  permalink_url: "https://plug.af",
+}
 
 // const cards = [];
 // for (let i = 0; i < audio.playlist.length; i++) {
@@ -67,8 +73,14 @@ class App extends Component {
       );
 
       if (!isEmpty(this.props.audio.playlist.length)) {
-        this.props.audio.playlist.map(track => {
-          cards.push(<Beatcard track={track} secondsPassed={5} />);
+        this.props.audio.playlist.map(track =>  {
+           const trackSubset = { 
+            artwork_url: track.artwork_url, 
+            title: track.title,
+            user: track.user,
+            permalink_url: track.permalink_url, 
+          }
+          cards.push(trackSubset);
         });
 
         this.setState({ cards });
@@ -97,42 +109,37 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div class="cards-list">
           <div style={wrapperStyles} id="WRAPPER">
             {cards.length > 0 ? (
-              <Fragment>
                 <div
                   id="SWIPABLE"
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
                     width:"100%",
-                    // backgroundColor: 'red',
                     height:"100%",
                     overflowX:"hidden"
 
                   }}
                 >
                   <Swipeable limit={100} onAfterSwipe={this.remove}>
-                    <div id="SWIPABLE_CARD_TOP"> {cards[0]}</div>
+                    <div id="SWIPABLE_CARD_TOP"> <Beatcard track={cards[0]} /></div>
                   </Swipeable>
-                </div>
                 {cards.length > 1 && (
                   <div
                     id="NONSWIPABLE_CARD_BOTTOM"
-                    style={{ ...cardStyles, zIndex: -1 }}
+                    style={cardStyles}
                   >
-                    {cards[1]}
+                    <Beatcard track={cards[1]} />
                   </div>
                 )}
-              </Fragment>
+                </div>
             ) : (
-              <div style={{ 'z-index': '-2', color: 'white' }}>
-                No more cards
+              <div style={{'z-index': '-2'}}>
+               <Beatcard track={emptyTrack} secondsPassed={0} />
               </div>
             )}
           </div>
-        </div>
       </Fragment>
     );
   }

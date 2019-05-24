@@ -79,6 +79,8 @@ body {
   font-size: 30px;
   font-weight: bold;
   flex-wrap: wrap;
+
+  margin-bottom: 0px;
 }
 .cards-list {
   z-index: 0;
@@ -96,6 +98,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  padding-top: 30px;
 }
 
 .card-container {
