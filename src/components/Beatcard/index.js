@@ -13,6 +13,10 @@ import {
   prevSong,
 } from '../../features/audioplayer/actions';
 
+
+const regex = /large/gi;
+const increaseImageResolution = originalURL => originalURL.replace(regex, "t500x500");
+
 class Beatcard extends Component {
   componentWillReceiveProps(nextProps) {
 
@@ -59,8 +63,8 @@ class Beatcard extends Component {
 
     
     const trackArtURL = isEmpty(track.artwork_url)
-      ? track.user.avatar_url
-      : track.artwork_url;
+      ? increaseImageResolution(track.user.avatar_url)
+      : increaseImageResolution(track.artwork_url);
 
     const renderedPlayButtonText = audio.isPlaying ? (
       <i className="fas fa-pause" />

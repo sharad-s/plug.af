@@ -13,7 +13,7 @@ import {
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 
-const PLUG_PLAYLIST_URL = 'https://soundcloud.com/octbr';
+const PLUG_PLAYLIST_URL = 'https://soundcloud.com/99q/sets/xxx';
 
 const baseURL = 'https://plug.af/';
 
