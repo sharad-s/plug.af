@@ -60,7 +60,12 @@ class AudioPage extends Component {
   render() {
     const { audio } = this.props;
 
-    return <SwipableCards />;
+    return (
+      <Fragment>
+        <SwipableCards />
+        <ButtonsPanel />
+      </Fragment>
+    );
   }
 }
 

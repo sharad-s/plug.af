@@ -223,7 +223,7 @@ class App extends Component {
                 buttons={({ left, right }) => {
                   // Set Global Var for Swipe Function
                   window.swipeFunction = { left, right };
-                  return <ButtonsPanel />;
+                  return;
                   {
                     /* move back into separate component*/
                   }
