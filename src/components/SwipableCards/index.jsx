@@ -36,7 +36,19 @@ const swipableStyles = {
 };
 
 // Styles for Card Underneath
-const cardStyles = {
+const bottomcardStyles = {
+  cursor: 'pointer',
+  userSelect: 'none',
+  position: 'fixed',
+  top: '62px',
+  bottom: '0px',
+  height: 'inherit',
+  zIndex: -1,
+  width: '100%',
+};
+
+// Styles for Card Underneath
+const bottomBottomCardStyles = {
   cursor: 'pointer',
   userSelect: 'none',
   position: 'fixed',
@@ -236,7 +248,7 @@ class App extends Component {
 
               {/* Bottom, Fixed Non-Swipable Card */}
               {tracks.length > 1 && (
-                <div id="NONSWIPABLE_CARD_BOTTOM" style={cardStyles}>
+                <div id="NONSWIPABLE_CARD_BOTTOM" style={bottomcardStyles}>
                   <Beatcard track={tracks[1]} />
                 </div>
               )}
