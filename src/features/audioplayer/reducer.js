@@ -48,7 +48,7 @@ export default function(state = initialState, action) {
       };
 
     case types.PLAY_SNIPPET:
-      console.log('PLAY_SNIPPET', action.payload);
+      // console.log('PLAY_SNIPPET', action.payload);
       return {
         ...state,
         isPlaying: true,
@@ -66,7 +66,7 @@ export default function(state = initialState, action) {
         ...state,
         trackIndex: action.payload.trackIndex,
         currentTrack: action.payload.currentTrack,
-        isPlaying: true,
+        isPlaying: true
       };
 
     case types.PREV_SNIPPET:

@@ -16,6 +16,7 @@ import {
   setSnippet,
   nextSong,
   prevSong,
+  pauseSnippet
 } from '../../features/audioplayer/actions';
 
 const swipeWrapperStyles = {
@@ -64,6 +65,7 @@ const createTrackSubset = (track = emptyTrack) => ({
 class App extends Component {
   state = {
     tracks: [],
+    currentSwipe: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -91,10 +93,22 @@ class App extends Component {
         //   tracks.push(createTrackSubset(track));
         // });
 
-         console.log("ComponentDidUpdate: playlist: About to Push New State:", tracks)
-        this.setState({ tracks });
-        console.log("ComponentDidUpdate: playlist: New State:", this.state.tracks)
+        console.log(
+          'ComponentDidUpdate: playlist: About to Push New State:',
+          tracks,
+        );
+        this.setState({ tracks }, () => {
+          console.log(
+            'ComponentDidUpdate: playlist: New State:',
+            this.state.tracks,
+          );
 
+          console.log(
+            `Current song should be ${
+              this.state.tracks[0].title
+            }. Next Song should be ${this.state.tracks[1].title}`,
+          );
+        });
       }
     }
 
@@ -104,38 +118,85 @@ class App extends Component {
       const tracks = [];
 
       console.log(
-        'trackIndex Updated: New TrackIndex:',
-        trackIndex,
-        ' / Tracks being pushed to state:',
-        createTrackSubset(playlist[trackIndex]),
-        createTrackSubset(playlist[trackIndex + 1]),
+        `trackIndex Updated: Prev TrackIndex: ${
+          prevProps.audio.trackIndex
+        }, New TrackIndex: ${trackIndex}`,
       );
 
       tracks.push(
         createTrackSubset(playlist[trackIndex]),
         createTrackSubset(playlist[trackIndex + 1]),
       );
-      
-      console.log("ComponentDidUpdate: trackIndex: About to Push New State:", tracks)
-      this.setState({ tracks });
 
-      console.log("ComponentDidUpdate: trackIndex: New State:", this.state.tracks)
+      console.log(
+        'ComponentDidUpdate: trackIndex: About to Push New State:',
+        tracks,
+      );
 
+      // Remove current just swiped song from state, then set new state
+
+      this.setState({ tracks }, () => {
+        console.log(
+          'ComponentDidUpdate: trackIndex: New State:',
+          this.state.tracks,
+        );
+
+        console.log(
+          `Current song should be ${
+            this.state.tracks[0].title
+          }. Next Song should be ${this.state.tracks[1].title}`,
+        );
+      });
     }
   }
 
   // Removes a track object from local state
   remove = () => {
-    console.log("SwipableCards: remove: About to remove a track. New State:", this.state)
-    this.setState(({ tracks }) => ({
-      tracks: tracks.slice(1, tracks.length),
-    }));
-    console.log("SwipableCards: remove: removed a track. New State:", this.state)
-  }
+    console.log(
+      'SwipableCards: remove: About to remove a track. PrevState:',
+      this.state.tracks,
+    );
+    this.setState(
+      ({ tracks }) => ({
+        tracks: tracks.slice(1, tracks.length),
+      }),
+      () => {
+        console.log(
+          'SwipableCards: remove: removed a track. New State:',
+          this.state.tracks,
+        );
+      },
+    );
+  };
 
+  handleSwipe = async swipeDirection => {
 
-  handleSwipe = swipeDirection => {
+    // pauseSnippet()
+
+    this.setState({ currentSwipe: swipeDirection }, () => {
+      console.log(
+        `SwipableCards: handleSwipe: set state.currentSwipe to ${
+          this.state.currentSwipe
+        }`,
+      );
+    });
+  };
+
+  onAfterSwipe = () => {
+    const swipeDirection = this.state.currentSwipe;
+
+    this.remove();
+    console.log(
+      `SwipableCards: onAfterSwipe: Actual Swipe ${swipeDirection}: calling nextSong()`,
+    );
     nextSong(swipeDirection, { disableForceSwipe: true });
+    this.setState({ currentSwipe: null }, () => {
+      console.log(
+        `SwipableCards: onAfterSwipe: set state.currentSwipe to ${
+          this.state.currentSwipe
+        }`,
+      );
+    });
   };
 
   render() {
@@ -157,12 +218,15 @@ class App extends Component {
 
               <Swipeable
                 limit={100}
-                onAfterSwipe={this.remove}
+                onAfterSwipe={this.onAfterSwipe}
                 onSwipe={swipeDirection => this.handleSwipe(swipeDirection)}
                 buttons={({ left, right }) => {
                   // Set Global Var for Swipe Function
                   window.swipeFunction = { left, right };
                   return <ButtonsPanel />;
+                  {
+                    /* move back into separate component*/
+                  }
                 }}
               >
                 <div id="SWIPABLE_CARD_TOP">

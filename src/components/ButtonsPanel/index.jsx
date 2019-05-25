@@ -20,6 +20,7 @@ const RIGHT = 'right';
 
 class ButtonsPanel extends Component {
 	nextSnippet = async swipeDirection => {
+		console.log(`ButtonsPanel: Force swipe ${swipeDirection}: calling nextSong()`)
 		await nextSong(swipeDirection);
 		// await setSnippet();
 	};

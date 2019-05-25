@@ -53,8 +53,11 @@ export const pauseSnippet = async () => {
   const { getState, dispatch } = store;
   const { scPlayer } = getState().audio;
   try {
+  	console.log("pauseSnippet: Pausing Snippet")
     await scPlayer.pause();
     dispatch(pauseSnippetAction());
+  	console.log("pauseSnippet: Paused Snippet")
+
   } catch (err) {
     console.log('pauseSnippet:', err.message);
   }
@@ -101,28 +104,33 @@ export const playSnippet = async () => {
 };
 
 export const setSnippet = async () => {
-  const { getState, dispatch } = store;
-  const { scPlayer } = getState().audio;
+	const { getState, dispatch } = store;
+	const { scPlayer } = getState().audio;
 
-  try {
-    scPlayer.setTime(45);
-    scPlayer.on('timeupdate', () => {
-      let currentTime = scPlayer.audio.currentTime;
-      // this.setState({ currentTime });
-      dispatch(updateTrackTimeAction(currentTime));
+	try {
+		scPlayer.setTime(45);
+		scPlayer.on('timeupdate', () => {
+			let currentTime = scPlayer.audio.currentTime;
+			// this.setState({ currentTime });
+			dispatch(updateTrackTimeAction(currentTime));
 
-      if (currentTime > 60) {
-        nextSong();
-      }
-    });
-    scPlayer.on('ended', () => {
-      console.log('Playback Unexpectedly ended. Skipping to Next Song');
-      nextSong();
-    });
-    dispatch(setSnippetAction());
-  } catch (err) {
-    console.log('setSnippet:', err.message);
-  }
+			if (currentTime > 60) {
+				console.log('setSnippet: currentTime > 60: calling nextSong()');
+				nextSong();
+			}
+		});
+		scPlayer.on('ended', () => {
+			console.log('Playback Unexpectedly ended. Skipping to Next Song');
+			console.log('setSnippet: onEnded: calling nextSong()');
+			nextSong();
+		});
+		scPlayer.on('paused', () => {
+			console.log('scPlayer.onPaused');
+		});
+		dispatch(setSnippetAction());
+	} catch (err) {
+		console.log('setSnippet:', err.message);
+	}
 };
 
 /*
@@ -152,32 +160,56 @@ export const nextSong = async (
   swipeDirection = 'LEFT',
   opts = { disableForceSwipe: false },
 ) => {
-  const { getState, dispatch } = store;
-  const { scPlayer, playlist } = getState().audio;
+	const { getState, dispatch } = store;
+	const { scPlayer, playlist } = getState().audio;
 
-  try {
-    // Index ?
-    const newTrackIndex = await _incrementIndex(1);
-    const nextTrack = playlist[newTrackIndex];
-    const streamUrl = _createStreamUrl(nextTrack.id);
+	console.log('nextSong 0');
 
-    // If Anything other than manual swipe occurs, Force Swipe Card
-    if (!opts.disableForceSwipe) {
-      forceSwipeCard(swipeDirection);
-    }
+	// If Anything other than manual swipe occurs, Force Swipe Card
+	if (!opts.disableForceSwipe) {
+		console.log('audioplayer Actions: nextSong: Force Swipe called');
+		return forceSwipeCard(swipeDirection);
+	}
 
-    // Play Snippet
-    await scPlayer.play({
-      streamUrl,
-    });
+	console.log('nextSong 1');
 
-    // Set Snippet Interval
-    await setSnippet();
+	try {
 
-    dispatch(nextSnippetAction(newTrackIndex, nextTrack));
-  } catch (err) {
-    console.log('nextSong:', err.message);
-  }
+		// pauseSnippet();
+
+		// Index ?
+		const newTrackIndex = await _incrementIndex(1);
+		const nextTrack = playlist[newTrackIndex];
+
+		console.log('nextSong 2');
+
+		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
+
+		console.log('nextSong 3');
+
+		const newCurrentTrackIndex = getState().audio.trackIndex;
+		const newCurrentTrack = getState().audio.playlist[newCurrentTrackIndex];
+
+		// console.log("nextTrack MATCHES newCurrentTrack", nextTrack.id === newCurrentTrack.id)
+
+		const streamUrl = _createStreamUrl(newCurrentTrack.id);
+
+		console.log('nextSong 4');
+
+		// Play Snippet
+		await scPlayer.play({
+			streamUrl,
+		});
+
+		console.log('nextSong 5');
+
+		// Set Snippet Interval
+		await setSnippet();
+
+		console.log('nextSong 6');
+	} catch (err) {
+		console.log('nextSong:', err.message);
+	}
 };
 
 export const prevSong = async () => {
@@ -292,20 +324,31 @@ export const getShortURLFromPlaylistURL = async playlistURL => {
 // Swipe The Fucking Card on the screen
 
 const forceSwipeCard = swipeDirection => {
-  const { swipeFunction } = window;
+	const { swipeFunction } = window;
 
-  switch (swipeDirection) {
-    case LEFT:
-      swipeFunction.left();
-      return;
-    case RIGHT:
-      swipeFunction.right();
-      return;
-    default:
-      swipeFunction.left();
-      return;
-  }
+	switch (swipeDirection) {
+		case LEFT:
+			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.left()');
+			swipeFunction.left();
+			return;
+		case RIGHT:
+			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.right()');
+			swipeFunction.right();
+			return;
+		default:
+			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.left()');
+			swipeFunction.left();
+			return;
+	}
 };
+
+export const clearTrackTime = async () => {
+  const { dispatch, getState } = store;
+  console.log("ACTIONS: clearTrackTime: About to CLEAR TRACK TIME TO ZERO");
+  dispatch(updateTrackTimeAction(0));
+  console.log("ACTIONS: clearTrackTime: New TrackTime =", getState().audio.currentTime);
+
+}
 
 /*
 ******************

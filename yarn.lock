@@ -5824,6 +5824,7 @@ mixin-object@^2.0.1:
 mixpanel-browser@^2.28.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/mixpanel-browser/-/mixpanel-browser-2.28.0.tgz#1fffbc2104af12fc092c5b25a97564c177dc070f"
+  integrity sha512-W/vfiO+PqubkyJXl6j9GWiayAUa7bVYxdN29C/t2USbG4DzXZk1xphKwxUcgfVCwxx1h7gSoi4dn9JC6DgOS9A==
 
 mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   version "0.5.1"
