@@ -4,8 +4,8 @@ import React, { Component, Fragment } from 'react';
 import isEmpty from '../../utils/isEmpty';
 
 // SubComponents
-import SwipableCards from "../SwipableCards"
-import ButtonsPanel from "../ButtonsPanel"
+import SwipableCards from '../SwipableCards';
+import ButtonsPanel from '../ButtonsPanel';
 
 // Redux
 import { connect } from 'react-redux';
@@ -20,6 +20,9 @@ import like from '../../images/like.svg';
 import dislike from '../../images/cancel.svg';
 import goback from '../../images/go-back.svg';
 import share from '../../images/share.svg';
+
+// Mixpanel
+import { Mixpanel } from '../../utils/mixpanel';
 
 class AudioPage extends Component {
   constructor(props) {
@@ -54,13 +57,10 @@ class AudioPage extends Component {
     await pauseSnippet();
   }
 
-
   render() {
     const { audio } = this.props;
 
-    return (
-        <SwipableCards />
-    );
+    return <SwipableCards />;
   }
 }
 
@@ -68,6 +68,4 @@ const mapStateToProps = state => ({
   audio: state.audio,
 });
 
-export default connect(
-  mapStateToProps,
-)(AudioPage); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}
+export default connect(mapStateToProps)(AudioPage); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}

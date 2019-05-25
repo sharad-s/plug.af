@@ -6,12 +6,14 @@ import * as types from './types';
 import store from '../../state/store';
 
 import {
-	getSoundcloudErrorsAction,
-	getSearchErrorAction,
+  getSoundcloudErrorsAction,
+  getSearchErrorAction,
 } from '../errors/actions';
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
+// Mixpanel
+import { Mixpanel } from '../../utils/mixpanel';
 
 const PLUG_PLAYLIST_URL = 'https://soundcloud.com/99q/sets/xxx';
 
@@ -20,8 +22,8 @@ const baseURL = 'https://plug.af/';
 const CLIENT_ID = '47159083054685525f6b73d25e2560b9';
 
 SC.initialize({
-	client_id: CLIENT_ID,
-	redirect_uri: 'http://03d0923f.ngrok.io',
+  client_id: CLIENT_ID,
+  redirect_uri: 'http://03d0923f.ngrok.io',
 });
 
 // Constants
@@ -36,90 +38,91 @@ Thunks
 
 // Tries downloading and Decrypting the file given payload
 export const connectSoundcloud = () => {
-	const { dispatch } = store;
-	try {
-		const scPlayer = new SoundCloudAudio(CLIENT_ID);
+  const { dispatch } = store;
+  try {
+    const scPlayer = new SoundCloudAudio(CLIENT_ID);
 
-		dispatch(connectSoundcloudAction(scPlayer));
-	} catch (err) {
-		console.log('connectSoundcloud:', err.message);
-		dispatch(getSoundcloudErrorsAction(err));
-	}
+    dispatch(connectSoundcloudAction(scPlayer));
+  } catch (err) {
+    console.log('connectSoundcloud:', err.message);
+    dispatch(getSoundcloudErrorsAction(err));
+  }
 };
 
 export const pauseSnippet = async () => {
-	const { getState, dispatch } = store;
-	const { scPlayer } = getState().audio;
-	try {
-		await scPlayer.pause();
-		dispatch(pauseSnippetAction());
-	} catch (err) {
-		console.log('pauseSnippet:', err.message);
-	}
+  const { getState, dispatch } = store;
+  const { scPlayer } = getState().audio;
+  try {
+    await scPlayer.pause();
+    dispatch(pauseSnippetAction());
+  } catch (err) {
+    console.log('pauseSnippet:', err.message);
+  }
 };
 
 export const getTrack = async index => {
-	const { getState, dispatch } = store;
-	const { playlist } = getState().audio;
+  const { getState, dispatch } = store;
+  const { playlist } = getState().audio;
 
-	const track = playlist[index];
-	console.log('gettrack', track);
-	dispatch(getTrackAction(track, index));
+  const track = playlist[index];
+  console.log('gettrack', track);
+  dispatch(getTrackAction(track, index));
 };
 
 export const playSnippet = async () => {
-	const { getState, dispatch } = store;
-	const { scPlayer, playlist, trackIndex } = getState().audio;
+  Mixpanel.track('play_Plug');
+  const { getState, dispatch } = store;
+  const { scPlayer, playlist, trackIndex } = getState().audio;
 
-	const track = playlist[trackIndex];
+  const track = playlist[trackIndex];
 
-	// Preload Next Snippet
-	try {
-		const nextTrack = playlist[trackIndex + 1];
-		const nextStreamUrl = _createStreamUrl(nextTrack.id);
-		// await scPlayer.preload(nextStreamUrl, 'auto');
-		// console.log('Preload scPlayer:', scPlayer);
-	} catch (err) {
-		console.log('playSnippet: preload next snippet', err.message);
-	}
+  // Preload Next Snippet
+  try {
+    const nextTrack = playlist[trackIndex + 1];
+    const nextStreamUrl = _createStreamUrl(nextTrack.id);
+    // await scPlayer.preload(nextStreamUrl, 'auto');
+    // console.log('Preload scPlayer:', scPlayer);
+  } catch (err) {
+    console.log('playSnippet: preload next snippet', err.message);
+  }
 
-	try {
-		// Create Stream URL
-		const streamUrl = _createStreamUrl(track.id);
-		// console.log('playSnippet:', streamUrl);
-		await scPlayer.play({
-			streamUrl,
-		});
+  try {
+    // Create Stream URL
+    const streamUrl = _createStreamUrl(track.id);
+    // console.log('playSnippet:', streamUrl);
+    await scPlayer.play({
+      streamUrl,
+    });
 
-		dispatch(playSnippetAction(track));
-	} catch (err) {
-		console.log('playSnippet:', err.message);
-	}
+    dispatch(playSnippetAction(track));
+  } catch (err) {
+    console.log('playSnippet:', err.message);
+  }
 };
 
 export const setSnippet = async () => {
-	const { getState, dispatch } = store;
-	const { scPlayer } = getState().audio;
+  const { getState, dispatch } = store;
+  const { scPlayer } = getState().audio;
 
-	try {
-		scPlayer.setTime(45);
-		scPlayer.on('timeupdate', () => {
-			let currentTime = scPlayer.audio.currentTime;
-			// this.setState({ currentTime });
-			dispatch(updateTrackTimeAction(currentTime));
+  try {
+    scPlayer.setTime(45);
+    scPlayer.on('timeupdate', () => {
+      let currentTime = scPlayer.audio.currentTime;
+      // this.setState({ currentTime });
+      dispatch(updateTrackTimeAction(currentTime));
 
-			if (currentTime > 60) {
-				nextSong();
-			}
-		});
-		scPlayer.on('ended', () => {
-			console.log('Playback Unexpectedly ended. Skipping to Next Song');
-			nextSong();
-		});
-		dispatch(setSnippetAction());
-	} catch (err) {
-		console.log('setSnippet:', err.message);
-	}
+      if (currentTime > 60) {
+        nextSong();
+      }
+    });
+    scPlayer.on('ended', () => {
+      console.log('Playback Unexpectedly ended. Skipping to Next Song');
+      nextSong();
+    });
+    dispatch(setSnippetAction());
+  } catch (err) {
+    console.log('setSnippet:', err.message);
+  }
 };
 
 /*
@@ -132,176 +135,176 @@ Helper Functions
 const _createStreamUrl = id => `https://api.soundcloud.com/tracks/${id}/stream`;
 
 const _incrementIndex = async int => {
-	const { getState, dispatch } = store;
-	const { trackIndex, playlist } = getState().audio;
-	// If trackIndex+ int is out of range of playlist length, return 0;
-	if (trackIndex + int >= playlist.length || trackIndex + int < 0) {
-		dispatch(updateCurrentIndexAction(0));
-		return 0;
-	} else {
-		dispatch(updateCurrentIndexAction(trackIndex + int));
-		return trackIndex + int;
-	}
+  const { getState, dispatch } = store;
+  const { trackIndex, playlist } = getState().audio;
+  // If trackIndex+ int is out of range of playlist length, return 0;
+  if (trackIndex + int >= playlist.length || trackIndex + int < 0) {
+    dispatch(updateCurrentIndexAction(0));
+    return 0;
+  } else {
+    dispatch(updateCurrentIndexAction(trackIndex + int));
+    return trackIndex + int;
+  }
 };
 
 // Swipe with Next Song
 export const nextSong = async (
-	swipeDirection = 'LEFT',
-	opts = { disableForceSwipe: false },
+  swipeDirection = 'LEFT',
+  opts = { disableForceSwipe: false },
 ) => {
-	const { getState, dispatch } = store;
-	const { scPlayer, playlist } = getState().audio;
+  const { getState, dispatch } = store;
+  const { scPlayer, playlist } = getState().audio;
 
-	try {
-		// Index ?
-		const newTrackIndex = await _incrementIndex(1);
-		const nextTrack = playlist[newTrackIndex];
-		const streamUrl = _createStreamUrl(nextTrack.id);
+  try {
+    // Index ?
+    const newTrackIndex = await _incrementIndex(1);
+    const nextTrack = playlist[newTrackIndex];
+    const streamUrl = _createStreamUrl(nextTrack.id);
 
-		// If Anything other than manual swipe occurs, Force Swipe Card
-		if (!opts.disableForceSwipe) {
-			forceSwipeCard(swipeDirection);
-		}
+    // If Anything other than manual swipe occurs, Force Swipe Card
+    if (!opts.disableForceSwipe) {
+      forceSwipeCard(swipeDirection);
+    }
 
-		// Play Snippet
-		await scPlayer.play({
-			streamUrl,
-		});
+    // Play Snippet
+    await scPlayer.play({
+      streamUrl,
+    });
 
-		// Set Snippet Interval
-		await setSnippet();
+    // Set Snippet Interval
+    await setSnippet();
 
-		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
-	} catch (err) {
-		console.log('nextSong:', err.message);
-	}
+    dispatch(nextSnippetAction(newTrackIndex, nextTrack));
+  } catch (err) {
+    console.log('nextSong:', err.message);
+  }
 };
 
 export const prevSong = async () => {
-	const { getState, dispatch } = store;
-	const { playlist } = getState().audio;
+  const { getState, dispatch } = store;
+  const { playlist } = getState().audio;
 
-	try {
-		const newTrackIndex = await _incrementIndex(-1);
-		if (newTrackIndex === 0) {
-			await getTrack(0);
-			await playSnippet();
-			await setSnippet();
-			return;
-		}
-		console.log('prevSong:', newTrackIndex);
+  try {
+    const newTrackIndex = await _incrementIndex(-1);
+    if (newTrackIndex === 0) {
+      await getTrack(0);
+      await playSnippet();
+      await setSnippet();
+      return;
+    }
+    console.log('prevSong:', newTrackIndex);
 
-		await getTrack(newTrackIndex);
-		await playSnippet();
-		await setSnippet();
-		const nextTrack = playlist[newTrackIndex];
-		// const streamUrl = _createStreamUrl(nextTrack.id);
-		// await scPlayer.play({
-		// 	streamUrl,
-		// });
-		// await setSnippet();
-		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
-	} catch (err) {
-		console.log('prevSong:', err.message);
-	}
+    await getTrack(newTrackIndex);
+    await playSnippet();
+    await setSnippet();
+    const nextTrack = playlist[newTrackIndex];
+    // const streamUrl = _createStreamUrl(nextTrack.id);
+    // await scPlayer.play({
+    // 	streamUrl,
+    // });
+    // await setSnippet();
+    dispatch(prevSnippetAction(newTrackIndex, nextTrack));
+  } catch (err) {
+    console.log('prevSong:', err.message);
+  }
 };
 
 export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
-	const { dispatch } = store;
-	try {
-		console.log('updatePlaylist: getting playlist:', url);
-		const response = await SC.resolve(url);
-		console.log(response);
+  const { dispatch } = store;
+  try {
+    console.log('updatePlaylist: getting playlist:', url);
+    const response = await SC.resolve(url);
+    console.log(response);
 
-		let shortURL;
+    let shortURL;
 
-		switch (response.kind) {
-			case 'playlist':
-				console.log('Searched Playlist');
-				let { tracks, title } = response;
-				// Get ShortID of playlist
-				shortURL = await getShortURLFromPlaylistURL(url);
-				console.log('SHORTURL', shortURL);
-				dispatch(clearPlaylistAction());
-				dispatch(
-					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-				);
-				break;
-			case 'user':
-				let user = response;
-				console.log(`Searched User: ${user.id}`);
-				// Search user's tracks
-				tracks = await SC.get('/tracks', {
-					user_id: user.id,
-					limit: 100,
-				});
-				title = user.permalink;
-				shortURL = await getShortURLFromPlaylistURL(url);
-				console.log('SHORTURL', shortURL);
-				dispatch(clearPlaylistAction());
-				dispatch(
-					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-				);
-				break;
-			case 'track':
-				console.log('Searched Track', response);
-				title = response.title;
-				tracks = [response];
-				shortURL = await getShortURLFromPlaylistURL(url);
-				dispatch(clearPlaylistAction());
-				dispatch(
-					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-				);
-				break;
-			default:
-				break;
-		}
+    switch (response.kind) {
+      case 'playlist':
+        console.log('Searched Playlist');
+        let { tracks, title } = response;
+        // Get ShortID of playlist
+        shortURL = await getShortURLFromPlaylistURL(url);
+        console.log('SHORTURL', shortURL);
+        dispatch(clearPlaylistAction());
+        dispatch(
+          updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+        );
+        break;
+      case 'user':
+        let user = response;
+        console.log(`Searched User: ${user.id}`);
+        // Search user's tracks
+        tracks = await SC.get('/tracks', {
+          user_id: user.id,
+          limit: 100,
+        });
+        title = user.permalink;
+        shortURL = await getShortURLFromPlaylistURL(url);
+        console.log('SHORTURL', shortURL);
+        dispatch(clearPlaylistAction());
+        dispatch(
+          updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+        );
+        break;
+      case 'track':
+        console.log('Searched Track', response);
+        title = response.title;
+        tracks = [response];
+        shortURL = await getShortURLFromPlaylistURL(url);
+        dispatch(clearPlaylistAction());
+        dispatch(
+          updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+        );
+        break;
+      default:
+        break;
+    }
 
-		await getTrack(0);
-		await playSnippet();
-		await setSnippet();
-	} catch (err) {
-		console.log('updatePlaylist:', err);
-		dispatch(getSearchErrorAction(err));
-		// this.setState({ errorMessage: err.message });
-	}
+    await getTrack(0);
+    await playSnippet();
+    await setSnippet();
+  } catch (err) {
+    console.log('updatePlaylist:', err);
+    dispatch(getSearchErrorAction(err));
+    // this.setState({ errorMessage: err.message });
+  }
 };
 
 export const getPlaylistFromShortID = async shortID => {
-	try {
-		const playlistURL = await getLongURL(shortID);
-		return playlistURL;
-	} catch (err) {
-		console.log('getPlaylistFromURL:', err);
-	}
+  try {
+    const playlistURL = await getLongURL(shortID);
+    return playlistURL;
+  } catch (err) {
+    console.log('getPlaylistFromURL:', err);
+  }
 };
 
 export const getShortURLFromPlaylistURL = async playlistURL => {
-	try {
-		const shortID = await setShortURL(playlistURL);
-		const shortURL = baseURL + shortID;
-		return shortURL;
-	} catch (err) {
-		console.log('getShortURLFromPlaylistURL:', err);
-	}
+  try {
+    const shortID = await setShortURL(playlistURL);
+    const shortURL = baseURL + shortID;
+    return shortURL;
+  } catch (err) {
+    console.log('getShortURLFromPlaylistURL:', err);
+  }
 };
 
 // Swipe The Fucking Card on the screen
 
 const forceSwipeCard = swipeDirection => {
-	const { swipeFunction } = window;
+  const { swipeFunction } = window;
 
-	switch (swipeDirection) {
-		case LEFT:
-			swipeFunction.left();
-			return;
-		case RIGHT:
-			swipeFunction.right();
-			return;
-		default:
-			swipeFunction.left();
-			return;
-	}
+  switch (swipeDirection) {
+    case LEFT:
+      swipeFunction.left();
+      return;
+    case RIGHT:
+      swipeFunction.right();
+      return;
+    default:
+      swipeFunction.left();
+      return;
+  }
 };
 
 /*
@@ -311,57 +314,57 @@ Action Creators
  */
 
 const connectSoundcloudAction = scPlayer => ({
-	type: types.CONNECT_SOUNDCLOUD,
-	payload: { scPlayer },
+  type: types.CONNECT_SOUNDCLOUD,
+  payload: { scPlayer },
 });
 
 const pauseSnippetAction = scPlayer => ({
-	type: types.PAUSE_SNIPPET,
+  type: types.PAUSE_SNIPPET,
 });
 
 const playSnippetAction = currentTrack => ({
-	type: types.PLAY_SNIPPET,
-	payload: currentTrack,
+  type: types.PLAY_SNIPPET,
+  payload: currentTrack,
 });
 
 const setSnippetAction = scPlayer => ({
-	type: types.SET_SNIPPET,
-	payload: scPlayer,
+  type: types.SET_SNIPPET,
+  payload: scPlayer,
 });
 
 const updatePlaylistAction = (tracks, title, playlistURL, shortURL, kind) => ({
-	type: types.UPDATE_PLAYLIST,
-	payload: { tracks, title, playlistURL, shortURL, kind },
+  type: types.UPDATE_PLAYLIST,
+  payload: { tracks, title, playlistURL, shortURL, kind },
 });
 
 const updateTrackTimeAction = currentTime => ({
-	type: types.UPDATE_TRACK_TIME,
-	payload: { currentTime },
+  type: types.UPDATE_TRACK_TIME,
+  payload: { currentTime },
 });
 
 const nextSnippetAction = (trackIndex, currentTrack) => ({
-	type: types.NEXT_SNIPPET,
-	payload: { trackIndex, currentTrack },
+  type: types.NEXT_SNIPPET,
+  payload: { trackIndex, currentTrack },
 });
 
 const prevSnippetAction = (newTrackIndex, nextTrack) => ({
-	type: types.PREV_SNIPPET,
-	payload: {
-		newTrackIndex,
-		nextTrack,
-	},
+  type: types.PREV_SNIPPET,
+  payload: {
+    newTrackIndex,
+    nextTrack,
+  },
 });
 
 const getTrackAction = (nextTrack, nextIndex) => ({
-	type: types.GET_TRACK,
-	payload: { nextTrack, nextIndex },
+  type: types.GET_TRACK,
+  payload: { nextTrack, nextIndex },
 });
 
 const clearPlaylistAction = nextTrack => ({
-	type: types.CLEAR_PLAYLIST,
+  type: types.CLEAR_PLAYLIST,
 });
 
 const updateCurrentIndexAction = trackIndex => ({
-	type: types.UPDATE_CURRENT_INDEX,
-	payload: trackIndex,
+  type: types.UPDATE_CURRENT_INDEX,
+  payload: trackIndex,
 });

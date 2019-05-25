@@ -7,30 +7,41 @@ import share from '../../images/share.svg';
 // Redux
 import { connect } from 'react-redux';
 
+// Mixpanel
+import { Mixpanel } from '../../utils/mixpanel';
+
 class ShareButton extends Component {
-	state = {
-		copied: false,
-	};
+  state = {
+    copied: false,
+  };
 
-	handleCopy = async () => {
-		this.setState({ copied: true });
-		alert(`Copied Plug Link (${this.props.audio.shortURL}) to Clipboard!`);
-	};
+  handleCopy = async () => {
+    this.setState({ copied: true });
+    alert(`Copied Plug Link (${this.props.audio.shortURL}) to Clipboard!`);
+  };
 
-	render() {
-		return (
-			<CopyToClipboard
-				text={this.props.audio.shortURL}
-				onCopy={this.handleCopy}
-			>
-				<img src={share} class="button-in button-small" />
-			</CopyToClipboard>
-		);
-	}
+  handleClick() {
+    Mixpanel.track('plug_Shared');
+  }
+
+  render() {
+    return (
+      <CopyToClipboard
+        text={this.props.audio.shortURL}
+        onCopy={this.handleCopy}
+      >
+        <img
+          src={share}
+          onClick={this.handleClick}
+          class="button-in button-small"
+        />
+      </CopyToClipboard>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-	audio: state.audio,
+  audio: state.audio,
 });
 
 export default connect(mapStateToProps)(ShareButton); //
