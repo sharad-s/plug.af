@@ -9,6 +9,8 @@ import ButtonsPanel from '../ButtonsPanel';
 // Mixpanel
 
 import { Mixpanel } from '../../utils/mixpanel';
+import { track_LoadedPlugPage } from '../../utils/mixpanel';
+
 
 // Redux
 import { connect } from 'react-redux';
@@ -44,6 +46,7 @@ class AudioPage extends Component {
     if (shortID) {
       // Get playlistURL from ShortID
       playlistURL = await getPlaylistFromShortID(shortID);
+      track_LoadedPlugPage(shortID);
     }
 
     // Check for any query params (link sharing)

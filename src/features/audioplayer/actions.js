@@ -8,13 +8,18 @@ import store from '../../state/store';
 import {
 	getSoundcloudErrorsAction,
 	getSearchErrorAction,
-	clearSearchErrorsAction
+	clearSearchErrorsAction,
 } from '../errors/actions';
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 // Mixpanel
-import { Mixpanel } from '../../utils/mixpanel';
+import {
+	Mixpanel,
+	track_PlaySnippet,
+	track_NextSnippet,
+	track_PrevSnippet,
+} from '../../utils/mixpanel';
 
 const PLUG_PLAYLIST_URL = 'https://soundcloud.com/99q/sets/xxx';
 
@@ -73,9 +78,8 @@ export const getTrack = async index => {
 };
 
 export const playSnippet = async () => {
-	Mixpanel.track('play_Plug');
 	const { getState, dispatch } = store;
-	const { scPlayer, playlist, trackIndex } = getState().audio;
+	const { scPlayer, playlist, trackIndex, shortURL} = getState().audio;
 
 	const track = playlist[trackIndex];
 
@@ -96,6 +100,14 @@ export const playSnippet = async () => {
 		await scPlayer.play({
 			streamUrl,
 		});
+
+		// Mixpanel Tracker
+		track_PlaySnippet({
+			shortURL, 
+			trackIndex,
+			trackTitle: track.title,
+			trackArtist: track.user.permalink
+		})
 
 		dispatch(playSnippetAction(track));
 	} catch (err) {
@@ -174,6 +186,9 @@ export const nextSong = async (
 	// If Anything other than manual swipe occurs, Force Swipe Card
 	if (!opts.disableForceSwipe) {
 		console.log('audioplayer Actions: nextSong: Force Swipe called');
+
+		const action = swipeDirection === "RIGHT" ? "LIKE" : "DISLIKE";
+
 		return forceSwipeCard(swipeDirection);
 	}
 
@@ -212,6 +227,14 @@ export const nextSong = async (
 		await setSnippet();
 
 		console.log('nextSong 6');
+
+		// Mixpanel Tracker
+		track_NextSnippet({
+			newSnippetIndex: newCurrentTrackIndex,
+			action: (swipeDirection === "RIGHT") ? "LIKE" : "SKIP"
+		})
+
+
 	} catch (err) {
 		console.log('nextSong:', err.message);
 	}
@@ -240,6 +263,14 @@ export const prevSong = async () => {
 		// 	streamUrl,
 		// });
 		// await setSnippet();
+
+
+
+		// Mixpanel Tracker
+		track_PrevSnippet({
+			newSnippetIndex: newTrackIndex,
+		})
+
 		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
 	} catch (err) {
 		console.log('prevSong:', err.message);
@@ -316,18 +347,21 @@ export const getPlaylistFromShortID = async shortID => {
 	}
 };
 
-export const getShortURLFromPlaylistURL = async (playlistURL, returnOnlyID=false) => {
+export const getShortURLFromPlaylistURL = async (
+	playlistURL,
+	returnOnlyID = false,
+) => {
 	try {
-		console.log("getShortURLFromPlaylistURL: URL", playlistURL);
+		console.log('getShortURLFromPlaylistURL: URL', playlistURL);
 
-		store.dispatch(clearSearchErrorsAction())
+		store.dispatch(clearSearchErrorsAction());
 
 		// See if URL Can Resolve to soundcloud first
 		const canResolve = await SC.resolve(playlistURL);
 		// Construct Short ID and SHORTURL
 		const shortID = await setShortURL(playlistURL);
 		const shortURL = baseURL + shortID;
-		return (returnOnlyID) ? shortID : shortURL;
+		return returnOnlyID ? shortID : shortURL;
 	} catch (err) {
 		console.log('getShortURLFromPlaylistURL:', err);
 		store.dispatch(getSearchErrorAction(err));

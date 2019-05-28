@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 
 // Mixpanel
 import { Mixpanel } from '../../utils/mixpanel';
+import { track_SharePlug } from '../../utils/mixpanel';
+
 
 class ShareButton extends Component {
   state = {
@@ -21,7 +23,7 @@ class ShareButton extends Component {
   };
 
   handleClick() {
-    Mixpanel.track('plug_Shared');
+    track_SharePlug({ plugID: this.props.audio.shortURL, method: 'Copy Link' });
   }
 
   render() {

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
+import { track_LoadedPreviewPage } from '../../utils/mixpanel';
+
 // import isEmpty from '../../utils/isEmpty';
 
 // Subcomponents
@@ -38,17 +40,17 @@ class AudioPage extends Component {
 	}
 
 	async componentDidMount() {
-		window.scrollTo(0, 1);
-		Mixpanel.track('loaded_Plug');
 
 		await connectSoundcloud();
 
 		let playlistURL;
 		const { shortID } = this.props.match.params;
 
+
 		if (shortID) {
 			// Get playlistURL from ShortID
 			playlistURL = await getPlaylistFromShortID(shortID);
+			track_LoadedPreviewPage(shortID)
 		}
 
 		// Check for any query params (link sharing)

@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import isEmpty from '../../utils/isEmpty';
 
+
+// Mixpanel
+import { track_LoadedHomePage, track_CreatePlug } from '../../utils/mixpanel';
+
 // Redux
 import { connect } from 'react-redux';
 import {
@@ -25,6 +29,11 @@ class HomePage extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
+
+	componentDidMount = () => {
+		track_LoadedHomePage()
+	}
+
 	handleSubmit = async e => {
 		e.preventDefault();
 		const soundcloudURL = this.state.input;
@@ -36,6 +45,8 @@ class HomePage extends Component {
 			if (!isEmpty(this.props.errors.searchError)) {
 				return this.setState({error: this.props.errors.searchError})
 			}
+
+			track_CreatePlug(shortID)
 
 			this.props.history.push(`/preview/${shortID}`);
 		} catch (error) {

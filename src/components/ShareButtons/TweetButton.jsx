@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 
+import { track_SharePlug } from '../../utils/mixpanel';
+
 // Redux
 import { connect } from 'react-redux';
 
-
 class TweetButton extends Component {
-	render() {
+	handleClick(e) {
+		track_SharePlug({ plugID: this.props.audio.shortURL, method: 'Twitter' });
+	}
 
+	render() {
 		const shortURL = this.props.audio.shortURL;
 
 		return (
@@ -16,6 +20,7 @@ class TweetButton extends Component {
 				className="twitter-share-button"
 				href={`https://twitter.com/intent/tweet?text=Swipe through snippets of my music in under a minute on @plugwithus. Check me out on Plug: ${shortURL}`}
 				data-size="large"
+				onClick={this.handleClick}
 			>
 				<i className="fab fa-twitter icon-hover" />
 			</a>
@@ -23,11 +28,8 @@ class TweetButton extends Component {
 	}
 }
 
-
 const mapStateToProps = state => ({
-  audio: state.audio,
+	audio: state.audio,
 });
 
-export default connect(
-  mapStateToProps,
-)(TweetButton); //
+export default connect(mapStateToProps)(TweetButton); //
