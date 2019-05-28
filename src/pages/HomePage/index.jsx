@@ -59,9 +59,9 @@ class HomePage extends Component {
 
 		return (
 			<center>
-				<div class="drop-in">
-					<p class="instructions">
-						Drop the link to your Soundcloud album, new release or profile.
+				<div className="drop-in">
+					<p className="instructions">
+						Drop the link to your Soundcloud playlist, single or profile.
 						We'll do the rest.
 					</p>
 					<form class="pure-form" onSubmit={this.handleSubmit}>
@@ -73,9 +73,9 @@ class HomePage extends Component {
 							onChange={this.handleChange('input')}
 							required
 						/>
-						<p>{renderedError} </p>
+						<p className="error-message">{renderedError} </p>
 
-						<input type="submit" value="Submit" class="pure-button btn-share" />
+						<input type="submit" value="Plug it" className="pure-button btn-share" />
 					</form>
 				</div>
 			</center>

@@ -360,13 +360,16 @@ select {
   color: #fff;
 }
 .sc-input {
-  width: 60%;
+  width: 70%;
   text-align: center;
   font-family: "Poppins", sans-serif;
 }
 
 .drop-in {
   width: 90%;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+
 }
 
 .preview-container { 
@@ -407,6 +410,8 @@ select {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+
 
 /*Buttons */
 .twitter-share-button {
