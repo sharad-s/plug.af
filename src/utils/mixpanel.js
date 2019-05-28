@@ -89,6 +89,6 @@ export const track_SharePlug = (payload = { plugID: null, method: null }) => {
   Mixpanel.track(SHARE_PLUG, payload);
 };
 
-export const track_CreatePlug = plugID => {
-  Mixpanel.track(CREATE_PLUG, { plugID });
+export const track_CreatePlug = (payload = {plugID: null, soundcloudURL: null}) => {
+  Mixpanel.track(CREATE_PLUG, payload);
 };

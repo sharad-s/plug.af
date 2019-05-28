@@ -46,7 +46,7 @@ class HomePage extends Component {
 				return this.setState({error: this.props.errors.searchError})
 			}
 
-			track_CreatePlug(shortID)
+			track_CreatePlug({plugID: shortID, soundcloudURL})
 
 			this.props.history.push(`/preview/${shortID}`);
 		} catch (error) {
