@@ -8,6 +8,7 @@ import store from '../../state/store';
 import {
 	getSoundcloudErrorsAction,
 	getSearchErrorAction,
+	clearSearchErrorsAction
 } from '../errors/actions';
 
 // Utils
@@ -315,13 +316,22 @@ export const getPlaylistFromShortID = async shortID => {
 	}
 };
 
-export const getShortURLFromPlaylistURL = async playlistURL => {
+export const getShortURLFromPlaylistURL = async (playlistURL, returnOnlyID=false) => {
 	try {
+		console.log("getShortURLFromPlaylistURL: URL", playlistURL);
+
+		store.dispatch(clearSearchErrorsAction())
+
+		// See if URL Can Resolve to soundcloud first
+		const canResolve = await SC.resolve(playlistURL);
+		// Construct Short ID and SHORTURL
 		const shortID = await setShortURL(playlistURL);
 		const shortURL = baseURL + shortID;
-		return shortURL;
+		return (returnOnlyID) ? shortID : shortURL;
 	} catch (err) {
 		console.log('getShortURLFromPlaylistURL:', err);
+		store.dispatch(getSearchErrorAction(err));
+		return err;
 	}
 };
 

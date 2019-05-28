@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
 // import isEmpty from '../../utils/isEmpty';
 
 // Subcomponents
 import AudioPlayer from '../AudioPlayer';
+import ButtonsPanel from '../ButtonsPanel';
 
 // Mixpanel
 
@@ -29,8 +30,6 @@ class AudioPage extends Component {
       errorMessage: '',
       value: '',
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -55,19 +54,6 @@ class AudioPage extends Component {
     await setSnippet();
   }
 
-  // Form Change
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  // Form input for custom playlist
-  handleSubmit(event) {
-    event.preventDefault();
-    this.setState({ errorMessage: '' });
-    const url = this.state.value;
-    updatePlaylist(url);
-  }
-
   render() {
     const { audio } = this.props;
 
@@ -76,11 +62,15 @@ class AudioPage extends Component {
     ) : null;
 
     return (
-      <AudioPlayer
-        tracks={this.state.tracks}
-        playlistName={this.state.playlistName}
-        renderedPlaylistName={renderedPlaylistName}
-      />
+      <Fragment>
+        <AudioPlayer
+          tracks={this.state.tracks}
+          playlistName={this.state.playlistName}
+          renderedPlaylistName={renderedPlaylistName}
+        />
+
+        <ButtonsPanel />
+      </Fragment>
     );
   }
 }

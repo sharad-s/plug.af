@@ -18,6 +18,11 @@ export default function(state = initialState, action) {
 				...state,
 				searchError: action.payload,
 			};
+		case types.CLEAR_SEARCH_ERRORS:
+			return {
+				...state,
+				searchError: {},
+			};
 		default:
 			return state;
 	}

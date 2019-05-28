@@ -5,7 +5,6 @@ import isEmpty from '../../utils/isEmpty';
 
 // SubComponents
 import SwipableCards from '../SwipableCards';
-import ButtonsPanel from '../ButtonsPanel';
 
 // Redux
 import { connect } from 'react-redux';
@@ -63,7 +62,6 @@ class AudioPage extends Component {
     return (
       <Fragment>
         <SwipableCards />
-        <ButtonsPanel />
       </Fragment>
     );
   }

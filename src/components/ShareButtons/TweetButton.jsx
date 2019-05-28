@@ -14,7 +14,7 @@ class TweetButton extends Component {
 				target="_blank"
 				rel="noopener noreferrer"
 				className="twitter-share-button"
-				href={`https://twitter.com/intent/tweet?text=I just discovered fire new music in a matter of seconds on @plugwithus. Can't believe this. ${shortURL}`}
+				href={`https://twitter.com/intent/tweet?text=Flip through snippets of all my music in under a minute on @plugwithus. \nCheck me out on Plug: ${shortURL}`}
 				data-size="large"
 			>
 				<i className="fab fa-twitter icon-hover" />

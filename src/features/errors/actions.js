@@ -10,3 +10,9 @@ export const getSearchErrorAction = error => ({
 	type: types.GET_SEARCH_ERRORS,
 	payload: error,
 });
+
+
+
+export const clearSearchErrorsAction = () => ({
+	type: types.CLEAR_SEARCH_ERRORS,
+});

@@ -82,6 +82,7 @@ body.noScroll { /* ...or body.dialogShowing */
   font-size: 30px;
   font-weight: bold;
   flex-wrap: wrap;
+  text-decoration: none;
 
   margin-bottom: 0px;
 }
@@ -341,5 +342,74 @@ body.noScroll { /* ...or body.dialogShowing */
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+
+/*mn*/
+
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+  outline: none !important;
+}
+
+.instructions {
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+}
+.sc-input {
+  width: 60%;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.drop-in {
+  width: 90%;
+}
+
+.preview-container { 
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+ }
+
+.voila {
+  color: #f3e576 !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 30px;
+  width:100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
+  /*p*/
+    margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+
+.pure-form {
+  color: white;
+}
+
+.preview-form {
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+    /*p*/
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/*Buttons */
+.twitter-share-button {
+  color: #38A1F3;
 }
 
