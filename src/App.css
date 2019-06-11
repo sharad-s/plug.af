@@ -10,6 +10,22 @@ body.noScroll { /* ...or body.dialogShowing */
   overflow: hidden;
 }
 
+
+/* Flexbox */
+.centered-vert-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexstart-vert-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 /*
 
   Extras
@@ -366,11 +382,14 @@ select {
 }
 
 .drop-in {
-  width: 90%;
+  width: 100%;
   margin-top: 10vh;
   margin-bottom: 10vh;
+  margin-left: auto;
+  margin-right: auto;
 
 }
+
 
 .preview-container { 
   display: flex;
@@ -420,3 +439,30 @@ select {
   color: #38A1F3;
 }
 
+
+/*New Login Form*/
+.login-text {
+  /*width: 100%;*/
+  border-radius: 40px;
+  color: #fff !important;
+  font-family: "Poppins", sans-serif;
+}
+
+.drop-in {
+  width: 100%;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-input {
+  width: 100%;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.button-enlarge:hover {
+  transform: scale(1.2, 1.2);
+  transition: 0.15s;
+}

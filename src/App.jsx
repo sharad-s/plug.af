@@ -11,9 +11,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // SubComponents
 import Header from './components/Layout/Header';
 // import MainBody from './components/Layout/Body';
-import AudioPage from './components/AudioPage';
+import AudioPage from './pages/AudioPage';
 import PreviewPage from './pages/PreviewPage';
 import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+
+
 // import Footer from './components/Layout/Footer';
 
 // Redux Functions
@@ -33,6 +37,22 @@ function App() {
                 render={() => {
                   pauseSnippet();
                   return <HomePage />;
+                }}
+              />
+              <Route
+                exact
+                path="/login"
+                render={() => {
+                  pauseSnippet();
+                  return <LoginPage />;
+                }}
+              />
+              <Route
+                exact
+                path="/register"
+                render={() => {
+                  pauseSnippet();
+                  return <RegisterPage />;
                 }}
               />
               <Route exact path="/preview/:shortID" component={PreviewPage} />

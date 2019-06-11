@@ -15,6 +15,12 @@ const PREV_SNIPPET = 'PREV_SNIPPET';
 const SHARE_PLUG = 'SHARE_PLUG';
 const CREATE_PLUG = 'CREATE_PLUG';
 
+
+const REGISTERED_USER = 'REGISTERED_USER';
+const LOGGED_IN_USER = 'LOGGED_IN_USER';
+
+
+
 let actions = {
   identify: id => {
     if (env_check) mixpanel.identify(id);
@@ -92,3 +98,11 @@ export const track_SharePlug = (payload = { plugID: null, method: null }) => {
 export const track_CreatePlug = (payload = {plugID: null, soundcloudURL: null}) => {
   Mixpanel.track(CREATE_PLUG, payload);
 };
+
+export const track_RegisteredUser = (payload = {email: null, username: null}) => {
+  Mixpanel.track(REGISTERED_USER, payload);
+}
+
+export const track_LoggedInUser = (payload = {email: null, username: null}) => {
+  Mixpanel.track(LOGGED_IN_USER, payload);
+}
