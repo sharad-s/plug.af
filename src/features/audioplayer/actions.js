@@ -55,6 +55,17 @@ export const connectSoundcloud = () => {
 	}
 };
 
+export const resolveSoundcloudURL = async (url) => {
+	const { dispatch } = store;
+	try {
+		const res = await SC.resolve(url);
+		return res;
+	} catch (err){
+		console.log('resolveSoundcloudURL:', err);
+		dispatch(getSearchErrorAction(err));
+	}
+}
+
 export const pauseSnippet = async () => {
 	const { getState, dispatch } = store;
 	const { scPlayer } = getState().audio;
