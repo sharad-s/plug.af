@@ -106,11 +106,6 @@ class Register extends Component {
         email: this.state.email,
         username: this.state.username,
       });
-      // redirect to plug preview
-      track_RegisteredUser({
-        email: this.state.email,
-        username: this.state.username,
-      });
 
       this.props.history.push(`/preview/${shortID}`);
     } catch (error) {

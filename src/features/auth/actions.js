@@ -16,6 +16,7 @@ import {
 import {
   getPlaylistFromShortID,
   resolveSoundcloudURL,
+  createPlugWithApi
 } from '../audioplayer/actions';
 
 import axios from 'axios';
@@ -63,19 +64,19 @@ export const registerUserWithPlug = (
     // Actions
     dispatch(setCurrentUser(decoded));
 
-    // Axios Config
-    let config = {
-      headers: {
-        'x-auth-token': token,
-      },
-    };
-
+  
     // Get and resolve URL from short PlugID
     const longURL = await getPlaylistFromShortID(plugID);
     const resolved = await resolveSoundcloudURL(longURL);
     console.log('longURL, resolved', longURL, resolved);
 
     // Post New Plug attached to logged in account
+    let config = {
+      headers: {
+        'x-auth-token': token,
+      },
+    };
+
     const { username, permalink_url, avatar_url } = resolved;
     const newPlug = {
       title: username,
@@ -83,11 +84,9 @@ export const registerUserWithPlug = (
       imageURL: avatar_url,
     };
 
-    const postRes = await axios.post('api/plugs', newPlug, config);
-
+    const postRes = await createPlugWithApi(newPlug);
     console.log("Post RES", postRes)
 
-    // .then(() => history.push(`/preview/${plugID}`))
   } catch (err) {
     console.log('REGISTER ERROR', err.response);
     dispatch(getRegisterErrorsAction(err.response));

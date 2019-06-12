@@ -2,8 +2,8 @@ import {
   CREATE_NEW_USER,
   SET_CURRENT_USER,
   GET_USER_ROLE,
-} from "../actions/types";
-import isEmpty from "../utils/is-empty";
+} from "./types";
+import isEmpty from "../../utils/isEmpty";
 
 const initialState = {
   user: {},
