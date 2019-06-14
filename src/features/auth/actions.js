@@ -16,8 +16,11 @@ import {
 import {
   getPlaylistFromShortID,
   resolveSoundcloudURL,
-  createPlugWithApi
 } from '../audioplayer/actions';
+
+import {
+  createPlugWithApi
+} from "../plugs/actions"
 
 import axios from 'axios';
 import setAuthToken from '../../utils/setAuthToken';
@@ -30,12 +33,12 @@ export const registerUser = (userData, history) => dispatch => {
       // const { token  = res.data;
       console.log(token);
 
-      // JWT
+      // Set JWT in localstorage
       localStorage.setItem('jwtToken', token);
       setAuthToken(token);
       const decoded = jwt_decode(token);
 
-      // Actions
+      // Set Current User in Redux State
       dispatch(setCurrentUser(decoded));
     })
     .then(res => history.push('/login'))
@@ -178,6 +181,12 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   dispatch(setCurrentUser({}));
 };
+
+/*
+******************
+Action Creators
+******************
+ */
 
 export const clearErrors = () => {
   return {

@@ -15,7 +15,7 @@ import AudioPage from './pages/AudioPage';
 import PreviewPage from './pages/PreviewPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage/RegisterPage';
+import RegisterPage from './pages/RegisterPage';
 
 
 // import Footer from './components/Layout/Footer';
