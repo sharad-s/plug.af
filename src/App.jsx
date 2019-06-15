@@ -17,6 +17,8 @@ import PreviewPage from './pages/PreviewPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ExplorePage from './pages/ExplorePage';
+
 
 
 // import Footer from './components/Layout/Footer';
@@ -80,6 +82,14 @@ function App() {
                 render={() => {
                   pauseSnippet();
                   return <RegisterPage />;
+                }}
+              />
+              <Route
+                exact
+                path="/explore"
+                render={() => {
+                  pauseSnippet();
+                  return <ExplorePage />;
                 }}
               />
               <Route exact path="/preview/:shortID" component={PreviewPage} />

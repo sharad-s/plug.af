@@ -27,7 +27,16 @@ class Header extends Component {
       ? '404 - Enter a Soundcloud Playlist URL'
       : 'Plug a Soundcloud URL';
 
-    return <Link to="/" className="top-menu">plug</Link>;
+    return (
+      <div className="top-menu">
+      <div className="top-menu-left"> 
+      <Link to="/login" className="top-menu-item top-small">login</Link>
+      </div>
+      <Link to="/" className="top-menu-item">plug</Link>
+      <Link to="/explore" className="top-menu-item top-small btn-explore">explore</Link>
+
+      </div>
+      );
   }
 }
 

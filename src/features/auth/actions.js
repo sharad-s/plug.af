@@ -90,9 +90,10 @@ export const loginUser = (userData, history, path) => async dispatch => {
     //   history.push(path);
     // }
     alert("Logged In!")
+    history.push("/")
   } catch (err) {
-    console.log(err)
-    dispatch(getLoginErrorsAction(err.message));
+    console.log(err.response.data)
+    dispatch(getLoginErrorsAction(err.response.data));
   }
 };
 

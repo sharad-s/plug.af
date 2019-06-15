@@ -7,7 +7,6 @@ const LoginForm = ({
 	onSubmit,
 }) => (
 	<Fragment>
-		<p className="login-text">Login</p>
 		<form className="pure-form flexstart-vert-flex" onSubmit={onSubmit}>
 			<input
 				type="text"

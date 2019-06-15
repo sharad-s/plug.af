@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import isEmpty from '../../utils/isEmpty';
 
@@ -71,6 +73,11 @@ class LoginPage extends Component {
 
 		return (
 			<div className="drop-in centered-vert-flex">
+			<p className="login-text">Login</p>
+			<p className="login-text">or <Link to="/register">Sign Up</Link></p>
+
+
+
 				<LoginForm
 					emailInput={this.state.email}
 					passwordInput={this.state.password}
