@@ -14,6 +14,10 @@ import {
 	// getAPIErrorsAction,
 } from '../errors/actions';
 
+import {
+	createPlugWithApi
+} from "../plugs/actions"
+
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 import isEmpty from '../../utils/isEmpty';
@@ -56,30 +60,6 @@ const getTrackArtURL = trackorPlaylist =>
 Thunks
 ******************
  */
-
-
-export const createPlugWithApi = async (newPlug = {title: null, soundcloudURL: null, imageURL: null}) => {
-	const {dispatch} = store;
-	try {
-
-	const token = localStorage.jwtToken;
-
-		// Post New Plug attached to logged in account
-    let config = {
-      headers: {
-        'x-auth-token': token,
-      },
-    };
-    
-    const res = await axios.post('api/plugs', newPlug, config);
-    console.log("Post PLUG TO API", res)
-    return res;
-} catch (err) {
-	dispatch(getSearchErrorAction(err))
-}
-	
-}
-
 
 // Tries downloading and Decrypting the file given payload
 export const connectSoundcloud = () => {

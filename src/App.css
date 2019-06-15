@@ -473,3 +473,10 @@ select {
 .width-100{
   width: 100%;
 }
+
+
+
+/*Login Error Message*/
+.error-message {
+  color: white;
+}

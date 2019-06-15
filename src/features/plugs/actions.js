@@ -19,6 +19,13 @@ import {
   clearRegisterErrorsAction,
 } from '../errors/actions';
 
+
+
+/*
+*  createPlugWithAPI: 
+*  POSTS a new Plug to the API. and registers
+*  Passes Authenticated Token as x-auth-token to API
+*/
 export const createPlugWithApi = async (
   newPlug = { title: null, soundcloudURL: null, imageURL: null },
 ) => {
@@ -26,8 +33,6 @@ export const createPlugWithApi = async (
   try {
     const token = localStorage.jwtToken;
 
-    // Post New Plug attached to logged in account
-    // Pass JWT in header
     let config = {
       headers: {
         'x-auth-token': token,
@@ -35,9 +40,23 @@ export const createPlugWithApi = async (
     };
 
     const res = await axios.post('api/plugs', newPlug, config);
-    console.log('Post PLUG TO API', res);
+    console.log('Posted PLUG TO API. Result:', res);
     return res;
   } catch (err) {
     dispatch(getSearchErrorAction(err));
   }
 };
+
+
+
+// Action Creators 
+const createPlugAction = () => ({
+  type: types.CREATE_NEW_PLUG,
+  payload: null
+})
+
+// Action Creators 
+const getPlugsAction = () => ({
+  type: types.CREATE_NEW_PLUG,
+  payload: null
+})

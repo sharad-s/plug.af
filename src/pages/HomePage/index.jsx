@@ -34,10 +34,14 @@ class HomePage extends Component {
 		track_LoadedHomePage()
 	}
 
+	clearErrors = () => {
+		this.setState({error: {}})
+	}
+
 	handleSubmit = async e => {
 		e.preventDefault();
 		const soundcloudURL = this.state.input;
-		this.setState({error: {}})
+		this.clearErrors()
 		try {
 			const shortID = await getShortURLFromPlaylistURL(soundcloudURL, true);
 			console.log('SHORTID', shortID);
@@ -49,7 +53,6 @@ class HomePage extends Component {
 			track_CreatePlug({plugID: shortID, soundcloudURL})
 
 			await updatePlaylist(soundcloudURL)
-
 
 			this.props.history.push(`/preview/${shortID}`);
 		} catch (error) {

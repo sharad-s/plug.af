@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 
 // Auth Actions
 import {
-	registerUser,
 	registerUserWithPlug,
 	preValidateRegister,
 } from '../../features/auth/actions';
@@ -67,7 +66,7 @@ class Register extends Component {
 
 		// Empty Form Errors
 		this.setState({ soundcloudError: {} });
-		
+
 		try {
 
 			// Attempt to Resolve Input URL into data from Soundcloud.
@@ -235,6 +234,6 @@ const mapStateToProps = state => ({
 export default withRouter(
 	connect(
 		mapStateToProps,
-		{ registerUser, registerUserWithPlug, preValidateRegister },
+		{ registerUserWithPlug, preValidateRegister },
 	)(Register),
 );

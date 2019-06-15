@@ -1,4 +1,5 @@
 import React from 'react';
+import isEmpty from "./utils/isEmpty";
 import './App.css';
 
 // Redux
@@ -25,22 +26,15 @@ import { pauseSnippet } from './features/audioplayer/actions';
 
 // Auth
 import { setCurrentUser } from './features/auth/actions';
-import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-
-
+import {addToken} from './utils/setAuthToken';
 
 
 // 
 // Check for token
-if (localStorage.jwtToken) {
-  // Set auth token header auth
-  setAuthToken(localStorage.jwtToken);
-  // Decode token and get user info and exp
-  const decoded = jwt_decode(localStorage.jwtToken);
-  console.log(decoded)
-  // Set user and isAuthenticated
-  store.dispatch(setCurrentUser(decoded));
+if (!isEmpty(localStorage.jwtToken)) {
+  console.log(localStorage.jwtToken, typeof localStorage.jwtToken)
+
+  addToken(localStorage.jwtToken)
 
   // // Check for expired token
   // const currentTime = Date.now() / 1000;

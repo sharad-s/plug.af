@@ -1,16 +1,19 @@
 import * as types from './types';
 
 
+
+// Soundcloud
 export const getSoundcloudErrorsAction = error => ({
 	type: types.GET_SOUNDCLOUD_ERRORS,
 	payload: error,
 });
 
+
+// Search
 export const getSearchErrorAction = error => ({
 	type: types.GET_SEARCH_ERRORS,
 	payload: error,
 });
-
 
 
 export const clearSearchErrorsAction = () => ({
@@ -18,6 +21,8 @@ export const clearSearchErrorsAction = () => ({
 });
 
 
+
+// Register 
 export const getRegisterErrorsAction = error => ({
 	type: types.GET_REGISTER_ERRORS,
 	payload: error,
@@ -28,8 +33,9 @@ export const clearRegisterErrorsAction = error => ({
 });
 
 
+// Login
 export const getLoginErrorsAction = error => ({
-	type: types.GET_REGISTER_ERRORS,
+	type: types.GET_LOGIN_ERRORS,
 	payload: error,
 });
 
