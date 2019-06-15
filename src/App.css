@@ -649,13 +649,24 @@ select {
   padding: 10px;
 }
 
+/*Contains Header Title and exit sidebar button*/
 .sidebar-header{
+  width:100%;
  display: flex;
  flex-direction: row;
+ justify-content: space-between;
 }
+
+.sidebar-header button{
+ font-size: 30px;
+}
+
 
 .sidebar-menu{
   display: flex;
+}
+.sidebar-menu li{
+  margin: 10px;
 }
 
 .sidebar-menu-item{
