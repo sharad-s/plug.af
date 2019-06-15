@@ -77,9 +77,17 @@ class LoginPage extends Component {
       marginTop: '-100px !important;',
     };
 
+    const titular = {
+      fontSize: '30px',
+      color: '#f3e576 !important;',
+      fontWeight: 'bold',
+    };
+
     return (
       <div className="drop-in centered-vert-flex">
-        <p className="login-text">Login</p>
+        <p style={titular} className="login-text-other">
+          Login
+        </p>
         <p className="login-text">
           or{' '}
           <Link style={loginTextStyle} to="/register">

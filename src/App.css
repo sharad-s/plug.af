@@ -136,7 +136,7 @@ body.noScroll { /* ...or body.dialogShowing */
 
 
 
-  /*margin-left: 1vw;*/ 
+  /*margin-left: 1vw;*/
   /*margin-right: 1vw;*/
 }
 
@@ -428,7 +428,7 @@ select {
 }
 
 
-.preview-container { 
+.preview-container {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -487,8 +487,14 @@ select {
 /*New Login Form*/
 .login-text {
   /*width: 100%;*/
-  border-radius: 40px;
+  margin-top:-5px;
   color: #fff !important;
+  font-family: "Poppins", sans-serif;
+}
+.login-text-other {
+  /*width: 100%;*/
+  border-radius: 40px;
+  color: #f3e576 !important;
   font-family: "Poppins", sans-serif;
 }
 
@@ -682,4 +688,3 @@ select {
 .sidebar-smaller{
   font-size: 20px;
 }
-
