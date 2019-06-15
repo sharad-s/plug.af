@@ -18,92 +18,101 @@ import LoginForm from './LoginForm';
 // import { track_RegisteredUser, track_CreatePlug } from '../../utils/mixpanel';
 
 class LoginPage extends Component {
-	componentDidMount() {
-		// Mixpanel.track("loaded_registerPage");
-	}
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.errors.authError) {
-			// console.log('REGISTER ERROR', nextProps.errors.authError);
-			this.setState({ authError: nextProps.errors.authError });
-			console.log("nextProps", nextProps.errors)
-		}
-		// if (nextProps.errors.authError) {
-		// 	// console.log('REGISTER ERROR', nextProps.errors.authError);
-		// 	this.setState({ authError: nextProps.errors.authError });
-		// }
-	}
-	constructor(props) {
-		super(props);
-		this.state = {
-			email: '',
-			password: '',
-			authError: {},
-		};
-		this.onChange = this.onChange.bind(this);
-	}
+  componentDidMount() {
+    // Mixpanel.track("loaded_registerPage");
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors.authError) {
+      // console.log('REGISTER ERROR', nextProps.errors.authError);
+      this.setState({ authError: nextProps.errors.authError });
+      console.log('nextProps', nextProps.errors);
+    }
+    // if (nextProps.errors.authError) {
+    // 	// console.log('REGISTER ERROR', nextProps.errors.authError);
+    // 	this.setState({ authError: nextProps.errors.authError });
+    // }
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      authError: {},
+    };
+    this.onChange = this.onChange.bind(this);
+  }
 
-	onSubmit = async (e) => {
-		e.preventDefault();
+  onSubmit = async e => {
+    e.preventDefault();
 
-		console.log(this.state)
+    console.log(this.state);
 
-		// Create Login User object
-		const user = {
-			email: this.state.email,
-			password: this.state.password,
-		};
+    // Create Login User object
+    const user = {
+      email: this.state.email,
+      password: this.state.password,
+    };
 
-		// Login User with API
-		return await this.props.loginUser(user, this.props.history, '/');
-	}
+    // Login User with API
+    return await this.props.loginUser(user, this.props.history, '/');
+  };
 
-	onChange(e) {
-		this.setState({ [e.target.name]: e.target.value });
-	}
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-	render() {
-		const { onChange, onSubmit } = this;
+  render() {
+    const { onChange, onSubmit } = this;
 
-		const { authError, email, password } = this.state;
+    const { authError, email, password } = this.state;
 
-		// Rendered Errors
-		const renderedAuthError = isEmpty(this.state.authError)
-			? null
-			: this.state.authError;
+    // Rendered Errors
+    const renderedAuthError = isEmpty(this.state.authError)
+      ? null
+      : this.state.authError;
 
-		return (
-			<div className="drop-in centered-vert-flex">
-			<p className="login-text">Login</p>
-			<p className="login-text">or <Link to="/register">Sign Up</Link></p>
+    const loginTextStyle = {
+      textDecoration: 'none',
+      color: '#f3e576',
+      marginTop: '-100px !important;',
+    };
 
+    return (
+      <div className="drop-in centered-vert-flex">
+        <p className="login-text">Login</p>
+        <p className="login-text">
+          or{' '}
+          <Link style={loginTextStyle} to="/register">
+            Sign Up
+          </Link>
+        </p>
 
-
-				<LoginForm
-					emailInput={this.state.email}
-					passwordInput={this.state.password}
-					onChange={onChange}
-					onSubmit={onSubmit}
-				/>
-				<p className="error-message">{renderedAuthError} </p>
-			</div>
-		);
-	}
+        <LoginForm
+          emailInput={this.state.email}
+          passwordInput={this.state.password}
+          onChange={onChange}
+          onSubmit={onSubmit}
+        />
+        <p className="error-message">{renderedAuthError} </p>
+      </div>
+    );
+  }
 }
 
 LoginPage.propTypes = {
-	// error: PropTypes.object.isRequired,
-	// auth: PropTypes.object.isRequired,
-	// registerUser: PropTypes.func.isRequired,
+  // error: PropTypes.object.isRequired,
+  // auth: PropTypes.object.isRequired,
+  // registerUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-	errors: state.errors,
-	auth: state.auth,
+  errors: state.errors,
+  auth: state.auth,
 });
 
 export default withRouter(
-	connect(
-		mapStateToProps,
-		{ loginUser },
-	)(LoginPage),
+  connect(
+    mapStateToProps,
+    { loginUser },
+  )(LoginPage),
 );
