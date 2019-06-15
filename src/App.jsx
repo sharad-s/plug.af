@@ -58,7 +58,7 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Header />
-          <div className="mainbody">
+          <div id="WRAPPER">
             <Switch>
               <Route
                 exact

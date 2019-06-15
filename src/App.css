@@ -88,6 +88,16 @@ body.noScroll { /* ...or body.dialogShowing */
   margin-left: 10px;
 }
 
+/* APP WRAPPER */
+#WRAPPER {
+  margin-top: 60px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 /*header */
 
 .top-menu {
@@ -536,19 +546,7 @@ select {
   font-weight: 100;
   max-width: 30%;
 }
-.timeline h1 {
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 1.5px;
-  font-weight: 100;
-  font-size: 1.4em;
-}
-.timeline h2,
-.timeline h3 {
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 1.5px;
-  font-weight: 400;
-  font-size: 1.4em;
-}
+
 .timeline .event {
   border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
   padding-bottom: 25px;
@@ -640,3 +638,36 @@ select {
     }
   }
 }
+
+
+/* SIDEBAR */
+.sidebar-container{
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px;
+}
+
+.sidebar-header{
+ display: flex;
+ flex-direction: row;
+}
+
+.sidebar-menu{
+  display: flex;
+}
+
+.sidebar-menu-item{
+  color: #f3e576;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 30px;
+  font-family: 'Poppins', sans-serif;
+  margin: 10px;
+}
+
+.sidebar-smaller{
+  font-size: 20px;
+}
+
