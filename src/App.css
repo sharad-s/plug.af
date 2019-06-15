@@ -646,7 +646,8 @@ select {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 10px;
+  margin-top: 10px;
+  padding:10px;
 }
 
 /*Contains Header Title and exit sidebar button*/
