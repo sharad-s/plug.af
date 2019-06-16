@@ -1,13 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-const DrawerLink = ({ to, children }) => {
-	return (
-		<NavLink to={to} className="sidebar-menu-item sidebar-smaller">
-			{children}
-		</NavLink>
-	);
-};
 
 const SidebarContent = ({ closeDrawer }) => (
 	<div className="sidebar-container">
