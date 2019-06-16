@@ -21,7 +21,6 @@ export const clearSearchErrorsAction = () => ({
 });
 
 
-
 // Register 
 export const getRegisterErrorsAction = error => ({
 	type: types.GET_REGISTER_ERRORS,
@@ -42,4 +41,16 @@ export const getLoginErrorsAction = error => ({
 export const clearLoginErrorsAction = error => ({
 	type: types.CLEAR_LOGIN_ERRORS,
 });
+
+
+// API
+export const getPlugErrorsAction = error => ({
+	type: types.GET_PLUG_ERRORS,
+	payload: error,
+});
+
+export const clearPlugErrorsAction = error => ({
+	type: types.CLEAR_PLUG_ERRORS,
+});
+
 

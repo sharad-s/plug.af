@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
 		case types.GET_PLUGS:
 			return {
 				...state,
-				plugs: {},
+				plugs: action.payload,
 			};
 		default:
 			return state;

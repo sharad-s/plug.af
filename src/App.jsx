@@ -19,6 +19,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ExplorePage from './pages/ExplorePage';
 import LogoutPage from './pages/LogoutPage';
+import ProfilePage from './pages/ProfilePage';
+
 
 
 
@@ -92,6 +94,14 @@ function App() {
                 render={() => {
                   pauseSnippet();
                   return <ExplorePage />;
+                }}
+              />
+              <Route
+                exact
+                path="/me"
+                render={() => {
+                  pauseSnippet();
+                  return <ProfilePage />;
                 }}
               />
               <Route

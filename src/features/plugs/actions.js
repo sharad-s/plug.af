@@ -14,9 +14,9 @@ import {
 
 // Errors
 import {
-  getRegisterErrorsAction,
+  getPlugErrorsAction,
   getSearchErrorAction,
-  clearRegisterErrorsAction,
+  clearPlugErrorsAction,
 } from '../errors/actions';
 
 
@@ -48,6 +48,30 @@ export const createPlugWithApi = async (
 };
 
 
+/*
+*  createPlugWithAPI: 
+*  POSTS a new Plug to the API. and registers
+*  Passes Authenticated Token as x-auth-token to API
+*/
+export const getPlugsFromUser = async (
+  userID
+) => {
+  const { dispatch } = store;
+  try {
+    console.log(`GETTING PLUGS FROM USER ${userID}`)
+    const res = await axios.get(`api/plugs/user/${userID}`);
+    const plugs = res.data;
+    dispatch(getPlugsAction(plugs));
+    console.log('Result:', plugs);
+    return res;
+  } catch (err) {
+    console.log("getPlugsFromUser: err:", err)
+    dispatch(getPlugErrorsAction(err));
+  }
+};
+
+
+
 
 // Action Creators 
 const createPlugAction = () => ({
@@ -56,7 +80,7 @@ const createPlugAction = () => ({
 })
 
 // Action Creators 
-const getPlugsAction = () => ({
-  type: types.CREATE_NEW_PLUG,
-  payload: null
+const getPlugsAction = (plugs) => ({
+  type: types.GET_PLUGS,
+  payload: plugs
 })

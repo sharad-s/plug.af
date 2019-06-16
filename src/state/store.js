@@ -7,12 +7,15 @@ import thunk from 'redux-thunk';
 import audioReducer from '../features/audioplayer/reducer';
 import errorReducer from '../features/errors/reducer';
 import authReducer from '../features/auth/reducer';
+import plugReducer from '../features/plugs/reducer';
+
 
 
 const rootReducer = combineReducers({
   audio: audioReducer,
   errors: errorReducer,
-  auth: authReducer
+  auth: authReducer,
+  plug: plugReducer
 });
 
 const initialState = {};

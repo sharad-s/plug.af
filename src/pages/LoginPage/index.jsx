@@ -44,6 +44,7 @@ class LoginPage extends Component {
     //   this.setState({ authError: nextProps.errors.authError });
     // }
   }
+  
   constructor(props) {
     super(props);
     this.state = {

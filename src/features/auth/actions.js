@@ -89,7 +89,7 @@ export const loginUser = (userData, history, path) => async dispatch => {
     // if (history && path) {
     //   history.push(path);
     // }
-    alert("Logged In!")
+    // alert("Logged In!")
     history.push("/")
   } catch (err) {
     console.log(err.response.data)

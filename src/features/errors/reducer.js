@@ -4,6 +4,7 @@ const initialState = {
 	soundcloudErrors: {},
 	searchError: {},
 	authError: {},
+	plugErrors: {},
 };
 
 export default function(state = initialState, action) {
@@ -47,6 +48,16 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				authError: {},
+			};
+		case types.GET_PLUG_ERRORS:
+			return {
+				...state,
+				plugErrors: action.payload,
+			};
+		case types.CLEAR_PLUG_ERRORS:
+			return {
+				...state,
+				plugErrors: {},
 			};
 		default:
 			return state;

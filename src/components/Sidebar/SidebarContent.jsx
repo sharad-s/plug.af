@@ -16,6 +16,10 @@ const SidebarContent = ({ closeDrawer, auth }) => {
 				to: '/',
 			},
 			{
+				content: `My Profile`,
+				to: '/me',
+			},
+			{
 				content: `Logout`,
 				to: '/logout',
 			},

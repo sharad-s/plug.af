@@ -52,9 +52,9 @@ class HomePage extends Component {
 
 			track_CreatePlug({plugID: shortID, soundcloudURL})
 
-			// await updatePlaylist(soundcloudURL)
+			await updatePlaylist(soundcloudURL)
 
-			this.props.history.push(`/preview/${shortID}`);
+			// this.props.history.push(`/preview/${shortID}`);
 		} catch (error) {
 			alert(error.message);
 			this.setState({
