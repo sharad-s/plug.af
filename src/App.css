@@ -663,9 +663,9 @@ select {
  font-size: 30px;
 }
 
-
 .sidebar-menu{
   display: flex;
+  flex-direction: column;
 }
 .sidebar-menu li{
   margin: 10px;

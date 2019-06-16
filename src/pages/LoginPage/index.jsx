@@ -17,6 +17,18 @@ import LoginForm from './LoginForm';
 // Mixpanel
 // import { track_RegisteredUser, track_CreatePlug } from '../../utils/mixpanel';
 
+const loginTextStyle = {
+  textDecoration: 'none',
+  color: '#f3e576',
+  marginTop: '-100px !important;',
+};
+
+const titular = {
+  fontSize: '30px',
+  color: '#f3e576 !important;',
+  fontWeight: 'bold',
+};
+
 class LoginPage extends Component {
   componentDidMount() {
     // Mixpanel.track("loaded_registerPage");
@@ -28,8 +40,8 @@ class LoginPage extends Component {
       console.log('nextProps', nextProps.errors);
     }
     // if (nextProps.errors.authError) {
-    // 	// console.log('REGISTER ERROR', nextProps.errors.authError);
-    // 	this.setState({ authError: nextProps.errors.authError });
+    //   // console.log('REGISTER ERROR', nextProps.errors.authError);
+    //   this.setState({ authError: nextProps.errors.authError });
     // }
   }
   constructor(props) {
@@ -70,18 +82,6 @@ class LoginPage extends Component {
     const renderedAuthError = isEmpty(this.state.authError)
       ? null
       : this.state.authError;
-
-    const loginTextStyle = {
-      textDecoration: 'none',
-      color: '#f3e576',
-      marginTop: '-100px !important;',
-    };
-
-    const titular = {
-      fontSize: '30px',
-      color: '#f3e576 !important;',
-      fontWeight: 'bold',
-    };
 
     return (
       <div className="drop-in centered-vert-flex">

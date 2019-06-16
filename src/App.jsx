@@ -18,6 +18,8 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ExplorePage from './pages/ExplorePage';
+import LogoutPage from './pages/LogoutPage';
+
 
 
 
@@ -90,6 +92,14 @@ function App() {
                 render={() => {
                   pauseSnippet();
                   return <ExplorePage />;
+                }}
+              />
+              <Route
+                exact
+                path="/logout"
+                render={() => {
+                  pauseSnippet();
+                  return <LogoutPage />;
                 }}
               />
               <Route exact path="/preview/:shortID" component={PreviewPage} />

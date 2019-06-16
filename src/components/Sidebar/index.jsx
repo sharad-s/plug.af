@@ -2,6 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from 'react-sidebar';
 
+// Redux
+import { connect } from 'react-redux';
+
+
 // Import Subcomponents
 import SidebarContent from "./SidebarContent"
 import MenuIcon from "../../images/menu.svg"
@@ -33,10 +37,22 @@ class LeftSidebar extends React.Component {
     this.setState({sidebarOpen: false});
   }
 
+  // getAuthStatus(){
+  //   const {auth} = this.props;
+  //   let menuItems;
+
+  //   if(auth.isAuthenticated) {
+  //     menuItems = 
+  //   }
+  // }
+
   render() {
+
+    const { auth } = this.props;
+
     return (
       <Sidebar
-        sidebar={<SidebarContent closeDrawer={this.closeDrawer}/>}
+        sidebar={<SidebarContent closeDrawer={this.closeDrawer} auth={auth}/>}
         open={this.state.sidebarOpen}
         onSetOpen={this.onSetSidebarOpen}
         styles={{ sidebar: { background: 'black', width: '250px' } }}
@@ -57,4 +73,12 @@ class LeftSidebar extends React.Component {
   }
 }
 
-export default LeftSidebar;
+const mapStateToProps = state => ({
+  audio: state.audio,
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+)(LeftSidebar); 
+
