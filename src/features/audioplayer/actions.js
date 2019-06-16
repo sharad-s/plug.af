@@ -314,8 +314,9 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 
 		var newPlug = {
 			title: null,
-			soundcloudURL: PLUG_PLAYLIST_URL,
+			soundcloudURL: url,
 			imageURL: null,
+			shortID: await getShortURLFromPlaylistURL(url, true)
 		};
 
 		switch (response.kind) {
@@ -332,6 +333,7 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 				// Set new plug properties
 				newPlug.imageURL = getTrackArtURL(response);
 				newPlug.title = title;
+
 				break;
 			case 'user':
 				let user = response;
@@ -370,9 +372,6 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 			default:
 				break;
 		}
-		// Create New Plug in API
-		console.log("POSTING TO API NEW PLUG", newPlug)
-		await createPlugWithApi(newPlug);
 
 		await getTrack(0);
 		await playSnippet();
