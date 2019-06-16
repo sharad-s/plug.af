@@ -100,46 +100,41 @@ body.noScroll { /* ...or body.dialogShowing */
 
 /*header */
 
-.top-menu {
-  z-index: 0;
+.header-container{
   margin: 30px auto;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: nowrap;
-  margin-bottom: 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
 }
 
-.top-menu-left {
-  z-index: 0;
-  /*width: 100%;*/
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  margin-bottom: 0px;
-}
-
-.top-menu-item {
+.header-item{
   color: #f3e576;
   text-decoration: none;
   font-weight: bold;
-  font-size: 30px;
   font-family: 'Poppins', sans-serif;
 }
 
-.top-small {
-  font-size: 15px;
-  padding-top: .5vh;
-  padding-bottom: .5vh;
-  padding-left: 1vw;
-  padding-right: 1vw;
-
-
-
-  /*margin-left: 1vw;*/
-  /*margin-right: 1vw;*/
+#MENU_BUTTON{
+  width:25px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
+#CENTER_ICON{
+  font-size: 35px;
+}
+
+#TOP_RIGHT_BUTTON{
+  font-size: 17px;
+  background-color: #f3e576;
+  color: black;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 5px;
+}
+
+/* Card */
 .card-container-god {
   /* Vertical Flex Container for Entire Space Surrounding Cards */
   display: flex;

@@ -4,6 +4,7 @@ import Sidebar from 'react-sidebar';
 
 // Import Subcomponents
 import SidebarContent from "./SidebarContent"
+import MenuIcon from "../../images/menu.svg"
 
 class LeftSidebar extends React.Component {
   constructor(props) {
@@ -40,14 +41,14 @@ class LeftSidebar extends React.Component {
         onSetOpen={this.onSetSidebarOpen}
         styles={{ sidebar: { background: 'black', width: '250px' } }}
       >
-        <div className="top-menu">
+        <div className="header-container">
           <button onClick={() => this.onSetSidebarOpen(true)}>
-            <span className="top-menu-item top-small">Menu</span>
-          </button>
-          <Link to="/" className="top-menu-item">
+            <img src={MenuIcon} className="header-item" id="MENU_BUTTON"/>
+          </button>  
+          <Link to="/" className="header-item" id="CENTER_ICON">
             plug
           </Link>
-          <Link to="/explore" className="top-menu-item top-small btn-explore">
+          <Link to="/explore" className="header-item" id="TOP_RIGHT_BUTTON">
             explore
           </Link>
         </div>
