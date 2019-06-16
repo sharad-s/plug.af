@@ -18,12 +18,13 @@ class ShareButton extends Component {
   };
 
   handleCopy = async () => {
+    console.log("CLICKED COPY", this.props)
     this.setState({ copied: true });
+    track_SharePlug({ plugID: this.props.audio.shortURL, method: 'Copy Link' });
     alert(`Copied Plug link (${this.props.audio.shortURL}) to Clipboard!`);
   };
 
   handleClick() {
-    track_SharePlug({ plugID: this.props.audio.shortURL, method: 'Copy Link' });
   }
 
   render() {
@@ -34,7 +35,6 @@ class ShareButton extends Component {
       >
         <img
           src={share}
-          onClick={this.handleClick}
           class="button-in button-small"
         />
       </CopyToClipboard>

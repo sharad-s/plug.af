@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import isEmpty from '../../utils/isEmpty';
 
 // Redux
 import { connect } from 'react-redux';
 import { updatePlaylist } from '../../features/audioplayer/actions';
+
+// Import Subcomponents
+import Sidebar from '../Sidebar';
 
 class Header extends Component {
   state = {
@@ -27,7 +30,12 @@ class Header extends Component {
       ? '404 - Enter a Soundcloud Playlist URL'
       : 'Plug a Soundcloud URL';
 
-    return <Link to="/" className="top-menu">plug</Link>;
+    return (
+      <Fragment>
+        <Sidebar/>
+        <div style={{marginBottom: "30px"}}/>
+        </Fragment>
+    );
   }
 }
 

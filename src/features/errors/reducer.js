@@ -3,6 +3,7 @@ import * as types from './types';
 const initialState = {
 	soundcloudErrors: {},
 	searchError: {},
+	authError: {},
 };
 
 export default function(state = initialState, action) {
@@ -12,7 +13,11 @@ export default function(state = initialState, action) {
 				...state,
 				soundcloudErrors: action.payload,
 			};
-
+		case types.CLEAR_SOUNDCLOUD_ERRORS:
+			return {
+				...state,
+				soundcloudErrors: {},
+			};
 		case types.GET_SEARCH_ERRORS:
 			return {
 				...state,
@@ -22,6 +27,26 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				searchError: {},
+			};
+		case types.GET_REGISTER_ERRORS:
+			return {
+				...state,
+				authError: action.payload,
+			};
+		case types.CLEAR_REGISTER_ERRORS:
+			return {
+				...state,
+				authError: {},
+			};
+		case types.GET_LOGIN_ERRORS:
+			return {
+				...state,
+				authError: action.payload,
+			};
+		case types.CLEAR_LOGIN_ERRORS:
+			return {
+				...state,
+				authError: {},
 			};
 		default:
 			return state;

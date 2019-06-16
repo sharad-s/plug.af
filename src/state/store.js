@@ -6,12 +6,13 @@ import thunk from 'redux-thunk';
 // Combine Reducers into rootReducer
 import audioReducer from '../features/audioplayer/reducer';
 import errorReducer from '../features/errors/reducer';
-
+import authReducer from '../features/auth/reducer';
 
 
 const rootReducer = combineReducers({
   audio: audioReducer,
-  errors: errorReducer
+  errors: errorReducer,
+  auth: authReducer
 });
 
 const initialState = {};

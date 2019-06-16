@@ -1,5 +1,7 @@
 import SoundCloudAudio from 'soundcloud-audio';
 import SC from 'soundcloud';
+import axios from 'axios';
+
 
 // Redux
 import * as types from './types';
@@ -9,10 +11,17 @@ import {
 	getSoundcloudErrorsAction,
 	getSearchErrorAction,
 	clearSearchErrorsAction,
+	// getAPIErrorsAction,
 } from '../errors/actions';
+
+import {
+	createPlugWithApi
+} from "../plugs/actions"
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
+import isEmpty from '../../utils/isEmpty';
+
 // Mixpanel
 import {
 	Mixpanel,
@@ -36,6 +45,16 @@ SC.initialize({
 const LEFT = 'left';
 const RIGHT = 'right';
 
+const regex = /large/gi;
+
+const increaseImageResolution = originalURL =>
+	originalURL.replace(regex, 't500x500');
+
+const getTrackArtURL = trackorPlaylist =>
+	isEmpty(trackorPlaylist.artwork_url)
+		? increaseImageResolution(trackorPlaylist.user.avatar_url)
+		: increaseImageResolution(trackorPlaylist.artwork_url);
+
 /*
 ******************
 Thunks
@@ -52,6 +71,17 @@ export const connectSoundcloud = () => {
 	} catch (err) {
 		console.log('connectSoundcloud:', err.message);
 		dispatch(getSoundcloudErrorsAction(err));
+	}
+};
+
+export const resolveSoundcloudURL = async url => {
+	const { dispatch } = store;
+	try {
+		const resolved = await SC.resolve(url);
+		return resolved;
+	} catch (err) {
+		console.log('resolveSoundcloudURL:', err);
+		dispatch(getSearchErrorAction(err));
 	}
 };
 
@@ -79,7 +109,7 @@ export const getTrack = async index => {
 
 export const playSnippet = async () => {
 	const { getState, dispatch } = store;
-	const { scPlayer, playlist, trackIndex, shortURL} = getState().audio;
+	const { scPlayer, playlist, trackIndex, shortURL } = getState().audio;
 
 	const track = playlist[trackIndex];
 
@@ -103,11 +133,11 @@ export const playSnippet = async () => {
 
 		// Mixpanel Tracker
 		track_PlaySnippet({
-			shortURL, 
+			shortURL,
 			trackIndex,
 			trackTitle: track.title,
-			trackArtist: track.user.permalink
-		})
+			trackArtist: track.user.permalink,
+		});
 
 		dispatch(playSnippetAction(track));
 	} catch (err) {
@@ -187,7 +217,7 @@ export const nextSong = async (
 	if (!opts.disableForceSwipe) {
 		console.log('audioplayer Actions: nextSong: Force Swipe called');
 
-		const action = swipeDirection === "RIGHT" ? "LIKE" : "DISLIKE";
+		const action = swipeDirection === 'RIGHT' ? 'LIKE' : 'DISLIKE';
 
 		return forceSwipeCard(swipeDirection);
 	}
@@ -231,10 +261,8 @@ export const nextSong = async (
 		// Mixpanel Tracker
 		track_NextSnippet({
 			newSnippetIndex: newCurrentTrackIndex,
-			action: (swipeDirection === "RIGHT") ? "LIKE" : "SKIP"
-		})
-
-
+			action: swipeDirection === 'RIGHT' ? 'LIKE' : 'SKIP',
+		});
 	} catch (err) {
 		console.log('nextSong:', err.message);
 	}
@@ -264,12 +292,10 @@ export const prevSong = async () => {
 		// });
 		// await setSnippet();
 
-
-
 		// Mixpanel Tracker
 		track_PrevSnippet({
 			newSnippetIndex: newTrackIndex,
-		})
+		});
 
 		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
 	} catch (err) {
@@ -286,9 +312,15 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 
 		let shortURL;
 
+		var newPlug = {
+			title: null,
+			soundcloudURL: PLUG_PLAYLIST_URL,
+			imageURL: null,
+		};
+
 		switch (response.kind) {
 			case 'playlist':
-				console.log('Searched Playlist');
+				console.log('Searched Playlist', response);
 				let { tracks, title } = response;
 				// Get ShortID of playlist
 				shortURL = await getShortURLFromPlaylistURL(url);
@@ -297,6 +329,9 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 				dispatch(
 					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
 				);
+				// Set new plug properties
+				newPlug.imageURL = getTrackArtURL(response);
+				newPlug.title = title;
 				break;
 			case 'user':
 				let user = response;
@@ -313,6 +348,10 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 				dispatch(
 					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
 				);
+
+				// Set new plug properties
+				newPlug.imageURL = user.avatar_url;
+				newPlug.title = user.username;
 				break;
 			case 'track':
 				console.log('Searched Track', response);
@@ -323,10 +362,17 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 				dispatch(
 					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
 				);
+
+				// Set new plug properties
+				newPlug.imageURL = getTrackArtURL(response);
+				newPlug.title = title;
 				break;
 			default:
 				break;
 		}
+		// Create New Plug in API
+		console.log("POSTING TO API NEW PLUG", newPlug)
+		await createPlugWithApi(newPlug);
 
 		await getTrack(0);
 		await playSnippet();

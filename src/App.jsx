@@ -1,4 +1,5 @@
 import React from 'react';
+import isEmpty from "./utils/isEmpty";
 import './App.css';
 
 // Redux
@@ -15,7 +16,11 @@ import AudioPage from './pages/AudioPage';
 import PreviewPage from './pages/PreviewPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage/RegisterPage';
+import RegisterPage from './pages/RegisterPage';
+import ExplorePage from './pages/ExplorePage';
+import LogoutPage from './pages/LogoutPage';
+
+
 
 
 // import Footer from './components/Layout/Footer';
@@ -23,13 +28,39 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 // Redux Functions
 import { pauseSnippet } from './features/audioplayer/actions';
 
+// Auth
+import { setCurrentUser } from './features/auth/actions';
+import {addToken} from './utils/setAuthToken';
+
+
+// 
+// Check for token
+if (!isEmpty(localStorage.jwtToken)) {
+  console.log(localStorage.jwtToken, typeof localStorage.jwtToken)
+
+  addToken(localStorage.jwtToken)
+
+  // // Check for expired token
+  // const currentTime = Date.now() / 1000;
+  // if (decoded.exp < currentTime) {
+  //   // Logout user
+  //   store.dispatch(logoutUser());
+  //   // Clear current Profile
+
+  //   // Redirect to login
+  //   // window.location.href = "/login";
+  // }
+}
+
+
+
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
           <Header />
-          <div className="mainbody">
+          <div id="WRAPPER">
             <Switch>
               <Route
                 exact
@@ -53,6 +84,22 @@ function App() {
                 render={() => {
                   pauseSnippet();
                   return <RegisterPage />;
+                }}
+              />
+              <Route
+                exact
+                path="/explore"
+                render={() => {
+                  pauseSnippet();
+                  return <ExplorePage />;
+                }}
+              />
+              <Route
+                exact
+                path="/logout"
+                render={() => {
+                  pauseSnippet();
+                  return <LogoutPage />;
                 }}
               />
               <Route exact path="/preview/:shortID" component={PreviewPage} />
