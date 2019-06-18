@@ -48,7 +48,7 @@ class ProfilePage extends Component {
     const renderedPlugs = myPlugs.map(plug => {
       return (
         <li>
-          <Link to={`/${plug.shortID}`}>{plug.title}</Link>
+          <Link to={`/${plug.shortID}`} style={{color:"white"}}>{plug.title}</Link>
         </li>
       );
     });
@@ -63,8 +63,9 @@ class ProfilePage extends Component {
 }
 
 ProfilePage.propTypes = {
-  // error: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
+  plug: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

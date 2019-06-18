@@ -1,5 +1,5 @@
 import React from 'react';
-import isEmpty from "./utils/isEmpty";
+import isEmpty from './utils/isEmpty';
 import './App.css';
 
 // Redux
@@ -14,16 +14,12 @@ import Header from './components/Layout/Header';
 // import MainBody from './components/Layout/Body';
 import AudioPage from './pages/AudioPage';
 import PreviewPage from './pages/PreviewPage';
-import HomePage from './pages/HomePage';
+import CreatePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ExplorePage from './pages/ExplorePage';
 import LogoutPage from './pages/LogoutPage';
 import ProfilePage from './pages/ProfilePage';
-
-
-
-
 
 // import Footer from './components/Layout/Footer';
 
@@ -32,15 +28,14 @@ import { pauseSnippet } from './features/audioplayer/actions';
 
 // Auth
 import { setCurrentUser } from './features/auth/actions';
-import {addToken} from './utils/setAuthToken';
+import { addToken } from './utils/setAuthToken';
 
-
-// 
+//
 // Check for token
 if (!isEmpty(localStorage.jwtToken)) {
-  console.log(localStorage.jwtToken, typeof localStorage.jwtToken)
+  console.log(localStorage.jwtToken, typeof localStorage.jwtToken);
 
-  addToken(localStorage.jwtToken)
+  addToken(localStorage.jwtToken);
 
   // // Check for expired token
   // const currentTime = Date.now() / 1000;
@@ -53,8 +48,6 @@ if (!isEmpty(localStorage.jwtToken)) {
   //   // window.location.href = "/login";
   // }
 }
-
-
 
 function App() {
   return (
@@ -69,7 +62,7 @@ function App() {
                 path="/"
                 render={() => {
                   pauseSnippet();
-                  return <HomePage />;
+                  return <AudioPage />;
                 }}
               />
               <Route
@@ -98,6 +91,14 @@ function App() {
               />
               <Route
                 exact
+                path="/create"
+                render={() => {
+                  pauseSnippet();
+                  return <CreatePage />;
+                }}
+              />
+              <Route
+                exact
                 path="/me"
                 render={() => {
                   pauseSnippet();
@@ -112,8 +113,22 @@ function App() {
                   return <LogoutPage />;
                 }}
               />
-              <Route exact path="/preview/:shortID" component={PreviewPage} />
-              <Route exact path="/:shortID" component={AudioPage} />
+              <Route
+                exact
+                path="/preview/:shortID"
+                render={() => {
+                  pauseSnippet();
+                  return <PreviewPage />;
+                }}
+              />
+              <Route
+                exact
+                path="/:shortID"
+                render={() => {
+                  pauseSnippet();
+                  return <AudioPage />;
+                }}
+              />
             </Switch>
           </div>
         </div>

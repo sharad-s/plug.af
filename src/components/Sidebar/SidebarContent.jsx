@@ -13,7 +13,7 @@ const SidebarContent = ({ closeDrawer, auth }) => {
 			},
 			{
 				content: 'Create a Plug',
-				to: '/',
+				to: '/create',
 			},
 			{
 				content: `My Profile`,
@@ -45,7 +45,7 @@ const SidebarContent = ({ closeDrawer, auth }) => {
 			},
 			{
 				content: 'Create a Plug',
-				to: '/',
+				to: '/create',
 			},
 		];
 		// authHeader = (

@@ -39,7 +39,7 @@ const DEFAULT_PLUG_URL = 'https://soundcloud.com/99q/sets/xxx';
  *  POSTS a new Plug to the API. and registers
  *  Passes Authenticated Token as x-auth-token to API
  */
-export const createPlugWithApi = async (url) => {
+export const createPlugWithApi = async url => {
   const { dispatch } = store;
   try {
     console.log('createPlugWithAPI, URL:', url);
@@ -55,9 +55,29 @@ export const createPlugWithApi = async (url) => {
 };
 
 /*
- *  createPlugWithAPI:
- *  POSTS a new Plug to the API. and registers
+ *  getPlugs:
+ *  GETs all plugs. Needs to be paginated too
  *  Passes Authenticated Token as x-auth-token to API
+ */
+export const getPlugs = async userID => {
+  const { dispatch } = store;
+  try {
+    console.log(`GETTING ALL PLUGS`);
+    const res = await axios.get(`api/plugs/`);
+    
+    const plugs = res.data;
+    dispatch(getPlugsAction(plugs));
+    return plugs;
+  } catch (err) {
+    console.log('getPlugs: err:', err);
+    dispatch(getPlugErrorsAction(err));
+  }
+};
+
+/*
+ *  getPlugsFromUser:
+ *  GETS plug made by specific user
+ *
  */
 export const getPlugsFromUser = async userID => {
   const { dispatch } = store;
@@ -74,7 +94,7 @@ export const getPlugsFromUser = async userID => {
   }
 };
 
-const parsePlug = async (url) => {
+const parsePlug = async url => {
   const { dispatch } = store;
   try {
     console.log('parsePlug: resolving URL:', url);
@@ -136,10 +156,15 @@ const parsePlug = async (url) => {
 };
 
 /*Image Size Manipulation*/
-const getTrackArtURL = trackorPlaylist =>
-  isEmpty(trackorPlaylist.artwork_url)
-    ? increaseImageResolution(trackorPlaylist.user.avatar_url)
-    : increaseImageResolution(trackorPlaylist.artwork_url);
+export const getTrackArtURL = plug => {
+  // Plug is User
+  if (plug.kind === 'user') return increaseImageResolution(plug.avatar_url);
+
+  // Plug is Track or Playlist check for custom Artwork
+  isEmpty(plug.artwork_url)
+    ? increaseImageResolution(plug.user.avatar_url)
+    : increaseImageResolution(plug.artwork_url);
+};
 
 const regex = /large/gi;
 
