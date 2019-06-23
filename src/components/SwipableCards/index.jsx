@@ -13,7 +13,7 @@ import ButtonsPanel from '../ButtonsPanel';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  setSnippet,
+  // setSnippet,
   nextSong,
   prevSong,
   pauseSnippet
@@ -272,7 +272,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      setSnippet,
+      // setSnippet,
       nextSong,
       prevSong,
     },

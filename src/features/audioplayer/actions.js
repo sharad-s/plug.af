@@ -113,6 +113,8 @@ export const playSnippet = async () => {
 
 	const track = playlist[trackIndex];
 
+	console.log("Playing Snippet...")
+
 	// Preload Next Snippet
 	try {
 		const nextTrack = playlist[trackIndex + 1];
@@ -148,6 +150,9 @@ export const playSnippet = async () => {
 export const setSnippet = async () => {
 	const { getState, dispatch } = store;
 	const { scPlayer } = getState().audio;
+
+	console.log("Setting Snippet...")
+
 
 	try {
 		scPlayer.setTime(45);
@@ -373,9 +378,9 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 				break;
 		}
 
-		await getTrack(0);
-		await playSnippet();
-		await setSnippet();
+		// await getTrack(0);
+		// await playSnippet();
+		// await setSnippet();
 	} catch (err) {
 		console.log('updatePlaylist:', err);
 		dispatch(getSearchErrorAction(err));

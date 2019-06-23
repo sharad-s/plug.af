@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 // Subcomponents
 import AudioPlayer from '../../components/AudioPlayer';
 import ButtonsPanel from '../../components/ButtonsPanel';
+import Overlay from '../../components/Overlay';
 
 // Mixpanel
 
@@ -30,16 +31,12 @@ class AudioPage extends Component {
     this.state = {
       errorMessage: '',
       value: '',
-      showDiv: true,
+      showDiv: false,
+      playlistURL: '',
     };
-
-    this.clickDiv = this.clickDiv.bind(this);
   }
 
-  async componentDidMount() {}
-
-  clickDiv() {
-    console.log('clicked');
+  async componentDidMount() {
     window.scrollTo(0, 1);
     Mixpanel.track('loaded_Plug');
 
@@ -50,18 +47,30 @@ class AudioPage extends Component {
 
     if (shortID) {
       // Get playlistURL from ShortID
-      playlistURL = getPlaylistFromShortID(shortID);
+      playlistURL = await getPlaylistFromShortID(shortID);
       track_LoadedPlugPage(shortID);
     }
 
     // Check for any query params (link sharing)
     // let { playlistURL } = queryString.parse(this.props.location.search);
-    updatePlaylist(playlistURL);
-    getTrack(0);
-    playSnippet();
-    setSnippet();
+    await updatePlaylist(playlistURL);
+    console.log('componentDidMount:GETTING TRACK');
+    await getTrack(0);
 
-    this.setState({ showDiv: false });
+    if (this.state.showDiv === false) {
+      await playSnippet();
+      await setSnippet();
+    }
+
+    console.log('componentDidMount:READY');
+
+    // this.setState({ showDiv: false });
+  }
+
+  changeDiv(){
+    this.setState({
+      showDiv: false
+    })
   }
 
   render() {
@@ -73,22 +82,6 @@ class AudioPage extends Component {
 
     return (
       <Fragment>
-        {this.state.showDiv && (
-          <div class="start-overlay" onClick={this.clickDiv}>
-            <center>
-              <h1 class="overlay-text">15</h1>
-              <h1 class="overlay-text">Second</h1>
-              <h1 class="overlay-text">Songs</h1>
-              <br />
-              <br />
-              <br />
-              <h1 class="overlay-text">Tap</h1>
-              <br />
-              <h1 class="overlay-text">Anywhere</h1>
-            </center>
-          </div>
-        )}
-
         <AudioPlayer
           tracks={this.state.tracks}
           playlistName={this.state.playlistName}
