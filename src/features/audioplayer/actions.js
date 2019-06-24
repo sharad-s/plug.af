@@ -307,6 +307,46 @@ export const prevSong = async () => {
 	}
 };
 
+export const newUpdatePlaylist = async plug => {
+	const { dispatch } = store;
+	console.log('newUpdatePlaylist: plug', plug);
+	const response = await SC.resolve(plug.soundcloudURL);
+
+	let tracks;
+	switch (plug.kind) {
+		case 'playlist':
+			// console.log(`Searched User: ${user.id}`);c
+			tracks = response;
+			break;
+		case 'user':
+			let user = response;
+			console.log(`Searched User: ${user.id}`);
+			// Search user's tracks
+			tracks = await SC.get('/tracks', {
+				user_id: user.id,
+				limit: 100,
+			});
+			break;
+		case 'track':
+			console.log('Searched Track', response);
+			tracks = [response];
+			break;
+		default:
+			break;
+	}
+
+	dispatch(clearPlaylistAction());
+	dispatch(
+		updatePlaylistAction(
+			tracks,
+			plug.title,
+			plug.soundcloudURL,
+			plug.shortURL,
+			plug.kind,
+		),
+	);
+};
+
 export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 	const { dispatch } = store;
 	try {
@@ -424,9 +464,9 @@ const forceSwipeCard = swipeDirection => {
 	switch (swipeDirection) {
 		case LEFT:
 			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.left()');
-			console.log('Swiping LEFT')
+			console.log('Swiping LEFT');
 			Swiper.swipeLeft();
-			console.log('After Swiping LEFT')
+			console.log('After Swiping LEFT');
 			// swipeFunction.left();
 			return;
 		case RIGHT:

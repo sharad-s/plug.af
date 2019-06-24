@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   connectSoundcloud,
+  newUpdatePlaylist,
   updatePlaylist,
   getTrack,
   playSnippet,
@@ -65,7 +66,7 @@ class AudioPage extends Component {
     const { soundcloudURL } = plug
 
 
-    await updatePlaylist(soundcloudURL);
+    await newUpdatePlaylist(plug);
     console.log('componentDidMount:GETTING TRACK');
     await getTrack(0);
 
