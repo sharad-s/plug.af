@@ -2,7 +2,6 @@ import SoundCloudAudio from 'soundcloud-audio';
 import SC from 'soundcloud';
 import axios from 'axios';
 
-
 // Redux
 import * as types from './types';
 import store from '../../state/store';
@@ -14,13 +13,14 @@ import {
 	// getAPIErrorsAction,
 } from '../errors/actions';
 
-import {
-	createPlugWithApi
-} from "../plugs/actions"
+import { createPlugWithApi } from '../plugs/actions';
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
 import isEmpty from '../../utils/isEmpty';
+
+// Swiper
+import Swiper from '../../utils/swiper';
 
 // Mixpanel
 import {
@@ -113,7 +113,7 @@ export const playSnippet = async () => {
 
 	const track = playlist[trackIndex];
 
-	console.log("Playing Snippet...")
+	console.log('Playing Snippet...');
 
 	// Preload Next Snippet
 	try {
@@ -151,8 +151,7 @@ export const setSnippet = async () => {
 	const { getState, dispatch } = store;
 	const { scPlayer } = getState().audio;
 
-	console.log("Setting Snippet...")
-
+	console.log('Setting Snippet...');
 
 	try {
 		scPlayer.setTime(45);
@@ -321,7 +320,7 @@ export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
 			title: null,
 			soundcloudURL: url,
 			imageURL: null,
-			shortID: await getShortURLFromPlaylistURL(url, true)
+			shortID: await getShortURLFromPlaylistURL(url, true),
 		};
 
 		switch (response.kind) {
@@ -422,20 +421,21 @@ export const getShortURLFromPlaylistURL = async (
 // Swipe The Fucking Card on the screen
 
 const forceSwipeCard = swipeDirection => {
-	const { swipeFunction } = window;
-
 	switch (swipeDirection) {
 		case LEFT:
 			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.left()');
-			swipeFunction.left();
+			console.log('Swiping LEFT')
+			Swiper.swipeLeft();
+			console.log('After Swiping LEFT')
+			// swipeFunction.left();
 			return;
 		case RIGHT:
 			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.right()');
-			swipeFunction.right();
+			Swiper.swipeRight();
 			return;
 		default:
 			console.log('ACTIONS: forceSwipeCard: Calling swipeFunction.left()');
-			swipeFunction.left();
+			Swiper.swipeLeft();
 			return;
 	}
 };

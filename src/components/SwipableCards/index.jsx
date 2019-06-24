@@ -4,6 +4,7 @@ import Swipeable from 'react-swipy';
 
 // Utils
 import isEmpty from '../../utils/isEmpty';
+import Swiper from "../../utils/swiper"
 
 // SubComponents
 import Beatcard from '../Beatcard';
@@ -234,7 +235,8 @@ class App extends Component {
                 onSwipe={swipeDirection => this.handleSwipe(swipeDirection)}
                 buttons={({ left, right }) => {
                   // Set Global Var for Swipe Function
-                  window.swipeFunction = { left, right };
+                  const swipeFunction = { left, right };
+                  Swiper.initializeSwiper(swipeFunction)
                   return;
                   {
                     /* move back into separate component*/
