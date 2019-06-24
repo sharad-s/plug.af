@@ -24,6 +24,11 @@ import {
   getPlaylistFromShortID,
 } from '../../features/audioplayer/actions';
 
+import {
+  getPlugByShortID,
+  getRandomPlug
+} from '../../features/plugs/actions';
+
 // Playlist
 class AudioPage extends Component {
   constructor(props) {
@@ -42,18 +47,25 @@ class AudioPage extends Component {
 
     connectSoundcloud();
 
-    let playlistURL;
+    let playlistURL, plug;
     const { shortID } = this.props.match.params;
 
     if (shortID) {
       // Get playlistURL from ShortID
-      playlistURL = await getPlaylistFromShortID(shortID);
+      // playlistURL = await getPlaylistFromShortID(shortID); FIXME:// REMOVING THIS MAKES ALL PREVIOUS PLUGS INCOMPATIBLE
+      plug = await getPlugByShortID(shortID)
       track_LoadedPlugPage(shortID);
+    } else {
+      plug = await getRandomPlug();
     }
 
     // Check for any query params (link sharing)
     // let { playlistURL } = queryString.parse(this.props.location.search);
-    await updatePlaylist(playlistURL);
+
+    const { soundcloudURL } = plug
+
+
+    await updatePlaylist(soundcloudURL);
     console.log('componentDidMount:GETTING TRACK');
     await getTrack(0);
 

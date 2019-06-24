@@ -62,9 +62,9 @@ export const createPlugWithApi = async url => {
 export const getPlugs = async userID => {
   const { dispatch } = store;
   try {
-    console.log(`GETTING ALL PLUGS`);
+    console.log(`GETTING ALL PLUGS FOR USER ${userID}`);
     const res = await axios.get(`api/plugs/`);
-    
+
     const plugs = res.data;
     dispatch(getPlugsAction(plugs));
     return plugs;
@@ -73,6 +73,35 @@ export const getPlugs = async userID => {
     dispatch(getPlugErrorsAction(err));
   }
 };
+
+
+export const getPlugByShortID = async shortID => {
+  const { dispatch } = store;
+  try {
+    const res = await axios.get(`api/plugs/shortID/${shortID}`);
+    const plug = res.data[0];
+    console.log("GOT PLUG", plug);
+    return plug 
+  } catch (err) {
+    console.log('getPlugByShortID: err:', err);
+    dispatch(getPlugErrorsAction(err));
+  }
+};
+
+
+export const getRandomPlug = async (amount=1) => {
+  const { dispatch } = store;
+  try {
+    const res = await axios.get(`api/plugs/random?amount=${amount}`);
+    const randomPlug = res.data[0];
+    console.log("GOT RANDOM PLUG", randomPlug);
+    return randomPlug;
+  } catch (err) {
+    console.log('getPlugByShortID: err:', err);
+    dispatch(getPlugErrorsAction(err));
+  }
+};
+
 
 /*
  *  getPlugsFromUser:
@@ -181,4 +210,10 @@ const createPlugAction = () => ({
 const getPlugsAction = plugs => ({
   type: types.GET_PLUGS,
   payload: plugs,
+});
+
+// Action Creators
+const getPlugAction = plug => ({
+  type: types.GET_PLUG,
+  payload: plug,
 });
