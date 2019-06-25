@@ -90,7 +90,7 @@ export const getPlugByShortID = async shortID => {
 export const getRandomPlug = async (amount = 1) => {
   const { dispatch } = store;
   try {
-    const res = await axios.get(`api/plugs/random?amount=${amount}`);
+    const res = await axios.get(`/api/plugs/random?amount=${amount}`);
     const randomPlug = res.data[0];
     console.log('GOT RANDOM PLUG', randomPlug);
     return randomPlug;

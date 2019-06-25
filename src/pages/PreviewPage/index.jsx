@@ -59,7 +59,7 @@ class AudioPage extends Component {
 		// Check for any query params (link sharing)
 		// let { playlistURL } = queryString.parse(this.props.location.search);
 
-		// await newUpdatePlaylist(plug);
+		await newUpdatePlaylist(plug);
 		console.log('componentDidMount:GETTING TRACK');
 		await getTrack(0);
 
