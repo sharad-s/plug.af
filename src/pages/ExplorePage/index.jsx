@@ -29,7 +29,7 @@ class ExplorePage extends Component {
 
 	render() {
 		const { plugs, loading } = this.state;
-
+		
 		const renderedPlugs = isEmpty(plugs)
 			? null
 			: plugs.map(plug => {
@@ -38,19 +38,19 @@ class ExplorePage extends Component {
 						plug.creator === null ? 'Anonymous' : plug.creator.name;
 
 					return (
-						<li class="event" data-date="5 seconds ago">
-							<Link to={`/${plug.shortID}`}>
-								<img class="activity-image" src={plug.imageURL} />
-							</Link>
-							<h3>
-								A new Plug has been created by <b>{creatorName}</b>
-							</h3>
-							<p>
-								<Link class="plug-link" to={`/${plug.shortID}`}>
-									Click here to listen
-								</Link>
-							</p>
-						</li>
+						<div class="gallery-item" tabindex="0">
+
+<img src="https://images.unsplash.com/photo-1497445462247-4330a224fdb1?w=500&h=500&fit=crop" class="gallery-image" alt="" />
+
+<div class="gallery-item-info">
+
+	<ul>
+		<li class="gallery-item-likes"><span class="visually-hidden">Plays:</span><i class="fas fa-play" aria-hidden="true"></i> 89</li>
+	</ul>
+
+</div>
+
+</div>
 					);
 			  });
 
@@ -58,13 +58,23 @@ class ExplorePage extends Component {
 			<center>
 				<div class="drop-in">
 					<p class="login-text">
-						<h2 class="title">Recent Plugs</h2>
+						<h2 class="title recent-plugs">Recent Plugs</h2>
 					</p>
 				</div>
 
-				<div>
-					<ul class="timeline">{renderedPlugs}</ul>
-				</div>
+
+	<div class="container">
+
+		<div class="gallery">
+
+		
+		</div>
+
+
+		<div class="loader"></div>
+
+	</div>
+	
 			</center>
 		);
 	}
