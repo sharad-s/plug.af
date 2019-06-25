@@ -74,16 +74,11 @@ class AudioPage extends Component {
 	render() {
 		const { audio } = this.props;
 
-		const renderedPlaylistName = audio.playlistName ? (
-			<h3>Playlist {audio.playlistName} </h3>
-		) : null;
-
 		return (
 			<Fragment>
 				<AudioPlayer
 					tracks={this.state.tracks}
 					playlistName={this.state.playlistName}
-					renderedPlaylistName={renderedPlaylistName}
 				/>
 				<div className="preview-container">
 					<p class="voila">Share your Plug</p>

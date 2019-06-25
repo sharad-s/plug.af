@@ -20,7 +20,7 @@ class TweetButton extends Component {
 				className="twitter-share-button"
 				href={`https://twitter.com/intent/tweet?text=Swipe through snippets of my music in under a minute on @plugwithus. Check me out on Plug: ${shortURL}`}
 				data-size="large"
-				onClick={this.handleClick}
+				onClick={() => this.handleClick}
 			>
 				<i className="fab fa-twitter icon-hover" />
 			</a>

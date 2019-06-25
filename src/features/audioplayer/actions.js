@@ -336,13 +336,14 @@ export const newUpdatePlaylist = async plug => {
 			break;
 	}
 
+	console.log("Dispatching Plug", plug)
 	dispatch(clearPlaylistAction());
 	dispatch(
 		updatePlaylistAction(
 			tracks,
 			plug.title,
 			plug.soundcloudURL,
-			plug.shortURL,
+			"https://plug.af/"+plug.shortID,
 			plug.kind,
 		),
 	);
