@@ -312,11 +312,12 @@ export const newUpdatePlaylist = async plug => {
 	console.log('newUpdatePlaylist: plug', plug);
 	const response = await SC.resolve(plug.soundcloudURL);
 
+	// FIXME: Still manually querying tracks
 	let tracks;
 	switch (plug.kind) {
 		case 'playlist':
 			// console.log(`Searched User: ${user.id}`);c
-			tracks = response;
+			tracks = response.tracks;
 			break;
 		case 'user':
 			let user = response;
@@ -347,85 +348,85 @@ export const newUpdatePlaylist = async plug => {
 	);
 };
 
-export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
-	const { dispatch } = store;
-	try {
-		console.log('updatePlaylist: getting playlist:', url);
-		const response = await SC.resolve(url);
-		console.log(response);
+// export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
+// 	const { dispatch } = store;
+// 		try {
+// 			console.log('updatePlaylist: getting playlist:', url);
+// 			const response = await SC.resolve(url);
+// 			console.log(response);
 
-		let shortURL;
+// 			let shortURL;
 
-		var newPlug = {
-			title: null,
-			soundcloudURL: url,
-			imageURL: null,
-			shortID: await getShortURLFromPlaylistURL(url, true),
-		};
+// 			var newPlug = {
+// 				title: null,
+// 				soundcloudURL: url,
+// 				imageURL: null,
+// 				shortID: await getShortURLFromPlaylistURL(url, true),
+// 			};
 
-		switch (response.kind) {
-			case 'playlist':
-				console.log('Searched Playlist', response);
-				let { tracks, title } = response;
-				// Get ShortID of playlist
-				shortURL = await getShortURLFromPlaylistURL(url);
-				console.log('SHORTURL', shortURL);
-				dispatch(clearPlaylistAction());
-				dispatch(
-					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-				);
-				// Set new plug properties
-				newPlug.imageURL = getTrackArtURL(response);
-				newPlug.title = title;
+// 			switch (response.kind) {
+// 				case 'playlist':
+// 					console.log('Searched Playlist', response);
+// 					let { tracks, title } = response;
+// 					// Get ShortID of playlist
+// 					shortURL = await getShortURLFromPlaylistURL(url);
+// 					console.log('SHORTURL', shortURL);
+// 					dispatch(clearPlaylistAction());
+// 					dispatch(
+// 						updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+// 					);
+// 					// Set new plug properties
+// 					newPlug.imageURL = getTrackArtURL(response);
+// 					newPlug.title = title;
 
-				break;
-			case 'user':
-				let user = response;
-				console.log(`Searched User: ${user.id}`);
-				// Search user's tracks
-				tracks = await SC.get('/tracks', {
-					user_id: user.id,
-					limit: 100,
-				});
-				title = user.permalink;
-				shortURL = await getShortURLFromPlaylistURL(url);
-				console.log('SHORTURL', shortURL);
-				dispatch(clearPlaylistAction());
-				dispatch(
-					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-				);
+// 					break;
+// 				case 'user':
+// 					let user = response;
+// 					console.log(`Searched User: ${user.id}`);
+// 					// Search user's tracks
+// 					tracks = await SC.get('/tracks', {
+// 						user_id: user.id,
+// 						limit: 100,
+// 					});
+// 					title = user.permalink;
+// 					shortURL = await getShortURLFromPlaylistURL(url);
+// 					console.log('SHORTURL', shortURL);
+// 					dispatch(clearPlaylistAction());
+// 					dispatch(
+// 						updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+// 					);
 
-				// Set new plug properties
-				newPlug.imageURL = user.avatar_url;
-				newPlug.title = user.username;
-				break;
-			case 'track':
-				console.log('Searched Track', response);
-				title = response.title;
-				tracks = [response];
-				shortURL = await getShortURLFromPlaylistURL(url);
-				dispatch(clearPlaylistAction());
-				dispatch(
-					updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-				);
+// 					// Set new plug properties
+// 					newPlug.imageURL = user.avatar_url;
+// 					newPlug.title = user.username;
+// 					break;
+// 				case 'track':
+// 					console.log('Searched Track', response);
+// 					title = response.title;
+// 					tracks = [response];
+// 					shortURL = await getShortURLFromPlaylistURL(url);
+// 					dispatch(clearPlaylistAction());
+// 					dispatch(
+// 						updatePlaylistAction(tracks, title, url, shortURL, response.kind),
+// 					);
 
-				// Set new plug properties
-				newPlug.imageURL = getTrackArtURL(response);
-				newPlug.title = title;
-				break;
-			default:
-				break;
-		}
+// 					// Set new plug properties
+// 					newPlug.imageURL = getTrackArtURL(response);
+// 					newPlug.title = title;
+// 					break;
+// 				default:
+// 					break;
+// 			}
 
-		// await getTrack(0);
-		// await playSnippet();
-		// await setSnippet();
-	} catch (err) {
-		console.log('updatePlaylist:', err);
-		dispatch(getSearchErrorAction(err));
-		// this.setState({ errorMessage: err.message });
-	}
-};
+// 			// await getTrack(0);
+// 			// await playSnippet();
+// 			// await setSnippet();
+// 		} catch (err) {
+// 			console.log('updatePlaylist:', err);
+// 			dispatch(getSearchErrorAction(err));
+// 			// this.setState({ errorMessage: err.message });
+// 		}
+// 	};
 
 export const getPlaylistFromShortID = async shortID => {
 	try {

@@ -18,17 +18,14 @@ import { bindActionCreators } from 'redux';
 import {
   connectSoundcloud,
   newUpdatePlaylist,
-  updatePlaylist,
+  // updatePlaylist,
   getTrack,
   playSnippet,
   setSnippet,
   getPlaylistFromShortID,
 } from '../../features/audioplayer/actions';
 
-import {
-  getPlugByShortID,
-  getRandomPlug
-} from '../../features/plugs/actions';
+import { getPlugByShortID, getRandomPlug } from '../../features/plugs/actions';
 
 // Playlist
 class AudioPage extends Component {
@@ -54,7 +51,7 @@ class AudioPage extends Component {
     if (shortID) {
       // Get playlistURL from ShortID
       // playlistURL = await getPlaylistFromShortID(shortID); FIXME:// REMOVING THIS MAKES ALL PREVIOUS PLUGS INCOMPATIBLE
-      plug = await getPlugByShortID(shortID)
+      plug = await getPlugByShortID(shortID);
       track_LoadedPlugPage(shortID);
     } else {
       plug = await getRandomPlug();
@@ -62,9 +59,6 @@ class AudioPage extends Component {
 
     // Check for any query params (link sharing)
     // let { playlistURL } = queryString.parse(this.props.location.search);
-
-    const { soundcloudURL } = plug
-
 
     await newUpdatePlaylist(plug);
     console.log('componentDidMount:GETTING TRACK');
@@ -80,10 +74,10 @@ class AudioPage extends Component {
     // this.setState({ showDiv: false });
   }
 
-  changeDiv(){
+  changeDiv() {
     this.setState({
-      showDiv: false
-    })
+      showDiv: false,
+    });
   }
 
   render() {
@@ -111,18 +105,10 @@ const mapStateToProps = state => ({
   audio: state.audio,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      connectSoundcloud,
-      updatePlaylist,
-    },
-    dispatch,
-  );
+
 
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps,
   )(AudioPage),
 );

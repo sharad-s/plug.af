@@ -63,7 +63,7 @@ export const getPlugs = async userID => {
   const { dispatch } = store;
   try {
     console.log(`GETTING ALL PLUGS FOR USER ${userID}`);
-    const res = await axios.get(`api/plugs/`);
+    const res = await axios.get(`/api/plugs/`);
 
     const plugs = res.data;
     dispatch(getPlugsAction(plugs));
@@ -74,34 +74,31 @@ export const getPlugs = async userID => {
   }
 };
 
-
 export const getPlugByShortID = async shortID => {
   const { dispatch } = store;
   try {
-    const res = await axios.get(`api/plugs/shortID/${shortID}`);
+    const res = await axios.get(`/api/plugs/shortID/${shortID}`);
     const plug = res.data[0];
-    console.log("GOT PLUG", plug);
-    return plug 
+    console.log('GOT PLUG', plug);
+    return plug;
   } catch (err) {
     console.log('getPlugByShortID: err:', err);
     dispatch(getPlugErrorsAction(err));
   }
 };
 
-
-export const getRandomPlug = async (amount=1) => {
+export const getRandomPlug = async (amount = 1) => {
   const { dispatch } = store;
   try {
     const res = await axios.get(`api/plugs/random?amount=${amount}`);
     const randomPlug = res.data[0];
-    console.log("GOT RANDOM PLUG", randomPlug);
+    console.log('GOT RANDOM PLUG', randomPlug);
     return randomPlug;
   } catch (err) {
     console.log('getPlugByShortID: err:', err);
     dispatch(getPlugErrorsAction(err));
   }
 };
-
 
 /*
  *  getPlugsFromUser:
@@ -189,10 +186,24 @@ export const getTrackArtURL = plug => {
   // Plug is User
   if (plug.kind === 'user') return increaseImageResolution(plug.avatar_url);
 
-  // Plug is Track or Playlist check for custom Artwork
-  isEmpty(plug.artwork_url)
-    ? increaseImageResolution(plug.user.avatar_url)
-    : increaseImageResolution(plug.artwork_url);
+  // Plug is Track
+  if (plug.kind === 'track')
+    return isEmpty(plug.artwork_url)
+      ? increaseImageResolution(plug.user.avatar_url)
+      : increaseImageResolution(plug.artwork_url);
+
+  // Plug is Track
+  if (plug.kind === 'playlist') {
+    // If top level artwork_url is not set
+    if (isEmpty(plug.artwork_url)) {
+      // If Tracks[0] level artwork URL is empty, return plist creator artwork url    
+      if (isEmpty(plug.tracks[0].artwork_url)) {
+        return increaseImageResolution(plug.user.avatar_url);
+      } else {
+        return increaseImageResolution(plug.tracks[0].artwork_url);
+      }
+    }
+  }
 };
 
 const regex = /large/gi;

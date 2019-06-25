@@ -9,9 +9,8 @@ import AudioPlayer from '../../components/AudioPlayer';
 import ButtonsPanel from '../../components/ButtonsPanel';
 
 // Share Buttons
-import CopyURLButton from "../../components/ShareButtons/CopyURLButton";
-import TweetButton from "../../components/ShareButtons/TweetButton";
-
+import CopyURLButton from '../../components/ShareButtons/CopyURLButton';
+import TweetButton from '../../components/ShareButtons/TweetButton';
 
 // Mixpanel
 
@@ -22,12 +21,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
 	connectSoundcloud,
-	updatePlaylist,
+	newUpdatePlaylist,
 	getTrack,
 	playSnippet,
 	setSnippet,
 	getPlaylistFromShortID,
 } from '../../features/audioplayer/actions';
+
+import { getPlugByShortID, getRandomPlug } from '../../features/plugs/actions';
 
 // Playlist
 class AudioPage extends Component {
@@ -40,25 +41,34 @@ class AudioPage extends Component {
 	}
 
 	async componentDidMount() {
-
 		await connectSoundcloud();
 
-		let playlistURL;
+		let playlistURL, plug;
 		const { shortID } = this.props.match.params;
-
 
 		if (shortID) {
 			// Get playlistURL from ShortID
-			playlistURL = await getPlaylistFromShortID(shortID);
-			track_LoadedPreviewPage(shortID)
+			// playlistURL = await getPlaylistFromShortID(shortID); FIXME:// REMOVING THIS MAKES ALL PREVIOUS PLUGS INCOMPATIBLE
+			plug = await getPlugByShortID(shortID);
+		} else {
+			plug = await getRandomPlug();
 		}
+
+		console.log('componentDidMount:GOT PLUG', plug);
 
 		// Check for any query params (link sharing)
 		// let { playlistURL } = queryString.parse(this.props.location.search);
-		await updatePlaylist(playlistURL);
+
+		// await newUpdatePlaylist(plug);
+		console.log('componentDidMount:GETTING TRACK');
 		await getTrack(0);
-		await playSnippet();
-		await setSnippet();
+
+		if (this.state.showDiv === false) {
+			await playSnippet();
+			await setSnippet();
+		}
+
+		console.log('PreviewPage: componentDidMount:READY');
 	}
 
 	render() {
@@ -78,11 +88,7 @@ class AudioPage extends Component {
 				<div className="preview-container">
 					<p class="voila">Share your Plug</p>
 					<form class="preview-form">
-						<input
-							type="text"
-							class="link-input"
-							value={audio.shortURL}
-						/>
+						<input type="text" class="link-input" value={audio.shortURL} />
 						<CopyURLButton />
 						<TweetButton />
 					</form>
@@ -96,18 +102,4 @@ const mapStateToProps = state => ({
 	audio: state.audio,
 });
 
-const mapDispatchToProps = dispatch =>
-	bindActionCreators(
-		{
-			connectSoundcloud,
-			updatePlaylist,
-		},
-		dispatch,
-	);
-
-export default withRouter(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps,
-	)(AudioPage),
-);
+export default withRouter(connect(mapStateToProps)(AudioPage));

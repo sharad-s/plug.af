@@ -4,26 +4,11 @@ import isEmpty from '../../utils/isEmpty';
 
 // Redux
 import { connect } from 'react-redux';
-import { updatePlaylist } from '../../features/audioplayer/actions';
 
 // Import Subcomponents
 import Sidebar from '../Sidebar';
 
 class Header extends Component {
-  state = {
-    value: '',
-  };
-
-  handleChange = event => {
-    this.setState({ value: event.target.value });
-  };
-
-  handleSubmit = async event => {
-    event.preventDefault();
-    this.setState({ value: '' });
-    const url = this.state.value;
-    await updatePlaylist(url);
-  };
 
   render() {
     const renderedPlaceholder = !isEmpty(this.props.errors.searchError.message)
