@@ -40,7 +40,7 @@ class ExplorePage extends Component {
 					return (
 						<div class="gallery-item" tabindex="0">
 
-<img src="https://images.unsplash.com/photo-1497445462247-4330a224fdb1?w=500&h=500&fit=crop" class="gallery-image" alt="" />
+<img src={plug.imageURL} class="gallery-image" alt="" />
 
 <div class="gallery-item-info">
 
