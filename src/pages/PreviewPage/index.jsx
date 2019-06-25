@@ -59,7 +59,7 @@ class AudioPage extends Component {
 		// Check for any query params (link sharing)
 		// let { playlistURL } = queryString.parse(this.props.location.search);
 
-		// await newUpdatePlaylist(plug);
+		await newUpdatePlaylist(plug);
 		console.log('componentDidMount:GETTING TRACK');
 		await getTrack(0);
 
@@ -74,16 +74,11 @@ class AudioPage extends Component {
 	render() {
 		const { audio } = this.props;
 
-		const renderedPlaylistName = audio.playlistName ? (
-			<h3>Playlist {audio.playlistName} </h3>
-		) : null;
-
 		return (
 			<Fragment>
 				<AudioPlayer
 					tracks={this.state.tracks}
 					playlistName={this.state.playlistName}
-					renderedPlaylistName={renderedPlaylistName}
 				/>
 				<div className="preview-container">
 					<p class="voila">Share your Plug</p>
