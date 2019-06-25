@@ -29,30 +29,33 @@ class ExplorePage extends Component {
 
 	render() {
 		const { plugs, loading } = this.state;
-		
-		const renderedPlugs = isEmpty(plugs)
-			? null
-			: plugs.map(plug => {
-					// Check Creator name if exists
-					const creatorName =
-						plug.creator === null ? 'Anonymous' : plug.creator.name;
 
-					return (
-						<div class="gallery-item" tabindex="0">
+		const renderedPlugs = isEmpty(plugs) ? (
+			<div class="loader" />
+		) : (
+			plugs.map(plug => {
+				// Check Creator name if exists
+				const creatorName =
+					plug.creator === null ? 'Anonymous' : plug.creator.name;
 
-<img src={plug.imageURL} class="gallery-image" alt="" />
+				return (
+					<div class="gallery-item" tabindex="0">
+						<Link to={`/${plug.shortID}`}>
+							<img src={plug.imageURL} class="gallery-image" alt="" />
 
-<div class="gallery-item-info">
-
-	<ul>
-		<li class="gallery-item-likes"><span class="visually-hidden">Plays:</span><i class="fas fa-play" aria-hidden="true"></i> 89</li>
-	</ul>
-
-</div>
-
-</div>
-					);
-			  });
+							<div class="gallery-item-info">
+								<ul>
+									<li class="gallery-item-likes">
+										<span class="visually-hidden">Plays:</span>
+										<i class="fas fa-play" aria-hidden="true" /> 89
+									</li>
+								</ul>
+							</div>
+						</Link>
+					</div>
+				);
+			})
+		);
 
 		return (
 			<center>
@@ -62,19 +65,9 @@ class ExplorePage extends Component {
 					</p>
 				</div>
 
-
-	<div class="container">
-
-		<div class="gallery">
-
-		
-		</div>
-
-
-		<div class="loader"></div>
-
-	</div>
-	
+				<div class="gallery-container">
+					<div class="gallery">{renderedPlugs}</div>
+				</div>
 			</center>
 		);
 	}

@@ -731,21 +731,21 @@ select {
 
 
 
+/* Gallery */
 
 
 
-
-img {
+.gallery-img {
   display: block;
 }
 
-.container {
+.gallery-container {
   max-width: 93.5rem;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-.btn {
+.gallery-btn {
   display: inline-block;
   font: inherit;
   background: none;
@@ -755,7 +755,7 @@ img {
   cursor: pointer;
 }
 
-.btn:focus {
+.gallery-btn:focus {
   outline: 0.5rem auto #4d90fe;
 }
 
@@ -796,6 +796,7 @@ img {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
+  color:white;
 }
 
 .gallery-item-info {
