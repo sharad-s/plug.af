@@ -69,18 +69,13 @@ class Beatcard extends Component {
   render() {
     const { audio, secondsPassed, track } = this.props;
 
-    
-    const trackArtURL = isEmpty(track.artwork_url)
-      ? increaseImageResolution(track.user.avatar_url)
-      : increaseImageResolution(track.artwork_url);
-
     const renderedPlayButtonText = audio.isPlaying ? (
       <i className="fas fa-pause" />
     ) : (
       <i className="fas fa-play" />
     );
 
-    const renderedPlayButton = audio.title ? (
+    const renderedPlayButton = track.title ? (
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
     ) : null;
 
@@ -91,7 +86,7 @@ class Beatcard extends Component {
           {/* Card Image + Play BUtton Container */}
           <div class="card-image-container">
             {/* Card Image */}
-            <img src={trackArtURL} className="card-image" />
+            <img src={track.imageURL} className="card-image" />
             {/* 25% Image Overlay with Track Details */}
             <div class="information-overlay" id="OVERLAY">
               <div class="fill" />

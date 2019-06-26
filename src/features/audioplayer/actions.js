@@ -118,7 +118,7 @@ export const playSnippet = async () => {
 	// Preload Next Snippet
 	try {
 		const nextTrack = playlist[trackIndex + 1];
-		const nextStreamUrl = _createStreamUrl(nextTrack.id);
+		const nextStreamUrl = _createStreamUrl(nextTrack.soundcloudID);
 		// await scPlayer.preload(nextStreamUrl, 'auto');
 		// console.log('Preload scPlayer:', scPlayer);
 	} catch (err) {
@@ -127,7 +127,7 @@ export const playSnippet = async () => {
 
 	try {
 		// Create Stream URL
-		const streamUrl = _createStreamUrl(track.id);
+		const streamUrl = _createStreamUrl(track.soundcloudID);
 		// console.log('playSnippet:', streamUrl);
 		await scPlayer.play({
 			streamUrl,
@@ -138,7 +138,7 @@ export const playSnippet = async () => {
 			shortURL,
 			trackIndex,
 			trackTitle: track.title,
-			trackArtist: track.user.permalink,
+			trackArtist: track.artist
 		});
 
 		dispatch(playSnippetAction(track));
@@ -246,7 +246,7 @@ export const nextSong = async (
 
 		// console.log("nextTrack MATCHES newCurrentTrack", nextTrack.id === newCurrentTrack.id)
 
-		const streamUrl = _createStreamUrl(newCurrentTrack.id);
+		const streamUrl = _createStreamUrl(newCurrentTrack.soundcloudID);
 
 		console.log('nextSong 4');
 
@@ -310,37 +310,11 @@ export const prevSong = async () => {
 export const newUpdatePlaylist = async plug => {
 	const { dispatch } = store;
 	console.log('newUpdatePlaylist: plug', plug);
-	const response = await SC.resolve(plug.soundcloudURL);
-
-	// FIXME: Still manually querying tracks
-	let tracks;
-	switch (plug.kind) {
-		case 'playlist':
-			// console.log(`Searched User: ${user.id}`);c
-			tracks = response.tracks;
-			break;
-		case 'user':
-			let user = response;
-			console.log(`Searched User: ${user.id}`);
-			// Search user's tracks
-			tracks = await SC.get('/tracks', {
-				user_id: user.id,
-				limit: 100,
-			});
-			break;
-		case 'track':
-			console.log('Searched Track', response);
-			tracks = [response];
-			break;
-		default:
-			break;
-	}
-
 	console.log("Dispatching Plug", plug)
 	dispatch(clearPlaylistAction());
 	dispatch(
 		updatePlaylistAction(
-			tracks,
+			plug.snippets,
 			plug.title,
 			plug.soundcloudURL,
 			"https://plug.af/"+plug.shortID,

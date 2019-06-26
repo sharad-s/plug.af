@@ -62,11 +62,8 @@ class AudioPage extends Component {
 		await newUpdatePlaylist(plug);
 		console.log('componentDidMount:GETTING TRACK');
 		await getTrack(0);
-
-		if (this.state.showDiv === false) {
-			await playSnippet();
-			await setSnippet();
-		}
+		await playSnippet();
+		await setSnippet();
 
 		console.log('PreviewPage: componentDidMount:READY');
 	}

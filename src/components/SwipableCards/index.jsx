@@ -68,12 +68,7 @@ const emptyTrack = {
   user: {},
 };
 
-const createTrackSubset = (track = emptyTrack) => ({
-  artwork_url: track.artwork_url,
-  title: track.title,
-  user: track.user,
-  permalink_url: track.permalink_url,
-});
+const createTrackSubset = (track = emptyTrack) => track;
 
 class App extends Component {
   state = {
@@ -101,18 +96,10 @@ class App extends Component {
           createTrackSubset(playlist[trackIndex]),
           createTrackSubset(playlist[trackIndex + 1]),
         );
-        // // Use a subset of track object needed for Beatcard
-        // this.props.audio.playlist.map(track => {
-        //   tracks.push(createTrackSubset(track));
-        // });
 
-        console.log(
-          'ComponentDidUpdate: playlist: About to Push New State:',
-          tracks,
-        );
         this.setState({ tracks }, () => {
           console.log(
-            'ComponentDidUpdate: playlist: New State:',
+            'ComponentDidUpdate: playlist: this.state.tracks:',
             this.state.tracks,
           );
 
@@ -141,16 +128,9 @@ class App extends Component {
         createTrackSubset(playlist[trackIndex + 1]),
       );
 
-      console.log(
-        'ComponentDidUpdate: trackIndex: About to Push New State:',
-        tracks,
-      );
-
-      // Remove current just swiped song from state, then set new state
-
       this.setState({ tracks }, () => {
         console.log(
-          'ComponentDidUpdate: trackIndex: New State:',
+          'ComponentDidUpdate: trackIndex: this.state.tracks:',
           this.state.tracks,
         );
 
