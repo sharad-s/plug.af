@@ -4,7 +4,7 @@ import Swipeable from 'react-swipy';
 
 // Utils
 import isEmpty from '../../utils/isEmpty';
-import Swiper from "../../utils/swiper"
+import Swiper from '../../utils/swiper';
 
 // SubComponents
 import Beatcard from '../Beatcard';
@@ -16,8 +16,6 @@ import { bindActionCreators } from 'redux';
 import {
   // setSnippet,
   nextSong,
-  prevSong,
-  pauseSnippet
 } from '../../features/audioplayer/actions';
 
 const swipeWrapperStyles = {
@@ -41,7 +39,7 @@ const bottomcardStyles = {
   cursor: 'pointer',
   userSelect: 'none',
   position: 'fixed',
-  top: '62px',
+  top: '65px',
   bottom: '0px',
   height: 'inherit',
   zIndex: -1,
@@ -163,9 +161,6 @@ class App extends Component {
   };
 
   handleSwipe = async swipeDirection => {
-
-    // pauseSnippet()
-
     this.setState({ currentSwipe: swipeDirection }, () => {
       console.log(
         `SwipableCards: handleSwipe: set state.currentSwipe to ${
@@ -195,11 +190,6 @@ class App extends Component {
   render() {
     const { tracks } = this.state;
     const { audio } = this.props;
-    const { trackIndex, playlist } = audio;
-
-    const firstTrack = playlist[trackIndex];
-    const secondTrack = playlist[trackIndex + 1];
-    // console.log('SwipableCards: audio.trackIndex:', audio.trackIndex);
 
     return (
       <Fragment>
@@ -216,11 +206,7 @@ class App extends Component {
                 buttons={({ left, right }) => {
                   // Set Global Var for Swipe Function
                   const swipeFunction = { left, right };
-                  Swiper.initializeSwiper(swipeFunction)
-                  return;
-                  {
-                    /* move back into separate component*/
-                  }
+                  return Swiper.initializeSwiper(swipeFunction);
                 }}
               >
                 <div id="SWIPABLE_CARD_TOP">
@@ -251,17 +237,4 @@ const mapStateToProps = state => ({
   audio: state.audio,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      // setSnippet,
-      nextSong,
-      prevSong,
-    },
-    dispatch,
-  );
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}
+export default connect(mapStateToProps)(App); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}

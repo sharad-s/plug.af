@@ -3,9 +3,7 @@ import isEmpty from '../../utils/isEmpty';
 
 // Redux
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import {
-  connectSoundcloud,
   pauseSnippet,
   playSnippet,
   setSnippet,
@@ -28,11 +26,13 @@ class Beatcard extends Component {
     const elem = document.querySelector('.information-overlay .fill');
 
     let numnum = ((secondsPassed % duration) / duration - 1) * 100;
-
     if (secondsPassed > duration) {
       numnum = -100
     }
 
+    elem.style.transform = `translate3d(${numnum}%, 0, 0)`;
+
+    /* Debug for animation */
     // console.log(
     //   'componentWillReceiveProps',
     //   'Current Second',
@@ -43,7 +43,6 @@ class Beatcard extends Component {
     //   nextProps.audio.isPlaying
     // );
 
-    elem.style.transform = `translate3d(${numnum}%, 0, 0)`;
   }
 
   handleClick = async e => {
@@ -67,7 +66,7 @@ class Beatcard extends Component {
   }
 
   render() {
-    const { audio, secondsPassed, track } = this.props;
+    const { audio, track } = this.props;
 
     const renderedPlayButtonText = audio.isPlaying ? (
       <i className="fas fa-pause" />
@@ -97,7 +96,7 @@ class Beatcard extends Component {
                     {track.title ? track.title : null}
                   </p>
                   <p className="title-text noselect">
-                    {track.user ? track.user.username : null}
+                    {track.artist ? track.artist : null}
                   </p>
                 </div>
               </div>
@@ -122,19 +121,7 @@ const mapStateToProps = state => ({
   audio: state.audio,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      connectSoundcloud,
-      pauseSnippet,
-      playSnippet,
-      setSnippet,
-      nextSong,
-      prevSong,
-    },
-    dispatch,
-  );
+
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(Beatcard); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}
