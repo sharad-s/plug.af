@@ -41,19 +41,19 @@ class HomePage extends Component {
 		const url = this.state.input;
 		this.clearErrors();
 		// Post Plug to API
-		try {
-			const newPlug = await createPlugWithApi(url);
-			console.log('handleSubmit:newPlug', newPlug);
-			const { shortID, soundcloudURL } = newPlug;
-
-			track_CreatePlug({ plugID: shortID, soundcloudURL });
-			this.props.history.push(`/preview/${shortID}`);
-		} catch (err) {
-			console.log('HandleSubmit: error', err);
-			this.setState({
-				error: err,
+		createPlugWithApi(url)
+			.then(newPlug => {
+				console.log('handleSubmit:newPlug', newPlug);
+				const { shortID, soundcloudURL } = newPlug;
+				track_CreatePlug({ plugID: shortID, soundcloudURL });
+				this.props.history.push(`/preview/${shortID}`);
+			})
+			.catch(err => {
+				console.log('HandleSubmit: error', err);
+				this.setState({
+					error: err,
+				});
 			});
-		}
 	};
 
 	handleChange = name => event => {
@@ -65,7 +65,7 @@ class HomePage extends Component {
 	render() {
 		const renderedError = isEmpty(this.state.error)
 			? null
-			: this.state.error.message;
+			: this.state.error.response.data;
 
 		return (
 			<center>

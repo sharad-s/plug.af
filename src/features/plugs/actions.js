@@ -78,7 +78,7 @@ export const getPlugByShortID = async shortID => {
   const { dispatch } = store;
   try {
     const res = await axios.get(`/api/plugs/shortID/${shortID}`);
-    const plug = res.data[0];
+    const plug = res.data;
     console.log('GOT PLUG', plug);
     return plug;
   } catch (err) {
@@ -133,6 +133,7 @@ const parsePlug = async url => {
       imageURL: null,
       shortID: await getShortURLFromPlaylistURL(url, true),
       kind: response.kind,
+      snippets: [],
     };
 
     switch (response.kind) {
@@ -144,12 +145,13 @@ const parsePlug = async url => {
         // Set newPlug properties
         newPlug.imageURL = getTrackArtURL(response);
         newPlug.title = title;
+        newPlug.snippets = tracks;
         break;
 
       // If URL is that of a Profile URL
       case 'user':
         let user = response;
-        console.log(`Resolved User Profile: ${user.id}`);
+        console.log(`Resolved User Profile: ${user.id}`, response);
 
         // Search Latest 100 of User's tracks
         tracks = await SC.get('/tracks', {
@@ -157,14 +159,19 @@ const parsePlug = async url => {
           limit: 100,
         });
 
+        tracks.map(track => newPlug.snippets.push(track));
+
         // Set newPlug properties
         newPlug.imageURL = user.avatar_url;
         newPlug.title = user.username;
+        newPlug.snippets = tracks;
         break;
 
       // If URL is that of a Single Track
       case 'track':
         console.log('Resolved Single Track', response);
+
+        newPlug.snippets.push(response);
 
         // Set new plug properties
         newPlug.imageURL = getTrackArtURL(response);
@@ -174,11 +181,24 @@ const parsePlug = async url => {
         break;
     }
 
+    newPlug.snippets = createSnippetsArray(newPlug.snippets);
     return newPlug;
   } catch (err) {
     dispatch(getSoundcloudErrorsAction(err));
     throw err;
   }
+};
+
+/* `tracks` will ALWAYS be an array of Soundcloud TRACK objects */
+const createSnippetsArray = tracks => {
+  const newSnippets = tracks.map(track => ({
+    soundcloudID: track.id.toString(),
+    title: track.title,
+    artist: track.user.username,
+    soundcloudPermalinkURL: track.permalink_url,
+    imageURL: getTrackArtURL(track),
+  }));
+  return newSnippets;
 };
 
 /*Image Size Manipulation*/
@@ -192,16 +212,18 @@ export const getTrackArtURL = plug => {
       ? increaseImageResolution(plug.user.avatar_url)
       : increaseImageResolution(plug.artwork_url);
 
-  // Plug is Track
+  // Plug is Playlist
   if (plug.kind === 'playlist') {
     // If top level artwork_url is not set
     if (isEmpty(plug.artwork_url)) {
-      // If Tracks[0] level artwork URL is empty, return plist creator artwork url    
+      // If Tracks[0] level artwork URL is empty, return plist creator artwork url
       if (isEmpty(plug.tracks[0].artwork_url)) {
         return increaseImageResolution(plug.user.avatar_url);
       } else {
         return increaseImageResolution(plug.tracks[0].artwork_url);
       }
+    } else {
+      return plug.artwork_url
     }
   }
 };
