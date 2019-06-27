@@ -76,23 +76,25 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // If New Playlist is Updated
-    if (prevProps.audio.playlist !== this.props.audio.playlist) {
-      const { playlist, trackIndex } = this.props.audio;
+    if (prevProps.audio.currentPlug.snippets !== this.props.audio.currentPlug.snippets) {
+      const { trackIndex, currentPlug } = this.props.audio;
       const tracks = [];
 
+      let newPlaylist = currentPlug.snippets
+
       // If New Playlist has tracks, push track objects to local state
-      if (!isEmpty(this.props.audio.playlist.length)) {
+      if (!isEmpty(newPlaylist.length)) {
         console.log(
-          'componentDidUpdate:: New Playlist Loaded. Playlist:',
-          playlist,
+          'componentDidUpdate:: New Snippet Playlist Loaded. Playlist:',
+          newPlaylist,
           ' / Tracks being pushed to state:',
-          createTrackSubset(playlist[trackIndex]),
-          createTrackSubset(playlist[trackIndex + 1]),
+          createTrackSubset(newPlaylist[trackIndex]),
+          createTrackSubset(newPlaylist[trackIndex + 1]),
         );
 
         tracks.push(
-          createTrackSubset(playlist[trackIndex]),
-          createTrackSubset(playlist[trackIndex + 1]),
+          createTrackSubset(newPlaylist[trackIndex]),
+          createTrackSubset(newPlaylist[trackIndex + 1]),
         );
 
         this.setState({ tracks }, () => {
@@ -112,8 +114,10 @@ class App extends Component {
 
     // // If New Track Index is Updated
     if (prevProps.audio.trackIndex !== this.props.audio.trackIndex) {
-      const { playlist, trackIndex } = this.props.audio;
+      const { playlist, trackIndex, currentPlug } = this.props.audio;
       const tracks = [];
+      let newPlaylist = currentPlug.snippets
+
 
       console.log(
         `trackIndex Updated: Prev TrackIndex: ${
@@ -122,8 +126,8 @@ class App extends Component {
       );
 
       tracks.push(
-        createTrackSubset(playlist[trackIndex]),
-        createTrackSubset(playlist[trackIndex + 1]),
+        createTrackSubset(newPlaylist[trackIndex]),
+        createTrackSubset(newPlaylist[trackIndex + 1]),
       );
 
       this.setState({ tracks }, () => {

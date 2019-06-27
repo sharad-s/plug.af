@@ -207,6 +207,10 @@ const _incrementIndex = async int => {
 	}
 };
 
+
+
+
+
 // Swipe with Next Song
 export const nextSong = async (
 	swipeDirection = 'LEFT',
@@ -312,15 +316,7 @@ export const newUpdatePlaylist = async plug => {
 	console.log('newUpdatePlaylist: plug', plug);
 	console.log("Dispatching Plug", plug)
 	dispatch(clearPlaylistAction());
-	dispatch(
-		updatePlaylistAction(
-			plug.snippets,
-			plug.title,
-			plug.soundcloudURL,
-			"https://plug.af/"+plug.shortID,
-			plug.kind,
-		),
-	);
+	dispatch(newUpdatePlugAction(plug))
 };
 
 // export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
@@ -527,3 +523,10 @@ const updateCurrentIndexAction = trackIndex => ({
 	type: types.UPDATE_CURRENT_INDEX,
 	payload: trackIndex,
 });
+
+
+//  NEW 
+const newUpdatePlugAction = plug => ({
+	type: types.NEW_UPDATE_PLUG,
+	payload: plug,
+})

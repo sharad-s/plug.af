@@ -3,18 +3,13 @@ import * as types from './types';
 const initialState = {
   scPlayer: {},
   playlist: {},
-  playlists: [],
-  playlistName: '',
-  playlistURL: '',
-  shortURL: '',
-  currentTrack: {},
-  trackIndex: 0,
   currentTime: 0,
-  errorMessage: '',
   isPlaying: false,
-  kind: '',
-  title: '',
-  currentIndex: 0,
+  plugs: [],
+  trackIndex: 0,
+  plugIndex: 0,
+  currentTrack: {},
+  currentPlug: {},
 };
 
 export default function(state = initialState, action) {
@@ -66,7 +61,7 @@ export default function(state = initialState, action) {
         ...state,
         trackIndex: action.payload.trackIndex,
         currentTrack: action.payload.currentTrack,
-        isPlaying: true
+        isPlaying: true,
       };
 
     case types.PREV_SNIPPET:
@@ -104,6 +99,38 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentIndex: action.trackIndex,
+      };
+
+    // NEW
+    case types.NEW_UPDATE_PLUG:
+      return {
+        ...state,
+        plugs: [...state.plugs, action.payload],
+        currentPlug: action.payload,
+        playlist: action.payload.snippets,
+      };
+
+    case types.NEW_APPEND_PLUG:
+      return {
+        ...state,
+        plugs: [...state.plugs, action.payload],
+      };
+
+    // Cannot hardcode +1 =1 in reducer because need to check boundaries of range before setting new Index.
+    case types.NEW_SHIFT_CURRENT_PLUG:
+      return {
+        ...state,
+        plugIndex: action.payload.newPlugIndex,
+        currentPlug: state.plugs[action.payload.newPlugIndex],
+      };
+
+    /* Tracks */
+    case types.NEW_SHIFT_CURRENT_TRACK:
+      return {
+        ...state,
+        trackIndex: action.payload.trackIndex,
+        currentTrack: action.payload.currentTrack,
+        isPlaying: true,
       };
 
     default:
