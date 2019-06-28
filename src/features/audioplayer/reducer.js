@@ -6,10 +6,12 @@ const initialState = {
   currentTime: 0,
   isPlaying: false,
   plugs: [],
-  trackIndex: 0,
   plugIndex: 0,
+  trackIndex: 0,
   currentTrack: {},
   currentPlug: {},
+  totalTrackCount: 0,
+  totalTrackIndex: 0,
 };
 
 export default function(state = initialState, action) {
@@ -107,29 +109,38 @@ export default function(state = initialState, action) {
         ...state,
         plugs: [...state.plugs, action.payload],
         currentPlug: action.payload,
+        totalTrackCount: state.totalTrackCount + action.payload.snippets.length,
       };
 
     case types.NEW_APPEND_PLUG:
       return {
         ...state,
         plugs: [...state.plugs, action.payload],
+        totalTrackCount: state.totalTrackCount + action.payload.snippets.length,
       };
 
     // Cannot hardcode +1 =1 in reducer because need to check boundaries of range before setting new Index.
-    case types.NEW_SHIFT_CURRENT_PLUG:
+    case types.NEW_UPDATE_PLUG_INDEX:
       return {
         ...state,
-        plugIndex: action.payload.newPlugIndex,
-        currentPlug: state.plugs[action.payload.newPlugIndex],
+        plugIndex: action.payload,
+        currentPlug: state.plugs[action.payload],
       };
 
     /* Tracks */
-    case types.NEW_SHIFT_CURRENT_TRACK:
+    case types.NEW_UPDATE_TRACK_INDEX:
       return {
         ...state,
-        trackIndex: action.payload.trackIndex,
-        currentTrack: action.payload.currentTrack,
+        trackIndex: action.payload,
+        currentTrack: state.currentPlug.snippets[action.payload],
         isPlaying: true,
+      };
+
+    /* Tracks */
+    case types.NEW_INCREMENT_TOTAL_TRACK_INDEX:
+      return {
+        ...state,
+        totalTrackIndex: state.totalTrackIndex + action.payload,
       };
 
     default:

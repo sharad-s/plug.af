@@ -13,7 +13,7 @@ import {
 	// getAPIErrorsAction,
 } from '../errors/actions';
 
-import { createPlugWithApi } from '../plugs/actions';
+import { createPlugWithApi, getRandomPlug } from '../plugs/actions';
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
@@ -195,18 +195,51 @@ const _createStreamUrl = id => `https://api.soundcloud.com/tracks/${id}/stream`;
 
 const _incrementIndex = async int => {
 	const { getState, dispatch } = store;
-	const { trackIndex, playlist, currentPlug } = getState().audio;
+	const {
+		trackIndex,
+		plugIndex,
+		playlist,
+		currentPlug,
+		totalTrackCount,
+		totalTrackIndex,
+	} = getState().audio;
 	let newPlaylist = currentPlug.snippets;
-	// If trackIndex+ int is out of range of playlist length, return 0;
-	// If trackIndex + int is more than playlist length, increment plug
+	/* PRELOAD: If trackIndex + int is exactly 2 less than playlist length, get next plug */
+	/* TODO: check if that specific track has been played or not yet  */
+	if (totalTrackIndex + int === totalTrackCount - 2) {
+		const randomPlug = await getRandomPlug(1);
+		console.log('<_incremen></_incremen>tIndex, randomPlug:', randomPlug);
+		dispatch(newAppendPlugAction(randomPlug));
+	}
+	/* END: If trackIndex + int is more than playlist length, increment */
+	/* Increment Current Plug index and reset Current Track Index to 0 */
 	if (trackIndex + int >= newPlaylist.length) {
-		dispatch(updateCurrentIndexAction(0));
+		// dispatch(updateCurrentIndexAction(0));
+		dispatch(newUpdatePlugIndex(plugIndex + 1));
+		dispatch(newUpdateTrackIndex(0));
+		// Increment TOTAL Track Index +1
+		dispatch(newUpdateTotalTrackIndex(int));
 		return 0;
+		/* REWIND: If trackIndex + int is more than playlist length, increment */
+		/* Increment Current Plug index and reset Current Track Index to 0 */
 	} else if (trackIndex + int < 0) {
-		dispatch(updateCurrentIndexAction(2));
-		return 0;
+		// Decrement Plug Index
+		dispatch(newUpdatePlugIndex(plugIndex - 1));
+		// Set Track Index to last track of the rewinded-to plug.
+		const newTrackIndex = getState().audio.currentPlug.snippets.length - 1;
+		// Dispatch New Track Index & return
+		dispatch(updateCurrentIndexAction(newTrackIndex));
+		// Decrement TOTAL Track Index -1
+		dispatch(newUpdateTotalTrackIndex(int));
+		console.log(
+			'REWIND TO PREVIOUS PLUG.',
+			`PLUG INDEX: ${plugIndex - 1}, NEW TRACK INDEX: ${newTrackIndex}`,
+		);
+		return newTrackIndex;
 	} else {
 		dispatch(updateCurrentIndexAction(trackIndex + int));
+		// Increment/Decrement TOTAL Track Index +/= 1
+		dispatch(newUpdateTotalTrackIndex(int));
 		return trackIndex + int;
 	}
 };
@@ -311,86 +344,6 @@ export const prevSong = async () => {
 	}
 };
 
-// export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
-// 	const { dispatch } = store;
-// 		try {
-// 			console.log('updatePlaylist: getting playlist:', url);
-// 			const response = await SC.resolve(url);
-// 			console.log(response);
-
-// 			let shortURL;
-
-// 			var newPlug = {
-// 				title: null,
-// 				soundcloudURL: url,
-// 				imageURL: null,
-// 				shortID: await getShortURLFromPlaylistURL(url, true),
-// 			};
-
-// 			switch (response.kind) {
-// 				case 'playlist':
-// 					console.log('Searched Playlist', response);
-// 					let { tracks, title } = response;
-// 					// Get ShortID of playlist
-// 					shortURL = await getShortURLFromPlaylistURL(url);
-// 					console.log('SHORTURL', shortURL);
-// 					dispatch(clearPlaylistAction());
-// 					dispatch(
-// 						updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-// 					);
-// 					// Set new plug properties
-// 					newPlug.imageURL = getTrackArtURL(response);
-// 					newPlug.title = title;
-
-// 					break;
-// 				case 'user':
-// 					let user = response;
-// 					console.log(`Searched User: ${user.id}`);
-// 					// Search user's tracks
-// 					tracks = await SC.get('/tracks', {
-// 						user_id: user.id,
-// 						limit: 100,
-// 					});
-// 					title = user.permalink;
-// 					shortURL = await getShortURLFromPlaylistURL(url);
-// 					console.log('SHORTURL', shortURL);
-// 					dispatch(clearPlaylistAction());
-// 					dispatch(
-// 						updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-// 					);
-
-// 					// Set new plug properties
-// 					newPlug.imageURL = user.avatar_url;
-// 					newPlug.title = user.username;
-// 					break;
-// 				case 'track':
-// 					console.log('Searched Track', response);
-// 					title = response.title;
-// 					tracks = [response];
-// 					shortURL = await getShortURLFromPlaylistURL(url);
-// 					dispatch(clearPlaylistAction());
-// 					dispatch(
-// 						updatePlaylistAction(tracks, title, url, shortURL, response.kind),
-// 					);
-
-// 					// Set new plug properties
-// 					newPlug.imageURL = getTrackArtURL(response);
-// 					newPlug.title = title;
-// 					break;
-// 				default:
-// 					break;
-// 			}
-
-// 			// await getTrack(0);
-// 			// await playSnippet();
-// 			// await setSnippet();
-// 		} catch (err) {
-// 			console.log('updatePlaylist:', err);
-// 			dispatch(getSearchErrorAction(err));
-// 			// this.setState({ errorMessage: err.message });
-// 		}
-// 	};
-
 export const getPlaylistFromShortID = async shortID => {
 	try {
 		const playlistURL = await getLongURL(shortID);
@@ -423,7 +376,6 @@ export const getShortURLFromPlaylistURL = async (
 };
 
 // Swipe The Fucking Card on the screen
-
 const forceSwipeCard = swipeDirection => {
 	switch (swipeDirection) {
 		case LEFT:
@@ -456,6 +408,15 @@ export const clearTrackTime = async () => {
 
 /* NEW */
 export const newUpdatePlaylist = async plug => {
+	const { dispatch } = store;
+	console.log('newUpdatePlaylist: plug', plug);
+	console.log('Dispatching Plug', plug);
+	dispatch(clearPlaylistAction());
+	dispatch(newUpdatePlugAction(plug));
+};
+
+/* NEW */
+export const newAppendlaylist = async plug => {
 	const { dispatch } = store;
 	console.log('newUpdatePlaylist: plug', plug);
 	console.log('Dispatching Plug', plug);
@@ -608,4 +569,24 @@ const updateCurrentIndexAction = trackIndex => ({
 const newUpdatePlugAction = plug => ({
 	type: types.NEW_UPDATE_PLUG,
 	payload: plug,
+});
+
+const newAppendPlugAction = plug => ({
+	type: types.NEW_APPEND_PLUG,
+	payload: plug,
+});
+
+const newUpdateTrackIndex = trackIndex => ({
+	type: types.NEW_UPDATE_TRACK_INDEX,
+	payload: trackIndex,
+});
+
+const newUpdatePlugIndex = plugIndex => ({
+	type: types.NEW_UPDATE_PLUG_INDEX,
+	payload: plugIndex,
+});
+
+const newUpdateTotalTrackIndex = int => ({
+	type: types.NEW_INCREMENT_TOTAL_TRACK_INDEX,
+	payload: int,
 });

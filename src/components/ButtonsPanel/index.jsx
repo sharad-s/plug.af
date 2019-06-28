@@ -20,7 +20,9 @@ const RIGHT = 'right';
 
 class ButtonsPanel extends Component {
 	nextSnippet = async swipeDirection => {
-		console.log(`ButtonsPanel: Force swipe ${swipeDirection}: calling nextSong()`)
+		console.log(
+			`ButtonsPanel: Force swipe ${swipeDirection}: calling nextSong()`,
+		);
 		await nextSong(swipeDirection);
 		// await setSnippet();
 	};
@@ -44,8 +46,9 @@ class ButtonsPanel extends Component {
 		const { audio } = this.props;
 
 		const prevButtonStyle =
-			audio.trackIndex !== 0 ? { visibility: 'visible' } : { visibility: 'hidden' };
-
+			audio.trackIndex === 0 && audio.plugIndex === 0
+				? { visibility: 'hidden' }
+				: { visibility: 'visible' };
 
 		return (
 			<center>

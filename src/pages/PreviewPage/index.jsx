@@ -80,7 +80,7 @@ class AudioPage extends Component {
 				<div className="preview-container">
 					<p class="voila">Share your Plug</p>
 					<form class="preview-form">
-						<input type="text" class="link-input" value={audio.shortURL} />
+						<input type="text" class="link-input" value={`https://plug.af/${audio.currentPlug.shortID}`} />
 						<CopyURLButton />
 						<TweetButton />
 					</form>
