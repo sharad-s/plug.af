@@ -2,16 +2,16 @@ import * as types from './types';
 
 const initialState = {
   scPlayer: {},
-  playlist: {},
   currentTime: 0,
   isPlaying: false,
   plugs: [],
   plugIndex: 0,
   trackIndex: 0,
-  currentTrack: {},
-  currentPlug: {},
+  playlist: [{}],
   totalTrackCount: 0,
   totalTrackIndex: 0,
+  currentTrack: {},
+  currentPlug: {},
 };
 
 export default function(state = initialState, action) {
@@ -89,7 +89,7 @@ export default function(state = initialState, action) {
     case types.CLEAR_PLAYLIST:
       return {
         ...state,
-        playlist: {},
+        playlist: [],
       };
     case types.SET_SHORT_ID:
       return {
@@ -107,8 +107,9 @@ export default function(state = initialState, action) {
     case types.NEW_UPDATE_PLUG:
       return {
         ...state,
-        plugs: [...state.plugs, action.payload],
         currentPlug: action.payload,
+        plugs: [...state.plugs, action.payload],
+        playlist: [...state.playlist, ...action.payload.snippets],
         totalTrackCount: state.totalTrackCount + action.payload.snippets.length,
       };
 
@@ -116,6 +117,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         plugs: [...state.plugs, action.payload],
+        playlist: [...state.playlist, ...action.payload.snippets],
         totalTrackCount: state.totalTrackCount + action.payload.snippets.length,
       };
 
