@@ -11,7 +11,9 @@ const initialState = {
   totalTrackCount: 0,
   totalTrackIndex: 0,
   currentTrack: {},
-  currentPlug: {},
+  currentPlug: {
+    snippets: [],
+  },
 };
 
 export default function(state = initialState, action) {

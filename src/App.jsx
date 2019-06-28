@@ -21,6 +21,8 @@ import ExplorePage from './pages/ExplorePage';
 import LogoutPage from './pages/LogoutPage';
 import ProfilePage from './pages/ProfilePage';
 
+import ConvertOldPlugsPage from './pages/ConvertOldPlugsPage';
+
 // import Footer from './components/Layout/Footer';
 
 // Redux Functions
@@ -111,6 +113,14 @@ function App() {
                 render={() => {
                   pauseSnippet();
                   return <LogoutPage />;
+                }}
+              />
+              <Route
+                exact
+                path="/migrate"
+                render={() => {
+                  pauseSnippet();
+                  return <ConvertOldPlugsPage />;
                 }}
               />
               <Route

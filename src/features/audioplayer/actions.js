@@ -206,7 +206,10 @@ const _incrementIndex = async int => {
 	let newPlaylist = currentPlug.snippets;
 	/* PRELOAD: If trackIndex + int is exactly 2 less than playlist length, get next plug */
 	/* TODO: check if that specific track has been played or not yet  */
-	if (totalTrackIndex + int === totalTrackCount - 2) {
+	if (
+		totalTrackIndex + int === totalTrackCount - 2 ||
+		totalTrackIndex + int >= totalTrackCount
+	) {
 		const randomPlug = await getRandomPlug(1);
 		console.log('<_incremen></_incremen>tIndex, randomPlug:', randomPlug);
 		dispatch(newAppendPlugAction(randomPlug));
@@ -411,8 +414,16 @@ export const newUpdatePlaylist = async plug => {
 	const { dispatch } = store;
 	console.log('newUpdatePlaylist: plug', plug);
 	console.log('Dispatching Plug', plug);
+	await checkPlug(plug);
 	dispatch(clearPlaylistAction());
+	dispatch(clearAllAction());
 	dispatch(newUpdatePlugAction(plug));
+};
+
+const checkPlug = async plug => {
+	if (isEmpty(plug.snippets)) {
+		return _incrementIndex(1);
+	}
 };
 
 /* NEW */
@@ -458,23 +469,22 @@ export const newNextTrack = async (
 		// pauseSnippet();
 
 		// Index ?
-		const newTrackIndex = await _incrementIndex(1);
-		const nextTrack = newPlaylist[newTrackIndex];
+		const newTrackIndex  = await _incrementIndex(1);
+		const nextTrack = getState().audio.playlist[
+			getState().audio.totalTrackIndex
+		];
 
 		console.log('newNextTrack 2');
+
+		// const newTrackIndex = getState().audio.trackIndex;
 
 		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
 
 		console.log('newNextTrack 3');
 
-		const newCurrentTrackIndex = getState().audio.trackIndex;
-		const newCurrentTrack = getState().audio.currentPlug.snippets[
-			newCurrentTrackIndex
-		];
-
 		// console.log("nextTrack MATCHES newCurrentTrack", nextTrack.id === newCurrentTrack.id)
 
-		const streamUrl = _createStreamUrl(newCurrentTrack.soundcloudID);
+		const streamUrl = _createStreamUrl(nextTrack.soundcloudID);
 
 		console.log('newNextTrack 4');
 
@@ -495,7 +505,8 @@ export const newNextTrack = async (
 
 		// Mixpanel Tracker
 		track_NextSnippet({
-			newSnippetIndex: newCurrentTrackIndex,
+			newSnippetIndex: getState().audio.trackIndex,
+
 			action: msg,
 		});
 	} catch (err) {
@@ -556,8 +567,12 @@ const getTrackAction = (nextTrack, nextIndex) => ({
 	payload: { nextTrack, nextIndex },
 });
 
-const clearPlaylistAction = nextTrack => ({
+const clearPlaylistAction = () => ({
 	type: types.CLEAR_PLAYLIST,
+});
+
+const clearAllAction = () => ({
+	type: types.CLEAR_ALL,
 });
 
 const updateCurrentIndexAction = trackIndex => ({

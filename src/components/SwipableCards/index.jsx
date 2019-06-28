@@ -76,16 +76,12 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-
-
-
-
     // If New Playlist is Updated
-    if (prevProps.audio.currentPlug.snippets !== this.props.audio.currentPlug.snippets) {
-      const { trackIndex, currentPlug } = this.props.audio;
+    if (prevProps.audio.playlist !== this.props.audio.playlist) {
+      const { trackIndex, currentPlug, totalTrackIndex, playlist} = this.props.audio;
       const tracks = [];
 
-      let newPlaylist = currentPlug.snippets
+      let newPlaylist = currentPlug.snippets;
 
       // If New Playlist has tracks, push track objects to local state
       if (!isEmpty(newPlaylist.length)) {
@@ -93,13 +89,13 @@ class App extends Component {
           'componentDidUpdate:: New Snippet Playlist Loaded. Playlist:',
           newPlaylist,
           ' / Tracks being pushed to state:',
-          createTrackSubset(newPlaylist[trackIndex]),
-          createTrackSubset(newPlaylist[trackIndex + 1]),
+          createTrackSubset(playlist[totalTrackIndex]),
+          createTrackSubset(playlist[totalTrackIndex + 1]),
         );
 
         tracks.push(
-          createTrackSubset(newPlaylist[trackIndex]),
-          createTrackSubset(newPlaylist[trackIndex + 1]),
+          createTrackSubset(playlist[totalTrackIndex]),
+          createTrackSubset(playlist[totalTrackIndex + 1]),
         );
 
         this.setState({ tracks }, () => {
@@ -120,7 +116,7 @@ class App extends Component {
     // // If Track Index is Updated
     if (prevProps.audio.trackIndex !== this.props.audio.trackIndex) {
       const { trackIndex, currentPlug } = this.props.audio;
-      let newPlaylist = currentPlug.snippets
+      let newPlaylist = currentPlug.snippets;
       const tracks = [];
 
       console.log(
