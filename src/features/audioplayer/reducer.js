@@ -47,7 +47,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isPlaying: true,
-        currentTrack: action.payload,
+        // currentTrack: action.payload,
       };
 
     case types.PAUSE_SNIPPET:
@@ -107,7 +107,6 @@ export default function(state = initialState, action) {
         ...state,
         plugs: [...state.plugs, action.payload],
         currentPlug: action.payload,
-        playlist: action.payload.snippets,
       };
 
     case types.NEW_APPEND_PLUG:

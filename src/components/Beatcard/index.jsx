@@ -18,6 +18,9 @@ const regex = /large/gi;
 const increaseImageResolution = originalURL => originalURL.replace(regex, "t500x500");
 
 class Beatcard extends Component {
+
+
+  // Update animation based nextProps.audio.secondsPassed
   componentWillReceiveProps(nextProps) {
 
     const secondsPassed = nextProps.audio.currentTime - 45;

@@ -16,6 +16,7 @@ import { bindActionCreators } from 'redux';
 import {
   // setSnippet,
   nextSong,
+  newNextTrack,
 } from '../../features/audioplayer/actions';
 
 const swipeWrapperStyles = {
@@ -75,6 +76,10 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+
+
+
+
     // If New Playlist is Updated
     if (prevProps.audio.currentPlug.snippets !== this.props.audio.currentPlug.snippets) {
       const { trackIndex, currentPlug } = this.props.audio;
@@ -112,12 +117,11 @@ class App extends Component {
       }
     }
 
-    // // If New Track Index is Updated
+    // // If Track Index is Updated
     if (prevProps.audio.trackIndex !== this.props.audio.trackIndex) {
-      const { playlist, trackIndex, currentPlug } = this.props.audio;
-      const tracks = [];
+      const { trackIndex, currentPlug } = this.props.audio;
       let newPlaylist = currentPlug.snippets
-
+      const tracks = [];
 
       console.log(
         `trackIndex Updated: Prev TrackIndex: ${
@@ -179,21 +183,20 @@ class App extends Component {
 
     this.remove();
     console.log(
-      `SwipableCards: onAfterSwipe: Actual Swipe ${swipeDirection}: calling nextSong()`,
+      `SwipableCards: onAfterSwipe: Actual Swipe ${swipeDirection}: calling newNextTrack()`,
     );
-    nextSong(swipeDirection, { disableForceSwipe: true });
-    this.setState({ currentSwipe: null }, () => {
-      console.log(
-        `SwipableCards: onAfterSwipe: set state.currentSwipe to ${
-          this.state.currentSwipe
-        }`,
-      );
-    });
+    newNextTrack(swipeDirection, { disableForceSwipe: true, swipeDirection });
+    // this.setState({ currentSwipe: null }, () => {
+    //   console.log(
+    //     `SwipableCards: onAfterSwipe: set state.currentSwipe to ${
+    //       this.state.currentSwipe
+    //     }`,
+    //   );
+    // });
   };
 
   render() {
     const { tracks } = this.state;
-    const { audio } = this.props;
 
     return (
       <Fragment>

@@ -98,36 +98,34 @@ export const pauseSnippet = async () => {
 	}
 };
 
+// LOAD THE TRACK INTO CURRENTTRACK
 export const getTrack = async index => {
 	const { getState, dispatch } = store;
-	const { playlist } = getState().audio;
+	const { playlist, currentPlug } = getState().audio;
 
-	const track = playlist[index];
+	const newPlaylist = currentPlug.snippets;
+
+	const track = newPlaylist[index];
 	console.log('gettrack', track);
 	dispatch(getTrackAction(track, index));
 };
 
+// PLAY THE SNIPPET USING WEB AUDIO
 export const playSnippet = async () => {
 	const { getState, dispatch } = store;
-	const { scPlayer, playlist, trackIndex, shortURL } = getState().audio;
-
-	const track = playlist[trackIndex];
-
-	console.log('Playing Snippet...');
-
-	// Preload Next Snippet
-	try {
-		const nextTrack = playlist[trackIndex + 1];
-		const nextStreamUrl = _createStreamUrl(nextTrack.soundcloudID);
-		// await scPlayer.preload(nextStreamUrl, 'auto');
-		// console.log('Preload scPlayer:', scPlayer);
-	} catch (err) {
-		console.log('playSnippet: preload next snippet', err.message);
-	}
+	const {
+		scPlayer,
+		playlist,
+		trackIndex,
+		shortURL,
+		currentTrack,
+	} = getState().audio;
 
 	try {
 		// Create Stream URL
-		const streamUrl = _createStreamUrl(track.soundcloudID);
+		const streamUrl = _createStreamUrl(currentTrack.soundcloudID);
+		console.log('Playing Snippet...', streamUrl);
+
 		// console.log('playSnippet:', streamUrl);
 		await scPlayer.play({
 			streamUrl,
@@ -137,16 +135,17 @@ export const playSnippet = async () => {
 		track_PlaySnippet({
 			shortURL,
 			trackIndex,
-			trackTitle: track.title,
-			trackArtist: track.artist
+			trackTitle: currentTrack.title,
+			trackArtist: currentTrack.artist,
 		});
-
-		dispatch(playSnippetAction(track));
+		// Dispatch Action
+		dispatch(playSnippetAction(currentTrack));
 	} catch (err) {
 		console.log('playSnippet:', err.message);
 	}
 };
 
+// SNIPPET FUNCTIONALITY
 export const setSnippet = async () => {
 	const { getState, dispatch } = store;
 	const { scPlayer } = getState().audio;
@@ -162,13 +161,13 @@ export const setSnippet = async () => {
 
 			if (currentTime > 60) {
 				console.log('setSnippet: currentTime > 60: calling nextSong()');
-				nextSong();
+				newNextTrack();
 			}
 		});
 		scPlayer.on('ended', () => {
 			console.log('Playback Unexpectedly ended. Skipping to Next Song');
 			console.log('setSnippet: onEnded: calling nextSong()');
-			nextSong();
+			newNextTrack();
 		});
 		scPlayer.on('paused', () => {
 			console.log('scPlayer.onPaused');
@@ -196,20 +195,21 @@ const _createStreamUrl = id => `https://api.soundcloud.com/tracks/${id}/stream`;
 
 const _incrementIndex = async int => {
 	const { getState, dispatch } = store;
-	const { trackIndex, playlist } = getState().audio;
+	const { trackIndex, playlist, currentPlug } = getState().audio;
+	let newPlaylist = currentPlug.snippets;
 	// If trackIndex+ int is out of range of playlist length, return 0;
-	if (trackIndex + int >= playlist.length || trackIndex + int < 0) {
+	// If trackIndex + int is more than playlist length, increment plug
+	if (trackIndex + int >= newPlaylist.length) {
 		dispatch(updateCurrentIndexAction(0));
+		return 0;
+	} else if (trackIndex + int < 0) {
+		dispatch(updateCurrentIndexAction(2));
 		return 0;
 	} else {
 		dispatch(updateCurrentIndexAction(trackIndex + int));
 		return trackIndex + int;
 	}
 };
-
-
-
-
 
 // Swipe with Next Song
 export const nextSong = async (
@@ -309,14 +309,6 @@ export const prevSong = async () => {
 	} catch (err) {
 		console.log('prevSong:', err.message);
 	}
-};
-
-export const newUpdatePlaylist = async plug => {
-	const { dispatch } = store;
-	console.log('newUpdatePlaylist: plug', plug);
-	console.log("Dispatching Plug", plug)
-	dispatch(clearPlaylistAction());
-	dispatch(newUpdatePlugAction(plug))
 };
 
 // export const updatePlaylist = async (url = PLUG_PLAYLIST_URL) => {
@@ -462,6 +454,94 @@ export const clearTrackTime = async () => {
 	);
 };
 
+/* NEW */
+export const newUpdatePlaylist = async plug => {
+	const { dispatch } = store;
+	console.log('newUpdatePlaylist: plug', plug);
+	console.log('Dispatching Plug', plug);
+	dispatch(clearPlaylistAction());
+	dispatch(newUpdatePlugAction(plug));
+};
+
+export const newNextTrack = async (
+	swipeDirection = 'LEFT',
+	opts = { disableForceSwipe: false, swipeDirection: 'LEFT' },
+) => {
+	const { getState, dispatch } = store;
+	const {
+		scPlayer,
+		playlist,
+		plugIndex,
+		trackIndex,
+		currentPlug,
+		currentTrack,
+		plugs,
+	} = getState().audio;
+
+	let newPlaylist = currentPlug.snippets;
+
+	console.log('newNextTrack 0');
+
+	// If Anything other than manual swipe occurs, Force Swipe Card
+	if (!opts.disableForceSwipe) {
+		console.log('audioplayer Actions: nextSong: Force Swipe called');
+
+		const action = swipeDirection === 'RIGHT' ? 'LIKE' : 'DISLIKE';
+
+		return forceSwipeCard(swipeDirection);
+	}
+
+	console.log('newNextTrack 1');
+
+	try {
+		// pauseSnippet();
+
+		// Index ?
+		const newTrackIndex = await _incrementIndex(1);
+		const nextTrack = newPlaylist[newTrackIndex];
+
+		console.log('newNextTrack 2');
+
+		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
+
+		console.log('newNextTrack 3');
+
+		const newCurrentTrackIndex = getState().audio.trackIndex;
+		const newCurrentTrack = getState().audio.currentPlug.snippets[
+			newCurrentTrackIndex
+		];
+
+		// console.log("nextTrack MATCHES newCurrentTrack", nextTrack.id === newCurrentTrack.id)
+
+		const streamUrl = _createStreamUrl(newCurrentTrack.soundcloudID);
+
+		console.log('newNextTrack 4');
+
+		// Play Snippet
+		await scPlayer.play({
+			streamUrl,
+		});
+
+		console.log('newNextTrack 5');
+
+		// Set Snippet Interval
+		await setSnippet();
+
+		console.log('newNextTrack 6');
+
+		const msg = swipeDirection === 'RIGHT' ? 'LIKE' : 'SKIP';
+		console.log(msg);
+
+		// Mixpanel Tracker
+		track_NextSnippet({
+			newSnippetIndex: newCurrentTrackIndex,
+			action: msg,
+		});
+	} catch (err) {
+		console.log('newNextTrack:', err.message);
+	}
+};
+
 /*
 ******************
 Action Creators
@@ -524,9 +604,8 @@ const updateCurrentIndexAction = trackIndex => ({
 	payload: trackIndex,
 });
 
-
-//  NEW 
+//  NEW
 const newUpdatePlugAction = plug => ({
 	type: types.NEW_UPDATE_PLUG,
 	payload: plug,
-})
+});
