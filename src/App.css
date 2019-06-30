@@ -844,6 +844,23 @@ select {
   animation: loader 500ms linear infinite;
 }
 
+@media only screen and (max-width: 768px) {
+  .gallery-item-info li {
+    display: inline-block;
+    font-size: 30px;
+    font-weight: 600;
+  }
+  .gallery-item {
+    position: relative;
+    flex: 1 0 10rem;
+    margin: 1rem;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+ 
+}
+
 
 
 /* Spinner Animation */
