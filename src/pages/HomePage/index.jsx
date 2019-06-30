@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 
 import { createPlugWithApi } from '../../features/plugs/actions';
 
+
+
 class HomePage extends Component {
 	constructor(props) {
 		super(props);

@@ -34,7 +34,7 @@ const PLUG_PLAYLIST_URL = 'https://soundcloud.com/99q/sets/xxx';
 
 const baseURL = 'https://plug.af/';
 
-const CLIENT_ID = '47159083054685525f6b73d25e2560b9';
+const CLIENT_ID = 'f911752b0d31492eca3ea086fbc9e8fd';
 
 SC.initialize({
 	client_id: CLIENT_ID,
@@ -415,10 +415,14 @@ export const newUpdatePlaylist = async plug => {
 	console.log('newUpdatePlaylist: plug', plug);
 	console.log('Dispatching Plug', plug);
 	await checkPlug(plug);
+	const response = await resolveSoundcloudURL(plug.soundcloudURL);
+	console.log("SC OBJECT", response)
 	dispatch(clearPlaylistAction());
 	dispatch(clearAllAction());
 	dispatch(newUpdatePlugAction(plug));
 };
+
+
 
 const checkPlug = async plug => {
 	if (isEmpty(plug.snippets)) {

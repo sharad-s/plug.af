@@ -59,11 +59,11 @@ export const createPlugWithApi = async url => {
  *  GETs all plugs. Needs to be paginated too
  *  Passes Authenticated Token as x-auth-token to API
  */
-export const getPlugs = async userID => {
+export const getPlugs = async (pageNum=1) => {
   const { dispatch } = store;
   try {
-    console.log(`GETTING ALL PLUGS FOR USER ${userID}`);
-    const res = await axios.get(`/api/plugs/`);
+    console.log(`GETTING ALL PLUGS FOR PAGE ${pageNum}`);
+    const res = await axios.get(`/api/plugs/?page=${pageNum}`);
 
     const plugs = res.data;
     dispatch(getPlugsAction(plugs));

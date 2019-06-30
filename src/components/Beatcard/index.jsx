@@ -111,7 +111,7 @@ class Beatcard extends Component {
 
           {/* Soundcloud Underbutton */}
 
-          <a class="pure-button btn-sc" href={track.permalink_url}>
+          <a class="pure-button btn-sc" href={track.soundcloudPermalinkURL}>
             <i class="fab fa-soundcloud" /> Listen on Soundcloud
           </a>
         </div>

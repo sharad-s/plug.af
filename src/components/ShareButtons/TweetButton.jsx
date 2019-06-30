@@ -11,7 +11,8 @@ class TweetButton extends Component {
 	}
 
 	render() {
-		const shortURL = this.props.audio.shortURL;
+		const { audio } = this.props;
+		const shortURL = `https://plug.af/${audio.currentPlug.shortid}`;
 
 		return (
 			<a
