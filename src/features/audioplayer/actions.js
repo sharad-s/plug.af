@@ -390,7 +390,7 @@ export const prevSong = async () => {
 	try {
 
 		// Index ?
-		const newTrackIndex  = await _incrementIndex(1);
+		const newTrackIndex  = await _incrementIndex(-1);
 		const nextTrack = getState().audio.playlist[
 			getState().audio.totalTrackIndex
 		];
