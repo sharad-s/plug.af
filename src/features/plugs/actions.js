@@ -120,6 +120,27 @@ export const getPlugsFromUser = async userID => {
   }
 };
 
+
+/*
+ *  getPlugsFromUser:
+ *  GETS plug made by specific user
+ *
+ */
+export const incrementSnippetPlayCount = async snippetID => {
+  const { dispatch } = store;
+  try {
+    console.log(`INCREMENTING PLAYCOUNT FOR SNIPPET WITH ID: ${snippetID}`);
+    const res = await axios.post(`api/snippets/incrementPlayCount/${snippetID}`);
+    const snippet = res.data;
+    // dispatch(getPlugsAction(plugs));
+    console.log('Result:', snippet);
+    return res;
+  } catch (err) {
+    console.log('incrementSnippetPlayCount: err:', err);
+    // dispatch(getPlugErrorsAction(err));
+  }
+};
+
 const parsePlug = async url => {
   const { dispatch } = store;
   try {

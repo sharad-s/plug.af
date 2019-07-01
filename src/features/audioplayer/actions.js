@@ -13,7 +13,7 @@ import {
 	// getAPIErrorsAction,
 } from '../errors/actions';
 
-import { createPlugWithApi, getRandomPlug } from '../plugs/actions';
+import { createPlugWithApi, getRandomPlug, incrementSnippetPlayCount } from '../plugs/actions';
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
@@ -30,7 +30,6 @@ import {
 	track_PrevSnippet,
 } from '../../utils/mixpanel';
 
-const PLUG_PLAYLIST_URL = 'https://soundcloud.com/99q/sets/xxx';
 
 const baseURL = 'https://plug.af/';
 
@@ -44,16 +43,6 @@ SC.initialize({
 // Constants
 const LEFT = 'left';
 const RIGHT = 'right';
-
-const regex = /large/gi;
-
-const increaseImageResolution = originalURL =>
-	originalURL.replace(regex, 't500x500');
-
-const getTrackArtURL = trackorPlaylist =>
-	isEmpty(trackorPlaylist.artwork_url)
-		? increaseImageResolution(trackorPlaylist.user.avatar_url)
-		: increaseImageResolution(trackorPlaylist.artwork_url);
 
 /*
 ******************
@@ -130,6 +119,9 @@ export const playSnippet = async () => {
 		await scPlayer.play({
 			streamUrl,
 		});
+
+		// Increment Play Count for Snippet
+		await incrementSnippetPlayCount(currentTrack._id)
 
 		// Mixpanel Tracker
 		track_PlaySnippet({
