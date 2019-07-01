@@ -12,17 +12,15 @@ import {
 } from '../../features/audioplayer/actions';
 
 // Subcomponents
-import {SmallLoader as Loader} from "../Loader";
+import { SmallLoader as Loader } from '../Loader';
 
 const regex = /large/gi;
-const increaseImageResolution = originalURL => originalURL.replace(regex, "t500x500");
+const increaseImageResolution = originalURL =>
+  originalURL.replace(regex, 't500x500');
 
 class Beatcard extends Component {
-
-
   // Update animation based nextProps.audio.secondsPassed
   componentWillReceiveProps(nextProps) {
-
     const secondsPassed = nextProps.audio.currentTime - 45;
     let duration = 15;
 
@@ -30,7 +28,7 @@ class Beatcard extends Component {
 
     let numnum = ((secondsPassed % duration) / duration - 1) * 100;
     if (secondsPassed > duration) {
-      numnum = -100
+      numnum = -100;
     }
 
     elem.style.transform = `translate3d(${numnum}%, 0, 0)`;
@@ -45,7 +43,6 @@ class Beatcard extends Component {
     //   "isPlaying:",
     //   nextProps.audio.isPlaying
     // );
-
   }
 
   handleClick = async e => {
@@ -77,9 +74,13 @@ class Beatcard extends Component {
       <i className="fas fa-play" />
     );
 
-    const renderedPlayButton = audio.loading ? <Loader /> : (
+    const renderedPlayButton = audio.loading ? (
+      <Loader />
+    ) : (
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
     );
+
+    const renderedPlayCount = <span> {track.playCount} </span>;
 
     return (
       <div class="card-container-god">
@@ -89,11 +90,15 @@ class Beatcard extends Component {
           <div class="card-image-container">
             {/* Card Image */}
             <img src={track.imageURL} className="card-image" />
-            {/* 25% Image Overlay with Track Details */}
+
+
+            {/* 25% Image Bottom Overlay with Track Details */}
             <div class="information-overlay" id="OVERLAY">
               <div class="fill" />
               <div class="details-container">
-                <div class="icon-on-overlay">{renderedPlayButton}</div>
+                <div class="icon-on-overlay">
+                  {renderedPlayCount} {renderedPlayButton} 
+                </div>
                 <div class="details">
                   <p className="title-text noselect">
                     {track.title ? track.title : null}
@@ -124,7 +129,4 @@ const mapStateToProps = state => ({
   audio: state.audio,
 });
 
-
-export default connect(
-  mapStateToProps,
-)(Beatcard); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}
+export default connect(mapStateToProps)(Beatcard); // {renderedTrackArtwork} //         {renderedTrackMetadata} //         {renederedSeconds} //         {renderedPlaylistName} //         {renderedPlayButton}

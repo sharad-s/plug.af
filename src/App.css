@@ -234,6 +234,7 @@ body.noScroll { /* ...or body.dialogShowing */
   justify-content: space-between;
   align-items: center;
   height: 100%;
+
 }
 .card_title {
   text-align: center;
@@ -306,9 +307,9 @@ body.noScroll { /* ...or body.dialogShowing */
   height: auto;
   margin-top: auto;
   margin-bottom: auto;
-  flex-shrink: 0;
-  flex-grow: 0;
   text-align: center;
+  display: flex;
+  justify-content: center
   /*background-color: red;*/
 }
 
