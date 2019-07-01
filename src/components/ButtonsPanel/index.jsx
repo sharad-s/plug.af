@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
 	setSnippet,
-	nextSong,
+	newNextTrack,
 	prevSong,
 } from '../../features/audioplayer/actions';
 
@@ -23,7 +23,7 @@ class ButtonsPanel extends Component {
 		console.log(
 			`ButtonsPanel: Force swipe ${swipeDirection}: calling nextSong()`,
 		);
-		await nextSong(swipeDirection);
+		await newNextTrack(swipeDirection);
 		// await setSnippet();
 	};
 
@@ -84,16 +84,7 @@ class ButtonsPanel extends Component {
 const mapStateToProps = state => ({
 	audio: state.audio,
 });
-const mapDispatchToProps = dispatch =>
-	bindActionCreators(
-		{
-			setSnippet,
-			nextSong,
-			prevSong,
-		},
-		dispatch,
-	);
+
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps,
 )(ButtonsPanel); // {renderedTrackArtwork} //

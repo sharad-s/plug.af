@@ -110,6 +110,8 @@ export const playSnippet = async () => {
 		currentTrack,
 	} = getState().audio;
 
+	dispatch(trackLoading())
+
 	try {
 		// Create Stream URL
 		const streamUrl = _createStreamUrl(currentTrack.soundcloudID);
@@ -239,105 +241,8 @@ const _incrementIndex = async int => {
 	}
 };
 
-// Swipe with Next Song
-export const nextSong = async (
-	swipeDirection = 'LEFT',
-	opts = { disableForceSwipe: false },
-) => {
-	const { getState, dispatch } = store;
-	const { scPlayer, playlist } = getState().audio;
 
-	console.log('nextSong 0');
 
-	// If Anything other than manual swipe occurs, Force Swipe Card
-	if (!opts.disableForceSwipe) {
-		console.log('audioplayer Actions: nextSong: Force Swipe called');
-
-		const action = swipeDirection === 'RIGHT' ? 'LIKE' : 'DISLIKE';
-
-		return forceSwipeCard(swipeDirection);
-	}
-
-	console.log('nextSong 1');
-
-	try {
-		// pauseSnippet();
-
-		// Index ?
-		const newTrackIndex = await _incrementIndex(1);
-		const nextTrack = playlist[newTrackIndex];
-
-		console.log('nextSong 2');
-
-		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
-
-		console.log('nextSong 3');
-
-		const newCurrentTrackIndex = getState().audio.trackIndex;
-		const newCurrentTrack = getState().audio.playlist[newCurrentTrackIndex];
-
-		// console.log("nextTrack MATCHES newCurrentTrack", nextTrack.id === newCurrentTrack.id)
-
-		const streamUrl = _createStreamUrl(newCurrentTrack.soundcloudID);
-
-		console.log('nextSong 4');
-
-		// Play Snippet
-		await scPlayer.play({
-			streamUrl,
-		});
-
-		console.log('nextSong 5');
-
-		// Set Snippet Interval
-		await setSnippet();
-
-		console.log('nextSong 6');
-
-		// Mixpanel Tracker
-		track_NextSnippet({
-			newSnippetIndex: newCurrentTrackIndex,
-			action: swipeDirection === 'RIGHT' ? 'LIKE' : 'SKIP',
-		});
-	} catch (err) {
-		console.log('nextSong:', err.message);
-	}
-};
-
-export const prevSong = async () => {
-	const { getState, dispatch } = store;
-	const { playlist } = getState().audio;
-
-	try {
-		const newTrackIndex = await _incrementIndex(-1);
-		if (newTrackIndex === 0) {
-			await getTrack(0);
-			await playSnippet();
-			await setSnippet();
-			return;
-		}
-		console.log('prevSong:', newTrackIndex);
-
-		await getTrack(newTrackIndex);
-		await playSnippet();
-		await setSnippet();
-		const nextTrack = playlist[newTrackIndex];
-		// const streamUrl = _createStreamUrl(nextTrack.id);
-		// await scPlayer.play({
-		// 	streamUrl,
-		// });
-		// await setSnippet();
-
-		// Mixpanel Tracker
-		track_PrevSnippet({
-			newSnippetIndex: newTrackIndex,
-		});
-
-		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
-	} catch (err) {
-		console.log('prevSong:', err.message);
-	}
-};
 
 export const getPlaylistFromShortID = async shortID => {
 	try {
@@ -436,34 +341,20 @@ export const newNextTrack = async (
 	opts = { disableForceSwipe: false, swipeDirection: 'LEFT' },
 ) => {
 	const { getState, dispatch } = store;
-	const {
-		scPlayer,
-		playlist,
-		plugIndex,
-		trackIndex,
-		currentPlug,
-		currentTrack,
-		plugs,
-	} = getState().audio;
 
-	let newPlaylist = currentPlug.snippets;
 
 	console.log('newNextTrack 0');
 
 	// If Anything other than manual swipe occurs, Force Swipe Card
 	if (!opts.disableForceSwipe) {
 		console.log('audioplayer Actions: nextSong: Force Swipe called');
-
 		const action = swipeDirection === 'RIGHT' ? 'LIKE' : 'DISLIKE';
-
 		return forceSwipeCard(swipeDirection);
 	}
 
 	console.log('newNextTrack 1');
 
 	try {
-		// pauseSnippet();
-
 		// Index ?
 		const newTrackIndex  = await _incrementIndex(1);
 		const nextTrack = getState().audio.playlist[
@@ -471,30 +362,13 @@ export const newNextTrack = async (
 		];
 
 		console.log('newNextTrack 2');
-
-		// const newTrackIndex = getState().audio.trackIndex;
-
 		dispatch(nextSnippetAction(newTrackIndex, nextTrack));
-
 		console.log('newNextTrack 3');
 
-		// console.log("nextTrack MATCHES newCurrentTrack", nextTrack.id === newCurrentTrack.id)
-
-		const streamUrl = _createStreamUrl(nextTrack.soundcloudID);
-
-		console.log('newNextTrack 4');
-
-		// Play Snippet
-		await scPlayer.play({
-			streamUrl,
-		});
-
-		console.log('newNextTrack 5');
-
-		// Set Snippet Interval
+		await playSnippet();
 		await setSnippet();
 
-		console.log('newNextTrack 6');
+		console.log('newNextTrack 4');
 
 		const msg = swipeDirection === 'RIGHT' ? 'LIKE' : 'SKIP';
 		console.log(msg);
@@ -502,11 +376,39 @@ export const newNextTrack = async (
 		// Mixpanel Tracker
 		track_NextSnippet({
 			newSnippetIndex: getState().audio.trackIndex,
-
 			action: msg,
 		});
 	} catch (err) {
 		console.log('newNextTrack:', err.message);
+	}
+};
+
+export const prevSong = async () => {
+	const { getState, dispatch } = store;
+	const { playlist } = getState().audio;
+
+	try {
+
+		// Index ?
+		const newTrackIndex  = await _incrementIndex(1);
+		const nextTrack = getState().audio.playlist[
+			getState().audio.totalTrackIndex
+		];
+
+		console.log('prevSong: new Track Index', newTrackIndex, "prevTrack", nextTrack);
+		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
+
+		await getTrack(newTrackIndex);
+		await playSnippet();
+		await setSnippet();
+
+		// Mixpanel Tracker
+		track_PrevSnippet({
+			newSnippetIndex: newTrackIndex,
+		});
+
+	} catch (err) {
+		console.log('prevSong:', err.message);
 	}
 };
 
@@ -601,3 +503,8 @@ const newUpdateTotalTrackIndex = int => ({
 	type: types.NEW_INCREMENT_TOTAL_TRACK_INDEX,
 	payload: int,
 });
+
+
+const trackLoading = () => ({
+	type: types.TRACK_LOADING	
+})

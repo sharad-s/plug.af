@@ -844,6 +844,16 @@ select {
   animation: loader 500ms linear infinite;
 }
 
+.loader-small {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0.3rem solid #999;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: loader 500ms linear infinite;
+}
+
 
 
 /* Spinner Animation */

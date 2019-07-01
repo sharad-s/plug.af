@@ -51,6 +51,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isPlaying: true,
+        loading: false
         // currentTrack: action.payload,
       };
 
@@ -65,7 +66,6 @@ export default function(state = initialState, action) {
         ...state,
         trackIndex: action.payload.trackIndex,
         currentTrack: action.payload.currentTrack,
-        isPlaying: true,
       };
 
     case types.PREV_SNIPPET:
@@ -145,6 +145,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         totalTrackIndex: state.totalTrackIndex + action.payload,
+      };
+
+    /* Loading */
+    case types.TRACK_LOADING:
+      return {
+        ...state,
+        loading: true
       };
 
     default:

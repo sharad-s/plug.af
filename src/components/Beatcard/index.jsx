@@ -77,9 +77,9 @@ class Beatcard extends Component {
       <i className="fas fa-play" />
     );
 
-    const renderedPlayButton = track.title ? (
+    const renderedPlayButton = audio.loading ? <Loader /> : (
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
-    ) : null;
+    );
 
     return (
       <div class="card-container-god">
