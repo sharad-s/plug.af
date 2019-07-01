@@ -76,10 +76,12 @@ export const getPlugs = async (pageNum=1) => {
 
 export const getPlugByShortID = async shortID => {
   const { dispatch } = store;
+  dispatch(plugLoading())
   try {
     const res = await axios.get(`/api/plugs/shortID/${shortID}`);
     const plug = res.data;
     console.log('GOT PLUG', plug);
+    dispatch(getPlugAction(plug))
     return plug;
   } catch (err) {
     console.log('getPlugByShortID: err:', err);
@@ -89,10 +91,12 @@ export const getPlugByShortID = async shortID => {
 
 export const getRandomPlug = async (amount = 1) => {
   const { dispatch } = store;
+  dispatch(plugLoading())
   try {
     const res = await axios.get(`/api/plugs/random?amount=${amount}`);
     const randomPlug = res.data[0];
     console.log('GOT RANDOM PLUG', randomPlug);
+    dispatch(getPlugAction(randomPlug))
     return randomPlug;
   } catch (err) {
     console.log('getPlugByShortID: err:', err);
@@ -271,3 +275,7 @@ const getPlugAction = plug => ({
   type: types.GET_PLUG,
   payload: plug,
 });
+
+const plugLoading = () => ({
+  type: types.PLUG_LOADING  
+})

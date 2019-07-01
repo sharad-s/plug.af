@@ -3,6 +3,7 @@ import * as types from './types';
 const initialState = {
 	currentPlug: {},
 	plugs: {},
+	loading: false
 };
 
 export default function(state = initialState, action) {
@@ -14,12 +15,17 @@ export default function(state = initialState, action) {
 		case types.GET_PLUG:
 			return {
 				...state,
-				currentPlug: action.payload,
+				loading: false
 			};
 		case types.GET_PLUGS:
 			return {
 				...state,
 				plugs: action.payload,
+			};
+		case types.PLUG_LOADING:
+			return {
+				...state,
+				loading: true,
 			};
 		default:
 			return state;

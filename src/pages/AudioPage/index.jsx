@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import AudioPlayer from '../../components/AudioPlayer';
 import ButtonsPanel from '../../components/ButtonsPanel';
 import Overlay from '../../components/Overlay';
+import { Loader } from '../../components/Loader';
 
 // Mixpanel
 
@@ -81,13 +82,17 @@ class AudioPage extends Component {
   }
 
   render() {
-    const { audio } = this.props;
+    const { audio, plug } = this.props;
 
     const renderedPlaylistName = audio.playlistName ? (
       <h3>Playlist {audio.playlistName} </h3>
     ) : null;
 
-    return (
+    const renderedPage = plug.loading ? (
+      <div className="audiopage-loader-container">
+        <Loader />
+      </div>
+    ) : (
       <Fragment>
         <AudioPlayer
           tracks={this.state.tracks}
@@ -98,17 +103,14 @@ class AudioPage extends Component {
         <ButtonsPanel />
       </Fragment>
     );
+
+    return <Fragment>{renderedPage}</Fragment>;
   }
 }
 
 const mapStateToProps = state => ({
   audio: state.audio,
+  plug: state.plug,
 });
 
-
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-  )(AudioPage),
-);
+export default withRouter(connect(mapStateToProps)(AudioPage));

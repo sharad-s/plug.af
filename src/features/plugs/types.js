@@ -7,3 +7,8 @@ export const GET_PLUGS = "GET_PLUGS"
 
 // New
 export const NEW_UPDATE_PLUG = "NEW_UPDATE_PLUG"
+
+
+
+// Loading
+export const PLUG_LOADING = "PLUG_LOADING"
