@@ -8,8 +8,12 @@ import isEmpty from '../../utils/isEmpty';
 
 // Redux
 import { connect } from 'react-redux';
+
 // Plug Actions
 import { getPlugs } from '../../features/plugs/actions';
+
+// SubComponents
+import Beatcard from "./Beatcard"
 
 class ExplorePage extends Component {
 	state = {
@@ -40,23 +44,7 @@ class ExplorePage extends Component {
 					// Check Creator name if exists
 					const creatorName =
 						plug.creator === null ? 'Anonymous' : plug.creator.name;
-
-					return (
-						<div class="gallery-item" tabindex="0">
-							<Link to={`/${plug.shortID}`}>
-								<img src={plug.imageURL} class="gallery-image" alt="" />
-
-								<div class="gallery-item-info">
-									<ul>
-										<li class="gallery-item-likes">
-											<span class="visually-hidden">Plays:</span>
-											<i class="fas fa-play" aria-hidden="true" /> 89
-										</li>
-									</ul>
-								</div>
-							</Link>
-						</div>
-					);
+					return <Beatcard plug={plug} key={idx} />
 			  });
 
 		return (

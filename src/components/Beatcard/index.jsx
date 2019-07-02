@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import isEmpty from '../../utils/isEmpty';
 
 // Redux
@@ -74,9 +74,7 @@ class Beatcard extends Component {
       <i className="fas fa-play" />
     );
 
-    const renderedPlayButton = audio.loading ? (
-      <Loader />
-    ) : (
+    const renderedPlayButton = (
       <button onClick={this.handleClick}>{renderedPlayButtonText}</button>
     );
 
@@ -91,13 +89,18 @@ class Beatcard extends Component {
             {/* Card Image */}
             <img src={track.imageURL} className="card-image" />
 
-
             {/* 25% Image Bottom Overlay with Track Details */}
             <div class="information-overlay" id="OVERLAY">
               <div class="fill" />
               <div class="details-container">
                 <div class="icon-on-overlay">
-                  {renderedPlayCount} {renderedPlayButton} 
+                  {audio.loading ? (
+                    <Loader />
+                  ) : (
+                    <Fragment>
+                      {renderedPlayCount} {renderedPlayButton}
+                    </Fragment>
+                  )}
                 </div>
                 <div class="details">
                   <p className="title-text noselect">

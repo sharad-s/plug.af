@@ -62,7 +62,7 @@ class LeftSidebar extends React.Component {
       >
         <div className="header-container">
          <Link to="/create" className="header-item" id="MENU_BUTTON">
-            +create
+            create
           </Link>
           <Link to="/" className="header-item" id="CENTER_ICON">
             plug

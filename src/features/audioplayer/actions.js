@@ -310,6 +310,9 @@ export const clearTrackTime = async () => {
 export const newUpdatePlaylist = async plug => {
 	const { dispatch } = store;
 	console.log('newUpdatePlaylist: plug', plug);
+
+	if (isEmpty(plug)) return false;
+	
 	console.log('Dispatching Plug', plug);
 	await checkPlug(plug);
 	const response = await resolveSoundcloudURL(plug.soundcloudURL);
