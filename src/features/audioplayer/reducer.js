@@ -51,7 +51,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isPlaying: true,
-        loading: false
+        // loading: false
         // currentTrack: action.payload,
       };
 
@@ -151,7 +151,7 @@ export default function(state = initialState, action) {
     case types.TRACK_LOADING:
       return {
         ...state,
-        loading: true
+        // loading: true
       };
 
     default:
