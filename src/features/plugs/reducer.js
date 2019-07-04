@@ -11,6 +11,7 @@ export default function(state = initialState, action) {
 		case types.CREATE_NEW_PLUG:
 			return {
 				...state,
+				currentPlug: action.payload
 			};
 		case types.GET_PLUG:
 			return {

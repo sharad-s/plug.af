@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router';
 // import isEmpty from '../../utils/isEmpty';
+import queryString from 'query-string';
 
 // Subcomponents
 import AudioPlayer from '../../components/AudioPlayer';
 import ButtonsPanel from '../../components/ButtonsPanel';
+import PreviewPanel from '../../components/PreviewPanel';
 import Overlay from '../../components/Overlay';
 import { Loader } from '../../components/Loader';
 
@@ -37,6 +39,7 @@ class AudioPage extends Component {
       value: '',
       showDiv: false,
       playlistURL: '',
+      preview: false,
     };
   }
 
@@ -49,6 +52,7 @@ class AudioPage extends Component {
     let playlistURL, plug;
     const { shortID } = this.props.match.params;
 
+    // If Specific ShortID in URL
     if (shortID) {
       // Get playlistURL from ShortID
       // playlistURL = await getPlaylistFromShortID(shortID); FIXME:// REMOVING THIS MAKES ALL PREVIOUS PLUGS INCOMPATIBLE
@@ -59,7 +63,10 @@ class AudioPage extends Component {
     }
 
     // Check for any query params (link sharing)
-    // let { playlistURL } = queryString.parse(this.props.location.search);
+    let { preview } = queryString.parse(this.props.location.search);
+    if (preview === 'true') {
+      this.setState({ preview: true });
+    }
 
     await newUpdatePlaylist(plug);
     console.log('componentDidMount:GETTING TRACK');
@@ -88,6 +95,12 @@ class AudioPage extends Component {
       <h3>Playlist {audio.playlistName} </h3>
     ) : null;
 
+    const renderedPanel = this.state.preview ? (
+      <PreviewPanel shortID={audio.currentPlug.shortID} />
+    ) : (
+      <ButtonsPanel />
+    );
+
     const renderedPage = plug.loading ? (
       <div className="audiopage-loader-container">
         <Loader />
@@ -100,7 +113,7 @@ class AudioPage extends Component {
           renderedPlaylistName={renderedPlaylistName}
         />
 
-        <ButtonsPanel />
+        {renderedPanel}
       </Fragment>
     );
 

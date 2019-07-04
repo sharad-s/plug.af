@@ -48,7 +48,7 @@ class HomePage extends Component {
 				console.log('handleSubmit:newPlug', newPlug);
 				const { shortID, soundcloudURL } = newPlug;
 				track_CreatePlug({ plugID: shortID, soundcloudURL });
-				this.props.history.push(`/preview/${shortID}`);
+				this.props.history.push(`/${shortID}/?preview=true`);
 			})
 			.catch(err => {
 				console.log('HandleSubmit: error', err);

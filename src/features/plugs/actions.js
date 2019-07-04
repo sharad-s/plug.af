@@ -46,13 +46,14 @@ export const createPlugWithApi = async url => {
     const newPlug = await parsePlug(url);
     console.log('About to POST plug to API. newPlug:', newPlug);
     const res = await axios.post('api/plugs', newPlug);
-    console.log('Posted PLUG TO API. Result:', res.data);
+    console.log('Posted PLUG TO API. Result:', res.data);  
     return res.data;
   } catch (err) {
     dispatch(getSearchErrorAction(err));
     throw err;
   }
 };
+
 
 /*
  *  getPlugs:
@@ -259,10 +260,15 @@ const increaseImageResolution = originalURL =>
   originalURL.replace(regex, 't500x500');
 
 // Action Creators
-const createPlugAction = () => ({
+const createPlugAction = (plug) => ({
   type: types.CREATE_NEW_PLUG,
-  payload: null,
+  payload: plug,
 });
+
+// setCurrentPlugAction = plug => ({
+//   type: types.SET_CURRENT_PLUG,
+//   payload: plug,
+// })
 
 // Action Creators
 const getPlugsAction = plugs => ({
