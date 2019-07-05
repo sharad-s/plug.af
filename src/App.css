@@ -66,6 +66,7 @@ body.noScroll {
   /*justify-content: center;*/
   align-items: center;
   display: grid;
+  grid-template-rows: 10% 1fr 15% 15%;
 }
 
 /* BUTTONS*/
@@ -110,7 +111,7 @@ body.noScroll {
 }
 
 /* If iPhone SE Then scale everything by 0.75 */
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 361px) {
   /* Every Button in the Buttons Panel*/
   .buttons-panel .button-in {
     width: 60px;
@@ -181,7 +182,7 @@ body.noScroll {
 }*/
 
 /* If iPhone SE Then scale everything by 0.75 */
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 361px) {
   /* Every Button in the Buttons Panel*/
   .header-item {
     font-size: 24px;
@@ -391,7 +392,7 @@ body.noScroll {
 }
 
 /* If iPhone SE Then scale everything by 0.75 */
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 361px) {
   /* Every Button in the Buttons Panel*/
   .card-container {
     width: 250px;
