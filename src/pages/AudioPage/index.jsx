@@ -4,9 +4,9 @@ import { withRouter } from 'react-router';
 import queryString from 'query-string';
 
 // Subcomponents
-import AudioPlayer from '../../components/AudioPlayer';
 import ButtonsPanel from '../../components/ButtonsPanel';
 import PreviewPanel from '../../components/PreviewPanel';
+import SwipableCards from '../../components/SwipableCards';
 import Overlay from '../../components/Overlay';
 import { Loader } from '../../components/Loader';
 
@@ -38,7 +38,7 @@ class AudioPage extends Component {
       errorMessage: '',
       value: '',
       showDiv: false,
-      playlistURL: '',
+      shortID: '',
       preview: false,
     };
   }
@@ -49,9 +49,9 @@ class AudioPage extends Component {
 
     connectSoundcloud();
 
-    let playlistURL, plug;
     const { shortID } = this.props.match.params;
 
+    let plug;
     // If Specific ShortID in URL
     if (shortID) {
       // Get playlistURL from ShortID
@@ -107,12 +107,7 @@ class AudioPage extends Component {
       </div>
     ) : (
       <Fragment>
-        <AudioPlayer
-          tracks={this.state.tracks}
-          playlistName={this.state.playlistName}
-          renderedPlaylistName={renderedPlaylistName}
-        />
-
+        <SwipableCards />
         {renderedPanel}
       </Fragment>
     );

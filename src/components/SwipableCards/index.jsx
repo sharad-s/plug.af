@@ -212,10 +212,10 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div style={swipeWrapperStyles}>
+        <div>
           {/* If Tracks are in local state, render Top and Bottom Card */}
           {tracks.length > 0 ? (
-            <div id="SWIPABLE" style={swipableStyles}>
+            <div id="SWIPABLE" >
               {/* Top Swipable Card */}
 
               <Swipeable

@@ -56,8 +56,8 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <div className="App">
-          <Header />
           <div id="WRAPPER">
+          <Header />
             <Switch>
               <Route
                 exact

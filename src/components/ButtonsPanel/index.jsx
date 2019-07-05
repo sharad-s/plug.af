@@ -51,7 +51,7 @@ class ButtonsPanel extends Component {
 				: { visibility: 'visible' };
 
 		return (
-			<center>
+			<center className="buttons-panel-container">
 				<div class="buttons-panel noselect">
 					<img
 						src={goback}
