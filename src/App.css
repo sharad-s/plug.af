@@ -67,6 +67,15 @@ body.noScroll {
   align-items: center;
   display: grid;
   grid-template-rows: 10% 1fr 15% 15%;
+
+  /*
+  TODO: 
+    
+  If User is mobile(Safari) `grid-template-rows: 15% 1fr 15%;`
+  If User is Desktop `grid-template-rows: 15% 1fr 15% 15%;`
+
+
+  */
 }
 
 /* BUTTONS*/
@@ -83,7 +92,7 @@ body.noScroll {
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center ;
   background-color: salmon;
   grid-row-start: 3;
 }
@@ -92,6 +101,8 @@ body.noScroll {
 .buttons-panel {
   background-color: red;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 /* Every Button in the Buttons Panel*/
@@ -206,6 +217,7 @@ body.noScroll {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 10px;
 }
 
 /* Card */
