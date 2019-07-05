@@ -5,7 +5,7 @@ import { track_LoadedPreviewPage } from '../../utils/mixpanel';
 // import isEmpty from '../../utils/isEmpty';
 
 // Subcomponents
-import AudioPlayer from '../../components/AudioPlayer';
+import SwipableCards from '../../components/SwipableCards';
 import ButtonsPanel from '../../components/ButtonsPanel';
 
 // Share Buttons
@@ -73,10 +73,7 @@ class AudioPage extends Component {
 
 		return (
 			<Fragment>
-				<AudioPlayer
-					tracks={this.state.tracks}
-					playlistName={this.state.playlistName}
-				/>
+				<SwipableCards	/>
 				<div className="preview-container">
 					<p class="voila">Share your Plug</p>
 					<form class="preview-form">
