@@ -19,17 +19,6 @@ import {
   newNextTrack,
 } from '../../features/audioplayer/actions';
 
-// Styles for Card Underneath
-const bottomcardStyles = {
-  cursor: 'pointer',
-  userSelect: 'none',
-  position: 'fixed',
-  top: '65px',
-  bottom: '0px',
-  height: 'inherit',
-  zIndex: -1,
-  width: '100%',
-};
 
 // Styles for Card Underneath
 const bottomBottomCardStyles = {
@@ -45,9 +34,9 @@ const bottomBottomCardStyles = {
 
 //  Track for End of List
 const emptyTrack = {
-  artwork_url: 'https://source.unsplash.com/random/300x300',
-  title: 'END OF LIST',
-  permalink_url: 'https://plug.af',
+  imageURL: 'https://source.unsplash.com/random/500x500',
+  title: 'Loading..',
+  soundcloudPermalinkURL: 'https://plug.af',
   user: {},
 };
 
@@ -220,7 +209,7 @@ class App extends Component {
 
               {/* Bottom, Fixed Non-Swipable Card */}
               {tracks.length > 1 && (
-                <div id="NONSWIPABLE_CARD_BOTTOM" style={bottomcardStyles}>
+                <div id="NONSWIPABLE_CARD_BOTTOM">
                   <Beatcard track={tracks[1]} />
                 </div>
               )}

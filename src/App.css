@@ -220,6 +220,22 @@ body.noScroll {
   padding-top: 10px;
 }
 
+
+#NONSWIPABLE_CARD_BOTTOM {
+  cursor: pointer;
+  user-select: none;
+  position: fixed;
+  top: 105px;
+  bottom: 0px;
+  height: inherit;
+  z-index: -1;
+  width: 100%;
+}
+
+#NONSWIPABLE_CARD_BOTTOM .btn-sc {
+  background-color: #cf6100 !important;
+}
+
 /* Card */
 .card-container-god {
   /* Vertical Flex Container for Entire Space Surrounding Cards */

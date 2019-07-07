@@ -92,6 +92,10 @@ export default function(state = initialState, action) {
       return {
         ...state,
         playlist: [],
+        // plugs: [],
+        totalTrackCount: 0,
+        totalTrackIndex: 0,
+        plugIndex: 0,
       };
     case types.SET_SHORT_ID:
       return {
