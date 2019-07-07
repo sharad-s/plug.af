@@ -101,7 +101,7 @@ class AudioPage extends Component {
       <ButtonsPanel />
     );
 
-    const renderedPage = plug.loading ? (
+    const renderedPage = (audio.plugs.length === 0 & plug.loading) ? (
       <div className="audiopage-loader-container">
         <Loader />
       </div>
