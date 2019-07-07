@@ -218,13 +218,13 @@ class App extends Component {
                 </div>
               </Swipeable>
 
-              {/* Bottom, Fixed Non-Swipable Card 
+              {/* Bottom, Fixed Non-Swipable Card */}
               {tracks.length > 1 && (
                 <div id="NONSWIPABLE_CARD_BOTTOM" style={bottomcardStyles}>
                   <Beatcard track={tracks[1]} />
                 </div>
               )}
-              */}
+              
             </div>
           ) : (
             <div style={{ zIndex: '-2' }}>
