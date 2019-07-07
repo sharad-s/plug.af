@@ -6,6 +6,7 @@ import axios from 'axios';
 import * as types from './types';
 import store from '../../state/store';
 
+  // Actions
 import {
 	getSoundcloudErrorsAction,
 	getSearchErrorAction,
@@ -14,6 +15,9 @@ import {
 } from '../errors/actions';
 
 import { createPlugWithApi, getRandomPlug, incrementSnippetPlayCount } from '../plugs/actions';
+
+import { openModal } from '../page';
+
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
@@ -198,6 +202,13 @@ const _incrementIndex = async int => {
 		totalTrackIndex,
 	} = getState().audio;
 	let newPlaylist = currentPlug.snippets;
+
+
+	// IF TOTAL TRACK INDEX IS 4 RUN OPENMODAL()
+	if (totalTrackIndex + 1 === 4) {
+		openModal()
+	}
+
 	/* PRELOAD: If trackIndex + int is exactly 2 less than playlist length, get next plug */
 	/* TODO: check if that specific track has been played or not yet  */
 	if (
@@ -233,7 +244,8 @@ const _incrementIndex = async int => {
 			`PLUG INDEX: ${plugIndex - 1}, NEW TRACK INDEX: ${newTrackIndex}`,
 		);
 		return newTrackIndex;
-	} else {
+	}
+	 else {
 		dispatch(updateCurrentIndexAction(trackIndex + int));
 		// Increment/Decrement TOTAL Track Index +/= 1
 		dispatch(newUpdateTotalTrackIndex(int));

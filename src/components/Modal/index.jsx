@@ -23,7 +23,6 @@ class ReusableModal extends React.Component {
 
     return (
       <div>
-        <button onClick={this.onOpenModal}>Open modal</button>
         <Modal open={page.modalOpen} onClose={this.onCloseModal} center>
           <h2>Simple centered modal</h2>
           <p>
