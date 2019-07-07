@@ -34,7 +34,7 @@ const bottomBottomCardStyles = {
 
 //  Track for End of List
 const emptyTrack = {
-  imageURL: 'https://source.unsplash.com/random/500x500',
+  imageURL: 'https://i.imgur.com/h7OIJa5.png',
   title: 'Loading..',
   soundcloudPermalinkURL: 'https://plug.af',
   user: {},
