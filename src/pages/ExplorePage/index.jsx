@@ -41,6 +41,8 @@ class ExplorePage extends Component {
 		const renderedPlugs = isEmpty(plugs)
 			? null
 			: plugs.map((plug, idx) => {
+
+					console.log("PLUG", plug, "PLAYCOUNT", plug.playCount)
 					// Check Creator name if exists
 					const creatorName =
 						plug.creator === null ? 'Anonymous' : plug.creator.name;
