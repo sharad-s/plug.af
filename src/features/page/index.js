@@ -24,10 +24,10 @@ export const openModal = () => {
 
 	// If Modal has been seen before on this device in the past 12 hours, don't show it again right now
 	if (currentTime < modalExpiration) {
-		alert(
-			`DONT SHOW MODAL: ${currentTime}, ${modalExpiration}, ${currentTime <
-				modalExpiration}`,
-		);
+		// alert(
+		// 	`DONT SHOW MODAL: ${currentTime}, ${modalExpiration}, ${currentTime <
+		// 		modalExpiration}`,
+		// );
 		return;
 	}
 
