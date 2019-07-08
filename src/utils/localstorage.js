@@ -1,8 +1,16 @@
-const setModalSeen = () => {
-	localStorage.setItem('modalSeen', true)
+export const setModalSeen = (timestamp) => {
+	return localStorage.setItem('modalSeen', timestamp)
 }
 
-const setEmailCollected = () => {
-	localStorage.setItem('emailCollected', true)
+export const getModalSeen = () => {
+	return localStorage.getItem('modalSeen')
 }
 
+export const setEmailCollected = () => {
+	return localStorage.setItem('emailCollected', true)
+}
+
+
+export const getEmailCollected = () => {
+	return localStorage.getItem('emailCollected')
+}
