@@ -225,7 +225,7 @@ body.noScroll {
   cursor: pointer;
   user-select: none;
   position: fixed;
-  top: 105px;
+  top: 15%;
   bottom: 0px;
   height: inherit;
   z-index: -1;
@@ -755,6 +755,8 @@ select {
   font-size: 20px;
 }
 
+
+/* Overlay */
 .start-overlay {
   opacity: 1;
   background-image: url('https://images.unsplash.com/photo-1508973379184-7517410fb0bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80');
