@@ -32,7 +32,7 @@ class ReusableModal extends React.Component {
 
 		return (
 			<div>
-				<Modal open={page.modalOpen} onClose={this.onCloseModal} center>
+				<Modal open={false} onClose={this.onCloseModal} center>
 					<h1>Join our Community</h1>
 					<MailchimpSubscribe
 						url={url}

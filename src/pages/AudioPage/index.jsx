@@ -8,7 +8,7 @@ import ButtonsPanel from '../../components/ButtonsPanel';
 import PreviewPanel from '../../components/PreviewPanel';
 import SwipableCards from '../../components/SwipableCards';
 import Overlay from '../../components/Overlay';
-import Modal from "../../components/Modal/EmailSignupModal"
+// import Modal from "../../components/Modal/EmailSignupModal"
 import { Loader } from '../../components/Loader';
 
 // Mixpanel
@@ -116,7 +116,6 @@ class AudioPage extends Component {
     return (
         <Fragment>
         {renderedPage}
-        <Modal />
         </Fragment>);
   }
 }
