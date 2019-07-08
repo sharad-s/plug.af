@@ -19,33 +19,6 @@ import {
   newNextTrack,
 } from '../../features/audioplayer/actions';
 
-const swipeWrapperStyles = {
-  position: 'relative',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-};
-
-const swipableStyles = {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  width: '100%',
-  height: '100%',
-  overflowX: 'hidden',
-};
-
-// Styles for Card Underneath
-const bottomcardStyles = {
-  cursor: 'pointer',
-  userSelect: 'none',
-  position: 'fixed',
-  top: '65px',
-  bottom: '0px',
-  height: 'inherit',
-  zIndex: -1,
-  width: '100%',
-};
 
 // Styles for Card Underneath
 const bottomBottomCardStyles = {
@@ -61,9 +34,9 @@ const bottomBottomCardStyles = {
 
 //  Track for End of List
 const emptyTrack = {
-  artwork_url: 'https://source.unsplash.com/random/300x300',
-  title: 'END OF LIST',
-  permalink_url: 'https://plug.af',
+  imageURL: 'https://i.imgur.com/h7OIJa5.png',
+  title: 'Loading..',
+  soundcloudPermalinkURL: 'https://plug.af',
   user: {},
 };
 
@@ -212,10 +185,9 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div style={swipeWrapperStyles}>
           {/* If Tracks are in local state, render Top and Bottom Card */}
           {tracks.length > 0 ? (
-            <div id="SWIPABLE" style={swipableStyles}>
+            <div className="swipable-container" id="SWIPABLE">
               {/* Top Swipable Card */}
 
               <Swipeable
@@ -228,17 +200,20 @@ class App extends Component {
                   return Swiper.initializeSwiper(swipeFunction);
                 }}
               >
-                <div id="SWIPABLE_CARD_TOP">
-                  <Beatcard track={tracks[0]} />
+                <div className="swipable-inner-container">
+                  <div id="SWIPABLE_CARD_TOP">
+                    <Beatcard track={tracks[0]} />
+                  </div>
                 </div>
               </Swipeable>
 
               {/* Bottom, Fixed Non-Swipable Card */}
               {tracks.length > 1 && (
-                <div id="NONSWIPABLE_CARD_BOTTOM" style={bottomcardStyles}>
+                <div id="NONSWIPABLE_CARD_BOTTOM">
                   <Beatcard track={tracks[1]} />
                 </div>
               )}
+              
             </div>
           ) : (
             <div style={{ zIndex: '-2' }}>
@@ -246,7 +221,6 @@ class App extends Component {
               <Beatcard track={emptyTrack} secondsPassed={0} />
             </div>
           )}
-        </div>
       </Fragment>
     );
   }

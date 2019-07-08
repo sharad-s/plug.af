@@ -5,6 +5,10 @@ import isEmpty from '../../utils/isEmpty';
 // Mixpanel
 import { track_LoadedHomePage, track_CreatePlug } from '../../utils/mixpanel';
 
+
+// SubComponents
+import Modal from "../../components/Modal"
+
 // Redux
 import { connect } from 'react-redux';
 
@@ -94,6 +98,7 @@ class HomePage extends Component {
 						/>
 					</form>
 				</div>
+				<Modal />
 			</center>
 		);
 	}

@@ -8,6 +8,8 @@ import audioReducer from '../features/audioplayer/reducer';
 import errorReducer from '../features/errors/reducer';
 import authReducer from '../features/auth/reducer';
 import plugReducer from '../features/plugs/reducer';
+import pageReducer from '../features/page/reducer';
+
 
 
 
@@ -15,7 +17,9 @@ const rootReducer = combineReducers({
   audio: audioReducer,
   errors: errorReducer,
   auth: authReducer,
-  plug: plugReducer
+  plug: plugReducer,
+  page: pageReducer
+
 });
 
 const initialState = {};
