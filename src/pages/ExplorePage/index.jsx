@@ -6,6 +6,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import isEmpty from '../../utils/isEmpty';
 
+// Mixpanel
+import { track_LoadedExplorePage } from '../../utils/mixpanel';
+
 // Redux
 import { connect } from 'react-redux';
 
@@ -21,6 +24,10 @@ class ExplorePage extends Component {
 		pageNum: 0,
 		loading: false,
 	};
+
+	componentDidMount() {
+		track_LoadedExplorePage()
+	}
 
 	loadFunc = async () => {
 		let { plugs, pageNum } = this.state;
