@@ -225,7 +225,7 @@ body.noScroll {
   cursor: pointer;
   user-select: none;
   position: fixed;
-  top: 15%;
+  top: 14%;
   bottom: 0px;
   height: inherit;
   z-index: -1;
