@@ -6,7 +6,7 @@ import axios from 'axios';
 import * as types from './types';
 import store from '../../state/store';
 
-  // Actions
+// Actions
 import {
 	getSoundcloudErrorsAction,
 	getSearchErrorAction,
@@ -14,10 +14,13 @@ import {
 	// getAPIErrorsAction,
 } from '../errors/actions';
 
-import { createPlugWithApi, getRandomPlug, incrementSnippetPlayCount } from '../plugs/actions';
+import {
+	createPlugWithApi,
+	getRandomPlug,
+	incrementSnippetPlayCount,
+} from '../plugs/actions';
 
 import { openModal } from '../page';
-
 
 // Utils
 import { setShortURL, getLongURL } from '../../utils/shorturl';
@@ -33,7 +36,6 @@ import {
 	track_NextSnippet,
 	track_PrevSnippet,
 } from '../../utils/mixpanel';
-
 
 const baseURL = 'https://plug.af/';
 
@@ -59,6 +61,10 @@ export const connectSoundcloud = () => {
 	const { dispatch } = store;
 	try {
 		const scPlayer = new SoundCloudAudio(CLIENT_ID);
+		scPlayer.on('loadedmetadata', e => {
+			console.log('scPlayer LOADED METADATA', e);
+			scPlayer.setTime(45);
+		});
 
 		dispatch(connectSoundcloudAction(scPlayer));
 	} catch (err) {
@@ -114,7 +120,7 @@ export const playSnippet = async () => {
 		currentTrack,
 	} = getState().audio;
 
-	dispatch(trackLoading())
+	dispatch(trackLoading());
 
 	try {
 		// Create Stream URL
@@ -127,7 +133,7 @@ export const playSnippet = async () => {
 		});
 
 		// Increment Play Count for Snippet
-		await incrementSnippetPlayCount(currentTrack._id)
+		await incrementSnippetPlayCount(currentTrack._id);
 
 		// Mixpanel Tracker
 		track_PlaySnippet({
@@ -151,7 +157,6 @@ export const setSnippet = async () => {
 	console.log('Setting Snippet...');
 
 	try {
-		scPlayer.setTime(45);
 		scPlayer.on('timeupdate', () => {
 			let currentTime = scPlayer.audio.currentTime;
 			// this.setState({ currentTime });
@@ -176,6 +181,7 @@ export const setSnippet = async () => {
 		scPlayer.on('loadstart', e => {
 			console.log('scPlayer.loadstart', e);
 		});
+
 		dispatch(setSnippetAction());
 	} catch (err) {
 		console.log('setSnippet:', err.message);
@@ -203,10 +209,9 @@ const _incrementIndex = async int => {
 	} = getState().audio;
 	let newPlaylist = currentPlug.snippets;
 
-
 	// IF TOTAL TRACK INDEX IS 4 RUN OPENMODAL()
 	if (totalTrackIndex + 1 === 4) {
-		openModal()
+		openModal();
 	}
 
 	/* PRELOAD: If trackIndex + int is exactly 2 less than playlist length, get next plug */
@@ -244,17 +249,13 @@ const _incrementIndex = async int => {
 			`PLUG INDEX: ${plugIndex - 1}, NEW TRACK INDEX: ${newTrackIndex}`,
 		);
 		return newTrackIndex;
-	}
-	 else {
+	} else {
 		dispatch(updateCurrentIndexAction(trackIndex + int));
 		// Increment/Decrement TOTAL Track Index +/= 1
 		dispatch(newUpdateTotalTrackIndex(int));
 		return trackIndex + int;
 	}
 };
-
-
-
 
 export const getPlaylistFromShortID = async shortID => {
 	try {
@@ -324,17 +325,15 @@ export const newUpdatePlaylist = async plug => {
 	console.log('newUpdatePlaylist: plug', plug);
 
 	if (isEmpty(plug)) return false;
-	
+
 	console.log('Dispatching Plug', plug);
 	await checkPlug(plug);
 	const response = await resolveSoundcloudURL(plug.soundcloudURL);
-	console.log("SC OBJECT", response)
+	console.log('SC OBJECT', response);
 	dispatch(clearPlaylistAction());
 	dispatch(clearAllAction());
 	dispatch(newUpdatePlugAction(plug));
 };
-
-
 
 const checkPlug = async plug => {
 	if (isEmpty(plug.snippets)) {
@@ -357,7 +356,6 @@ export const newNextTrack = async (
 ) => {
 	const { getState, dispatch } = store;
 
-
 	console.log('newNextTrack 0');
 
 	// If Anything other than manual swipe occurs, Force Swipe Card
@@ -371,7 +369,7 @@ export const newNextTrack = async (
 
 	try {
 		// Index ?
-		const newTrackIndex  = await _incrementIndex(1);
+		const newTrackIndex = await _incrementIndex(1);
 		const nextTrack = getState().audio.playlist[
 			getState().audio.totalTrackIndex
 		];
@@ -403,14 +401,18 @@ export const prevSong = async () => {
 	const { playlist } = getState().audio;
 
 	try {
-
 		// Index ?
-		const newTrackIndex  = await _incrementIndex(-1);
+		const newTrackIndex = await _incrementIndex(-1);
 		const nextTrack = getState().audio.playlist[
 			getState().audio.totalTrackIndex
 		];
 
-		console.log('prevSong: new Track Index', newTrackIndex, "prevTrack", nextTrack);
+		console.log(
+			'prevSong: new Track Index',
+			newTrackIndex,
+			'prevTrack',
+			nextTrack,
+		);
 		dispatch(prevSnippetAction(newTrackIndex, nextTrack));
 
 		await getTrack(newTrackIndex);
@@ -421,7 +423,6 @@ export const prevSong = async () => {
 		track_PrevSnippet({
 			newSnippetIndex: newTrackIndex,
 		});
-
 	} catch (err) {
 		console.log('prevSong:', err.message);
 	}
@@ -519,7 +520,6 @@ const newUpdateTotalTrackIndex = int => ({
 	payload: int,
 });
 
-
 const trackLoading = () => ({
-	type: types.TRACK_LOADING	
-})
+	type: types.TRACK_LOADING,
+});
