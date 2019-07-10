@@ -157,6 +157,7 @@ export const setSnippet = async () => {
 	console.log('Setting Snippet...');
 
 	try {
+		scPlayer.setTime(45);
 		scPlayer.on('timeupdate', () => {
 			let currentTime = scPlayer.audio.currentTime;
 			// this.setState({ currentTime });
