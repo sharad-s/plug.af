@@ -21,7 +21,7 @@ class Header extends Component {
           create
         </Link>
         <Link to="/" className="header-item" id="CENTER_ICON">
-          plug
+          plug.
         </Link>
         <Link to="/explore" className="header-item-small" id="TOP_RIGHT_BUTTON">
           explore
