@@ -5,16 +5,15 @@ import isEmpty from '../../utils/isEmpty';
 // Mixpanel
 import { track_LoadedHomePage, track_CreatePlug } from '../../utils/mixpanel';
 
-
 // SubComponents
-import Modal from "../../components/Modal"
+import Modal from '../../components/Modal';
+import { Loader } from '../../components/Loader';
+
 
 // Redux
 import { connect } from 'react-redux';
 
 import { createPlugWithApi } from '../../features/plugs/actions';
-
-
 
 class HomePage extends Component {
 	constructor(props) {
@@ -38,13 +37,15 @@ class HomePage extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (!isEmpty(nextProps.errors.searchError)) {
-			console.log("CREATE PAGE", "SEARCHERROR", nextProps.errors.searchError)
+			console.log('CREATE PAGE', 'SEARCHERROR', nextProps.errors.searchError);
+			this.setState({loading: false})
 			return this.setState({ error: nextProps.errors.searchError });
 		}
 	}
 
 	handleSubmit = async e => {
 		e.preventDefault();
+		this.setState({ loading: true });
 		const url = this.state.input;
 		this.clearErrors();
 		// Post Plug to API
@@ -53,6 +54,7 @@ class HomePage extends Component {
 				console.log('handleSubmit:newPlug', newPlug);
 				const { shortID, soundcloudURL } = newPlug;
 				track_CreatePlug({ plugID: shortID, soundcloudURL });
+				this.setState({ loading: false });
 				this.props.history.push(`/${shortID}/?preview=true`);
 			})
 			.catch(err => {
@@ -70,9 +72,14 @@ class HomePage extends Component {
 	};
 
 	render() {
-		const renderedError = isEmpty(this.state.error)
-			? null
-			: this.state.error.message;
+
+		const renderedError = isEmpty(this.state.error) ? null : this.state.error.message;
+
+		const renderedButton = this.state.loading ? (
+			<Loader />
+		) : (
+			<input type="submit" value="Plug it" className="pure-button btn-share" />
+		);
 
 		return (
 			<center>
@@ -92,11 +99,7 @@ class HomePage extends Component {
 						/>
 						<p className="error-message">{renderedError} </p>
 
-						<input
-							type="submit"
-							value="Plug it"
-							className="pure-button btn-share"
-						/>
+						{renderedButton}
 					</form>
 				</div>
 				<Modal />
