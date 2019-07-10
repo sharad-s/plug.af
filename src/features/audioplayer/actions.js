@@ -387,13 +387,15 @@ export const newNextTrack = async (
 		console.log("newNextTrack: swipeDirection: ", msg, swipeDirection);
 
 		// Mixpanel Tracker
-		track_NextSnippet({
-			newSnippetIndex: newTrackIndex,
-			 shortID: nextTrack.shortID,
+		const payload = {
+			 newSnippetIndex: newTrackIndex,
+			 shortID: getState().audio.currentPlug.shortID,
 		  	 trackTitle: nextTrack.title,
   			 trackArtist: nextTrack.artist,
 			 action: msg,
-		});
+			}
+		console.log("newNextTrack: payload", payload, nextTrack);
+		track_NextSnippet(payload);
 	} catch (err) {
 		console.log('newNextTrack:', err.message);
 	}
