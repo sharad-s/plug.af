@@ -14,7 +14,7 @@ class Header extends Component {
       ? '404 - Enter a Soundcloud Playlist URL'
       : 'Plug a Soundcloud URL';
 
-    const Sidebar = <Sidebar />;
+    // const Sidebar = <Sidebar />;
     const Header = (
       <div className="header-container">
         <Link to="/create" className="header-item-small" id="MENU_BUTTON">

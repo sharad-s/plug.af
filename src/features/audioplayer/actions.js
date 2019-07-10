@@ -352,8 +352,8 @@ export const newAppendlaylist = async plug => {
 };
 
 export const newNextTrack = async (
-	swipeDirection = 'LEFT',
-	opts = { disableForceSwipe: false, swipeDirection: 'LEFT' },
+	swipeDirection = LEFT,
+	opts = { disableForceSwipe: false, swipeDirection: LEFT },
 ) => {
 	const { getState, dispatch } = store;
 
@@ -362,7 +362,6 @@ export const newNextTrack = async (
 	// If Anything other than manual swipe occurs, Force Swipe Card
 	if (!opts.disableForceSwipe) {
 		console.log('audioplayer Actions: nextSong: Force Swipe called');
-		const action = swipeDirection === 'RIGHT' ? 'LIKE' : 'DISLIKE';
 		return forceSwipeCard(swipeDirection);
 	}
 
@@ -384,13 +383,16 @@ export const newNextTrack = async (
 
 		console.log('newNextTrack 4');
 
-		const msg = swipeDirection === 'RIGHT' ? 'LIKE' : 'SKIP';
-		console.log(msg);
+		const msg = swipeDirection === RIGHT ? 'LIKE' : 'SKIP';	
+		console.log("newNextTrack: swipeDirection: ", msg, swipeDirection);
 
 		// Mixpanel Tracker
 		track_NextSnippet({
-			newSnippetIndex: getState().audio.trackIndex,
-			action: msg,
+			newSnippetIndex: newTrackIndex,
+			 shortID: nextTrack.shortID,
+		  	 trackTitle: nextTrack.title,
+  			 trackArtist: nextTrack.artist,
+			 action: msg,
 		});
 	} catch (err) {
 		console.log('newNextTrack:', err.message);

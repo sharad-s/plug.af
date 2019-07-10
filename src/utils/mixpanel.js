@@ -97,6 +97,9 @@ export const track_PlaySnippet = (
 export const track_NextSnippet = (
   payload = {
     newSnippetIndex: null,
+    shortID: null,
+    trackTitle: null,
+    trackArtist: null,
     action: null,
   },
 ) => {
