@@ -38,6 +38,7 @@ class HomePage extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (!isEmpty(nextProps.errors.searchError)) {
+			console.log("CREATE PAGE", "SEARCHERROR", nextProps.errors.searchError)
 			return this.setState({ error: nextProps.errors.searchError });
 		}
 	}
@@ -71,7 +72,7 @@ class HomePage extends Component {
 	render() {
 		const renderedError = isEmpty(this.state.error)
 			? null
-			: this.state.error.response.data;
+			: this.state.error.message;
 
 		return (
 			<center>
